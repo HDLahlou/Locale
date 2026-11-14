@@ -1,0 +1,96 @@
+{
+  "model": "claude-fable-5-2",
+  "effortLevel": "high",
+  "worktree": {
+    "baseRef": "head"
+  },
+  "permissions": {
+    "denyInsteadOfPrompting": true,
+    "allow": [
+      "Read",
+      "Glob",
+      "Grep",
+      "Edit",
+      "Write",
+      "Bash(cargo *)",
+      "Bash(rustc *)",
+      "Bash(rustup target *)",
+      "Bash(rustup component *)",
+      "Bash(pnpm *)",
+      "Bash(node *)",
+      "Bash(flutter *)",
+      "Bash(dart *)",
+      "Bash(flutter_rust_bridge_codegen *)",
+      "Bash(just *)",
+      "Bash(xcrun simctl *)",
+      "Bash(xcodebuild *)",
+      "Bash(adb *)",
+      "Bash(python3 -I *)",
+      "Bash(sips *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "Bash(git show *)",
+      "Bash(git rev-parse *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git branch *)",
+      "Bash(git merge *)",
+      "Bash(git worktree *)",
+      "Bash(git stash *)",
+      "Bash(git fetch *)",
+      "Bash(git push origin ci/*)",
+      "Bash(gh run *)",
+      "Bash(gh workflow view *)",
+      "Bash(ls *)",
+      "Bash(wc *)",
+      "Bash(grep *)",
+      "Bash(find *)",
+      "Bash(mkdir *)",
+      "Bash(head *)",
+      "Bash(tail *)",
+      "Bash(sort *)",
+      "Bash(diff *)",
+      "Bash(shasum *)",
+      "Bash(date*)"
+    ],
+    "deny": [
+      "Bash(git push origin main*)",
+      "Bash(git push origin docs/*)",
+      "Bash(git push origin build/*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(git reset --hard*)",
+      "Bash(sudo *)",
+      "Bash(brew *)",
+      "Bash(gh pr *)",
+      "Bash(gh repo *)",
+      "Bash(gh secret *)",
+      "Bash(gh api *)",
+      "Bash(fly *)",
+      "Bash(flyctl *)",
+      "Bash(rm -rf /*)",
+      "Bash(rm -rf ~*)",
+      "Edit(design/**)",
+      "Edit(docs/agentic/source/**)",
+      "Edit(docs/agentic/tools/**)",
+      "Edit(.claude/**)",
+      "Edit(docs/*.docx)"
+    ]
+  },
+  "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 -I .claude/hooks/pause_on_session_end.py",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "status": "not_started",
+  "milestone": null,
+  "started_at": null,
+  "paused_at": null,
+  "reason": "Not started yet. Start with docs/agentic/start-build.sh.",
+  "last_checkpoint": null,
+  "consecutive_env_failures": 0,
+  "dispatches_since_last_done": 0
+}
