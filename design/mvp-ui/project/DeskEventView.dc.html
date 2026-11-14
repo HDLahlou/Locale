@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale desktop · Joined event</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E2DFD8">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4" fill="#6366F1"></circle><circle cx="16" cy="16" r="9" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.55"></circle><circle cx="16" cy="16" r="14" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.25"></circle></svg>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px">Locale</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; gap: 6px">
+      <a href="DeskEvents.dc.html" aria-current="page" style="padding: 8px 14px; border-radius: 10px; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Events</a>
+      <a href="HostCreate.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Host</a>
+      <a href="HostPast.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Past events</a>
+    </nav>
+    <button type="button" aria-label="Account: Sam R." style="width: 40px; height: 40px; border-radius: 20px; border: 0; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">SR</button>
+  </header>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 20px 28px 40px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px">
+    <a href="DeskEvents.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: #16171A; text-decoration: none">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+      All events
+    </a>
+
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap">
+          <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">Studio crit night</h1>
+          <span style="padding: 3px 10px; border-radius: 999px; background: #E6E9FE; color: #3730A3; font-size: 12px; font-weight: 700">Uploader</span>
+        </div>
+        <span style="font-size: 14px; color: #4A4E55">Hosted by Priya · Thu 6:00 – 9:00 PM · photos delete Fri 9:00 PM</span>
+      </div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap">
+        <button type="button" style="height: 42px; padding: 0 16px; border: 1.5px solid #16171A; border-radius: 10px; background: #FFFFFF; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; cursor: pointer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12M7 11l5 5 5-5"></path><path d="M4 20h16"></path></svg>
+          Download all originals (62)
+        </button>
+        <button type="button" style="height: 42px; padding: 0 16px; border: 0; border-radius: 10px; background: #A5B4FC; color: #1E1B4B; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+          Add photos
+        </button>
+      </div>
+    </div>
+
+    <section aria-label="Latest post from the host" style="display: flex; align-items: flex-start; gap: 14px; padding: 14px 18px; border-radius: 14px; background: #FFFFFF; border: 1px solid #E2DFD8">
+      <span style="width: 36px; height: 36px; border-radius: 18px; background: #E6E9FE; color: #3730A3; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 17v5M8 3h8l-1 7 3 3H6l3-3z"></path></svg>
+      </span>
+      <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+        <span style="font-size: 12px; font-weight: 600; color: #3730A3">Pinned · Priya (host) · 7:40 PM</span>
+        <span style="font-size: 15px; line-height: 1.45">Second round of crits starts at 8. Upload your work-in-progress shots before then so we can pull them up on the big screen.</span>
+      </div>
+      <a href="#posts" style="font-size: 13px; font-weight: 600; white-space: nowrap; align-self: center">All posts (3)</a>
+    </section>
+
+    <div role="tablist" aria-label="Event sections" style="display: flex; gap: 24px; border-bottom: 1px solid #E2DFD8">
+      <button type="button" role="tab" aria-selected="true" style="height: 44px; padding: 0 2px; border: 0; border-bottom: 2.5px solid #6366F1; background: transparent; font-size: 15px; font-weight: 700; color: #16171A; cursor: pointer">Photos 62</button>
+      <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 2px; border: 0; border-bottom: 2.5px solid transparent; background: transparent; font-size: 15px; font-weight: 500; color: #4A4E55; cursor: pointer">Posts 3</button>
+      <button type="button" role="tab" aria-selected="false" style="height: 44px; padding: 0 2px; border: 0; border-bottom: 2.5px solid transparent; background: transparent; font-size: 15px; font-weight: 500; color: #4A4E55; cursor: pointer">Attendees 14</button>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+      <section style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+        <div role="radiogroup" aria-label="Show photos by" style="display: flex; gap: 10px; flex-wrap: nowrap; overflow-x: auto">
+          <sc-for list="{{people}}" as="pp" hint-placeholder-count="6">
+            <button type="button" role="radio" aria-checked="{{pp.sel}}" aria-label="{{pp.aria}}" style="display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 12px 0 4px; border-radius: 999px; border: {{pp.border}}; background: {{pp.bg}}; cursor: pointer; color: #16171A; flex-shrink: 0">
+              <span style="width: 32px; height: 32px; border-radius: 16px; background: {{pp.scene}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700">{{pp.initial}}</span>
+              <span style="font-size: 13px; font-weight: 600">{{pp.name}}</span>
+              <span style="font-size: 12px; color: #5B5F66">{{pp.count}}</span>
+            </button>
+          </sc-for>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 4px">
+          <h2 style="margin: 0; font-size: 15px; font-weight: 700">7:00 – 7:30 PM <span style="font-weight: 500; color: #5B5F66">· 18 photos</span></h2>
+          <button type="button" aria-haspopup="menu" aria-expanded="false" style="display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; border: 1px solid #E2DFD8; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #16171A; cursor: pointer">Newest<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></button>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); grid-auto-rows: 130px; gap: 6px">
+          <sc-for list="{{photos}}" as="p" hint-placeholder-count="12">
+            <button type="button" aria-label="{{p.label}}" style="grid-column: {{p.span}}; grid-row: {{p.span}}; border: {{p.border}}; padding: 0; border-radius: 10px; background: {{p.scene}}; position: relative; overflow: hidden; cursor: pointer">
+              <span style="position: absolute; left: 6px; bottom: 6px; display: flex; align-items: center; gap: 5px; padding: 2px 7px 2px 2px; border-radius: 999px; background: rgba(14,15,17,0.6); color: #FFFFFF; font-size: 10px; font-weight: 600"><span style="width: 16px; height: 16px; border-radius: 8px; background: #A5B4FC; color: #1E1B4B; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700">{{p.initial}}</span>{{p.time}}</span>
+              <sc-if value="{{p.saved}}" hint-placeholder-val="{{false}}">
+                <span style="position: absolute; right: 6px; top: 6px; width: 20px; height: 20px; border-radius: 10px; background: #A5B4FC; color: #1E1B4B; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center" aria-label="Saved to this computer">✓</span>
+              </sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <div style="border: 2px dashed #C9C6BF; border-radius: 14px; background: #FAF9F6; padding: 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 14px; color: #3F4349">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5B5F66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"></path><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"></path></svg>
+          <span><strong>Drop photos anywhere</strong> to add them to this event. JPEG, HEIC or PNG.</span>
+        </div>
+      </section>
+
+      <aside style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 14px">
+        <div style="aspect-ratio: 4 / 3; max-width: 100%; border-radius: 12px; background: {{selected}}; position: relative">
+          <div style="position: absolute; left: 10px; top: 10px; display: flex; gap: 6px">
+            <span style="padding: 3px 8px; border-radius: 6px; background: rgba(14,15,17,0.65); color: #FFFFFF; font-size: 11px; font-weight: 700">HEIC</span>
+            <span style="padding: 3px 8px; border-radius: 6px; background: rgba(14,15,17,0.65); color: #FFFFFF; font-size: 11px; font-weight: 700">12 MP · HDR</span>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <span style="font-size: 15px; font-weight: 600">Photo by Priya · Thu 7:12 PM</span>
+          <span style="font-size: 13px; color: #4A4E55">Saved by 6 people</span>
+        </div>
+        <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+          <legend style="font-size: 13px; font-weight: 600; margin-bottom: 6px">Save as</legend>
+          <label style="display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: {{origBorder}}; background: {{origBg}}; border-radius: 12px; cursor: pointer">
+            <input type="radio" name="ver" checked="{{origChecked}}" style="accent-color: #6366F1; width: 18px; height: 18px; margin: 1px 0 0">
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 700">Original · HEIC</span><span style="font-size: 12px; color: #4A4E55">Exact file, with HDR · 3.4 MB</span></span>
+          </label>
+          <label style="display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: {{compBorder}}; background: {{compBg}}; border-radius: 12px; cursor: pointer">
+            <input type="radio" name="ver" checked="{{compChecked}}" style="accent-color: #6366F1; width: 18px; height: 18px; margin: 1px 0 0">
+            <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 700">Compatible · JPEG</span><span style="font-size: 12px; color: #4A4E55">{{compNote}}</span></span>
+          </label>
+        </fieldset>
+        <button type="button" style="height: 46px; border: 0; border-radius: 12px; background: #A5B4FC; color: #1E1B4B; font-size: 15px; font-weight: 600; cursor: pointer">Save to folder</button>
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: #4A4E55">
+          <span style="font-family: 'JetBrains Mono', monospace">{{folder}}</span>
+          <button type="button" style="height: 30px; padding: 0 8px; border: 0; background: transparent; color: #4F46E5; font-size: 12px; font-weight: 600; cursor: pointer">Change</button>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"platform":{"editor":"enum","options":["macOS","Windows"],"default":"macOS"},"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const S = {
+      dusk: 'linear-gradient(180deg,#2E3168 0%,#6E4C8A 38%,#E79B7A 62%,#3B2A33 63%,#1C1620 100%)',
+      lights: 'radial-gradient(circle at 18% 28%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 42% 18%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 66% 30%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 86% 20%,#FFE6A6 0 2px,transparent 3px),radial-gradient(ellipse at 50% 120%,#7A4E7E 0%,transparent 60%),linear-gradient(180deg,#151632 0%,#2A2550 100%)',
+      cake: 'radial-gradient(circle at 50% 42%,#FFD9A0 0 6%,rgba(255,180,90,0.55) 12%,transparent 34%),radial-gradient(ellipse at 50% 95%,#F4E3D0 0 28%,transparent 29%),linear-gradient(180deg,#2B1D1A 0%,#4A2E28 100%)',
+      terrace: 'radial-gradient(ellipse at 30% 105%,#5E7F55 0 30%,transparent 31%),radial-gradient(ellipse at 80% 110%,#4E6E4A 0 34%,transparent 35%),linear-gradient(180deg,#9FC3E3 0%,#D8E7F2 55%,#E9DCC8 56%,#CDBBA2 100%)',
+      portrait: 'radial-gradient(circle at 50% 38%,#C99A7E 0 15%,transparent 16%),radial-gradient(ellipse at 50% 100%,#3D4A6B 0 38%,transparent 39%),linear-gradient(160deg,#E9C7A8 0%,#B98B7A 100%)',
+      city: 'radial-gradient(circle at 75% 25%,#F6E7C1 0 5%,transparent 6%),linear-gradient(180deg,#232858 0%,#4A4D8C 60%,#151833 61%,#0E1027 100%)',
+      group: 'radial-gradient(circle at 25% 52%,#3A2F3F 0 9%,transparent 10%),radial-gradient(circle at 50% 46%,#4A3B4E 0 10%,transparent 11%),radial-gradient(circle at 75% 52%,#3A2F3F 0 9%,transparent 10%),radial-gradient(ellipse at 50% 100%,#2B2433 0 45%,transparent 46%),linear-gradient(180deg,#F2B880 0%,#D9826B 100%)',
+      drinks: 'radial-gradient(ellipse at 35% 60%,rgba(255,255,255,0.55) 0 8%,transparent 9%),radial-gradient(ellipse at 62% 58%,rgba(255,255,255,0.45) 0 9%,transparent 10%),linear-gradient(135deg,#1F3A4A 0%,#3E7C8C 50%,#C9E4DF 100%)',
+      confetti: 'radial-gradient(circle at 20% 30%,#A5B4FC 0 3%,transparent 4%),radial-gradient(circle at 70% 20%,#F9A8D4 0 3%,transparent 4%),radial-gradient(circle at 40% 70%,#FDE68A 0 3%,transparent 4%),radial-gradient(circle at 85% 65%,#99F6E4 0 3%,transparent 4%),linear-gradient(160deg,#2D2A4A 0%,#4C3F75 100%)',
+      sky: 'linear-gradient(180deg,#F7C59F 0%,#EF8A7E 40%,#8C5A8F 75%,#3A2F55 100%)'
+    };
+    const win = (this.props.platform ?? 'macOS') === 'Windows';
+    const list = [
+      [S.portrait, 'P', '7:12', true, 'span 2', true], [S.city, 'J', '7:14', false, 'span 1', false], [S.drinks, 'K', '7:15', true, 'span 1', false],
+      [S.group, 'P', '7:18', false, 'span 1', false], [S.lights, 'M', '7:19', false, 'span 1', false], [S.terrace, 'J', '7:21', false, 'span 1', false],
+      [S.sky, 'K', '7:22', false, 'span 1', false], [S.cake, 'P', '7:24', false, 'span 1', false], [S.confetti, 'M', '7:26', false, 'span 1', false],
+      [S.dusk, 'J', '7:28', false, 'span 1', false]
+    ];
+    const sel = (on) => on ? '2px solid #6366F1' : '1px solid #D4D4D8';
+    return {
+      selected: S.portrait,
+      origChecked: !win, compChecked: win,
+      origBorder: sel(!win), compBorder: sel(win),
+      origBg: !win ? '#F5F6FF' : '#FFFFFF', compBg: win ? '#F5F6FF' : '#FFFFFF',
+      compNote: win ? 'Opens in Windows Photos without extra codecs · 5.1 MB' : 'Opens anywhere, no HDR · 5.1 MB',
+      folder: win ? 'Downloads\\Locale\\Studio crit night' : '~/Downloads/Locale/Studio crit night',
+      chips: [
+        { label: 'All', bg: '#16171A', ink: '#FFFFFF', border: '#16171A' },
+        { label: 'Most saved', bg: '#FFFFFF', ink: '#16171A', border: '#E2DFD8' },
+        { label: 'Not saved yet', bg: '#FFFFFF', ink: '#16171A', border: '#E2DFD8' },
+        { label: 'Mine', bg: '#FFFFFF', ink: '#16171A', border: '#E2DFD8' },
+        { label: 'Newest first', bg: '#FFFFFF', ink: '#16171A', border: '#E2DFD8' }
+      ],
+      people: [
+        { initial: 'All', name: 'Everyone', count: '62', scene: '#16171A', border: '2px solid #6366F1', bg: '#F5F6FF', sel: 'true', aria: 'Everyone’s photos' },
+        { initial: 'P', name: 'Priya', count: '21', scene: S.terrace, border: '1px solid #E2DFD8', bg: '#FFFFFF', sel: 'false', aria: 'Show photos by Priya' },
+        { initial: 'J', name: 'Jordan', count: '17', scene: S.portrait, border: '1px solid #E2DFD8', bg: '#FFFFFF', sel: 'false', aria: 'Show photos by Jordan' },
+        { initial: 'K', name: 'Kai', count: '12', scene: S.drinks, border: '1px solid #E2DFD8', bg: '#FFFFFF', sel: 'false', aria: 'Show photos by Kai' },
+        { initial: 'M', name: 'Mo', count: '8', scene: S.confetti, border: '1px solid #E2DFD8', bg: '#FFFFFF', sel: 'false', aria: 'Show photos by Mo' },
+        { initial: 'S', name: 'You', count: '4', scene: S.dusk, border: '1px solid #E2DFD8', bg: '#FFFFFF', sel: 'false', aria: 'Show your photos' }
+      ],
+      photos: list.map(([sc, i, t, saved, span, selectedTile], k) => ({
+        scene: sc, initial: i, time: t, saved, span,
+        border: selectedTile ? '3px solid #6366F1' : '0',
+        label: 'Photo ' + (k + 1) + ' of 62, ' + t + ' PM' + (saved ? ', saved' : '')
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

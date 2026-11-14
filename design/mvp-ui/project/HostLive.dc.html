@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale Host · Live event</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E2DFD8">
+    <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4" fill="#6366F1"></circle><circle cx="16" cy="16" r="9" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.55"></circle><circle cx="16" cy="16" r="14" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.25"></circle></svg>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px">{{eventName}}</span>
+      <sc-if value="{{isQuick}}" hint-placeholder-val="{{false}}">
+        <button type="button" style="height: 30px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: #4F46E5; font-size: 13px; font-weight: 600; cursor: pointer">Rename</button>
+      </sc-if>
+      <span style="display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #DCFCE7; color: #14532D; font-size: 13px; font-weight: 700"><span style="width: 8px; height: 8px; border-radius: 4px; background: #16A34A"></span>{{pillLabel}}</span>
+    </div>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap">
+      <button type="button" style="height: 40px; padding: 0 16px; border: 0; border-radius: 10px; background: #A5B4FC; color: #1E1B4B; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; cursor: pointer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>Add photos</button>
+      <button type="button" style="height: 40px; padding: 0 16px; border: 1px solid #C9C6BF; border-radius: 10px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Edit details</button>
+    </div>
+  </header>
+
+  <main style="max-width: 1240px; margin: 0 auto; padding: 24px 28px 40px; box-sizing: border-box; display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+    <section style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 18px; padding: 22px; display: flex; flex-direction: column; align-items: center; gap: 14px">
+      <h2 style="margin: 0; align-self: flex-start; font-size: 16px; font-weight: 700">Join with this code</h2>
+      <div role="img" aria-label="Event QR code" style="width: 232px; height: 232px; padding: 12px; box-sizing: border-box; background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 12px; display: grid; grid-template-columns: repeat(25, minmax(0, 1fr))">
+        <sc-for list="{{qr}}" as="q" hint-placeholder-count="625">
+          <div style="aspect-ratio: 1; background: {{q.bg}}"></div>
+        </sc-for>
+      </div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.45; color: #3F4349; text-align: center">Scan with the Locale app, or any phone camera to view in a browser.</p>
+      <div style="display: flex; gap: 10px; width: 100%">
+        <button type="button" style="flex: 1; height: 44px; border: 0; border-radius: 12px; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Show full screen</button>
+        <button type="button" style="flex: 1; height: 44px; border: 1px solid #C9C6BF; border-radius: 12px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Print</button>
+      </div>
+      <div style="width: 100%; padding-top: 12px; border-top: 1px solid #EFEDE8; display: flex; flex-direction: column; gap: 6px; font-size: 12px; color: #4A4E55">
+        <span>Host code (for Nearby joins)</span>
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 16px; color: #16171A; letter-spacing: 0.06em">4F2A · 9C1E · 77B0</span>
+        <span style="font-family: 'JetBrains Mono', monospace">192.168.1.24:7420 · Rooftop-WiFi</span>
+      </div>
+    </section>
+
+    <div style="flex: 999 1 600px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px">
+        <div style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; color: #4A4E55">Here now</span>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700">23</span>
+          <span style="font-size: 12px; color: #5B5F66">11 iPhone · 9 Android · 3 browser</span>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; color: #4A4E55">Photos</span>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700">48</span>
+          <span style="font-size: 12px; color: #5B5F66">2 uploading now</span>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 4px">
+          <span style="font-size: 13px; color: #4A4E55">Failed in last hour</span>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700">1</span>
+          <span style="font-size: 12px; color: #5B5F66">Unsupported file type</span>
+        </div>
+        <div style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 13px; color: #4A4E55">Storage</span>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700">3.8 <span style="font-size: 14px; font-weight: 500; color: #5B5F66">of 20 GB</span></span>
+          <div style="height: 6px; border-radius: 3px; background: #EFEDE8"><div style="width: 19%; height: 6px; border-radius: 3px; background: #16171A"></div></div>
+        </div>
+      </div>
+
+      <sc-if value="{{isEvent}}" hint-placeholder-val="{{true}}">
+      <section style="background: {{expiryBg}}; border: 1px solid {{expiryBorder}}; border-radius: 16px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+        <div style="display: flex; flex-direction: column; gap: 4px; min-width: 240px">
+          <span style="font-size: 13px; font-weight: 600; color: #4A4E55">Photos delete in</span>
+          <span style="font-family: 'Space Grotesk', sans-serif; font-size: 26px; font-weight: 700; color: {{expiryInk}}">{{remaining}}</span>
+          <span style="font-size: 13px; color: #4A4E55">{{expiryDate}} · up to 7 days total (until Thu, Nov 20)</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <button type="button" style="height: 40px; padding: 0 14px; border: 1px solid #16171A; border-radius: 10px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">+1 hour</button>
+            <button type="button" style="height: 40px; padding: 0 14px; border: 1px solid #16171A; border-radius: 10px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">+6 hours</button>
+            <button type="button" style="height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: #A5B4FC; color: #1E1B4B; font-size: 14px; font-weight: 600; cursor: pointer">+1 day</button>
+            <button type="button" style="height: 40px; padding: 0 14px; border: 0; border-radius: 10px; background: transparent; font-size: 14px; font-weight: 600; text-decoration: underline; cursor: pointer">Custom…</button>
+          </div>
+          <span style="font-size: 12px; color: #4A4E55">Everyone is told when you extend or shorten.</span>
+        </div>
+      </section>
+      </sc-if>
+      <sc-if value="{{isQuick}}" hint-placeholder-val="{{false}}">
+        <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+          <div style="display: flex; flex-direction: column; gap: 4px; min-width: 240px">
+            <span style="font-size: 13px; font-weight: 600; color: #4A4E55">Quick session</span>
+            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 24px; font-weight: 700">Ends when you end it</span>
+            <span style="font-size: 13px; color: #4A4E55">Auto-ends at 3:40 AM (12 h max). Photos are deleted as soon as it ends.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end">
+            <button type="button" style="height: 40px; padding: 0 16px; border: 1.5px solid #16171A; border-radius: 10px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Add details</button>
+            <span style="font-size: 12px; color: #4A4E55; max-width: 260px; text-align: right">Turns it into a full event with a description, schedule and deletion time. Same QR code.</span>
+          </div>
+        </section>
+      </sc-if>
+
+      <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 14px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 700">Photos</h2>
+          <a href="#gallery" style="font-size: 13px; font-weight: 600">Open gallery (48)</a>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: stretch">
+          <div style="flex: 1 1 260px; min-height: 120px; border: 2px dashed #C9C6BF; border-radius: 14px; background: #FAF9F6; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 16px; text-align: center">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5B5F66" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"></path><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"></path></svg>
+            <span style="font-size: 14px; font-weight: 600">Drop photos here, or <button type="button" style="border: 0; padding: 0; background: transparent; color: #4F46E5; font-size: 14px; font-weight: 600; text-decoration: underline; cursor: pointer">choose files</button></span>
+            <span style="font-size: 12px; line-height: 1.4; color: #4A4E55">JPEG, HEIC or PNG up to 50 MB. Copies are added to the event; your originals stay where they are.</span>
+          </div>
+          <div style="flex: 2 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+            <span style="font-size: 13px; font-weight: 600; color: #4A4E55">Latest photos (yours first)</span>
+            <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px">
+              <sc-for list="{{mine}}" as="m" hint-placeholder-count="6">
+                <div style="aspect-ratio: 1; border-radius: 10px; background: {{m.scene}}; position: relative; overflow: hidden">
+                  <sc-if value="{{m.busy}}" hint-placeholder-val="{{false}}">
+                    <div style="position: absolute; inset: 0; background: rgba(22,23,26,0.55); color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700">{{m.label}}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+            <span style="font-size: 12px; color: #4A4E55">Checked the same way as everyone's photos before they appear.</span>
+          </div>
+        </div>
+      </section>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+        <section style="flex: 3 1 380px; min-width: 0; background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 18px 20px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px">
+            <h2 style="margin: 0; font-size: 16px; font-weight: 700">Attendees</h2>
+            <a href="#all" style="font-size: 13px; font-weight: 600">View all 23</a>
+          </div>
+          <div style="overflow-x: auto">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px">
+              <thead>
+                <tr style="text-align: left; color: #4A4E55; font-size: 12px">
+                  <th style="padding: 8px 6px; font-weight: 600">Name</th>
+                  <th style="padding: 8px 6px; font-weight: 600">Device</th>
+                  <th style="padding: 8px 6px; font-weight: 600">Role</th>
+                  <th style="padding: 8px 6px; font-weight: 600">Photos</th>
+                  <th style="padding: 8px 6px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{people}}" as="p" hint-placeholder-count="5">
+                  <tr style="border-top: 1px solid #EFEDE8">
+                    <td style="padding: 10px 6px; font-weight: 600"><span style="display: inline-flex; align-items: center; gap: 6px">{{p.name}}<sc-if value="{{p.verified}}" hint-placeholder-val="{{true}}"><svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Verified account"><circle cx="12" cy="12" r="10" fill="#6366F1"></circle><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></sc-if></span></td>
+                    <td style="padding: 10px 6px; color: #3F4349">{{p.device}}</td>
+                    <td style="padding: 10px 6px; color: #3F4349">{{p.role}}</td>
+                    <td style="padding: 10px 6px; color: #3F4349">{{p.photos}}</td>
+                    <td style="padding: 6px; text-align: right"><button type="button" aria-label="{{p.menuLabel}}" style="width: 34px; height: 34px; border: 0; border-radius: 8px; background: transparent; color: #4A4E55; cursor: pointer; display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <p style="margin: 10px 0 0; display: flex; align-items: center; gap: 6px; font-size: 12px; color: #4A4E55"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#6366F1"></circle><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>Verified account · use ⋯ to remove someone</p>
+        </section>
+
+        <div style="flex: 2 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px">
+            <label for="ann" style="font-size: 16px; font-weight: 700">New post</label>
+            <span style="font-size: 12px; color: #4A4E55; margin-top: -4px">Shows in everyone's Posts tab.</span>
+            <div style="display: flex; gap: 8px">
+              <input id="ann" placeholder="Post to everyone…" style="flex-grow: 1; min-width: 0; height: 42px; padding: 0 12px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 14px">
+              <button type="button" style="height: 42px; padding: 0 16px; border: 0; border-radius: 10px; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Post</button>
+            </div>
+          </section>
+          <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 6px">
+            <div style="display: flex; justify-content: space-between; align-items: baseline">
+              <h2 style="margin: 0; font-size: 16px; font-weight: 700">Event log</h2>
+              <button type="button" style="height: 32px; padding: 0 10px; border: 0; background: transparent; font-size: 13px; font-weight: 600; color: #4F46E5; cursor: pointer">Export</button>
+            </div>
+            <sc-for list="{{log}}" as="l" hint-placeholder-count="5">
+              <div style="display: flex; gap: 10px; font-size: 13px; line-height: 1.4; padding: 6px 0; border-top: 1px solid #EFEDE8">
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #5B5F66; flex-shrink: 0">{{l.t}}</span>
+                <span style="color: {{l.ink}}">{{l.text}}</span>
+              </div>
+            </sc-for>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <section aria-labelledby="danger-title" style="flex: 1 1 100%; margin-top: 24px; padding-top: 24px; border-top: 1px solid #E2DFD8; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+      <div style="display: flex; flex-direction: column; gap: 4px; max-width: 640px">
+        <h2 id="danger-title" style="margin: 0; font-size: 16px; font-weight: 700; color: #912018">{{dangerTitle}}</h2>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #4A4E55">{{dangerText}}</p>
+      </div>
+      <button type="button" style="height: 42px; padding: 0 18px; border: 1.5px solid #B42318; border-radius: 10px; background: #FFFFFF; color: #B42318; font-size: 14px; font-weight: 600; cursor: pointer">{{endLabel}}</button>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["event","quick session"],"default":"event"},"expiringSoon":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":1340}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const soon = this.props.expiringSoon ?? false;
+    const quick = (this.props.mode ?? 'event') === 'quick session';
+    const N = 25;
+    const finder = (r, c, r0, c0) => {
+      const y = r - r0, x = c - c0;
+      if (y < 0 || x < 0 || y > 6 || x > 6) return null;
+      if (y === 0 || y === 6 || x === 0 || x === 6) return true;
+      if (y >= 2 && y <= 4 && x >= 2 && x <= 4) return true;
+      return false;
+    };
+    const qr = [];
+    for (let r = 0; r < N; r++) {
+      for (let c = 0; c < N; c++) {
+        let on = finder(r, c, 0, 0);
+        if (on === null) on = finder(r, c, 0, N - 7);
+        if (on === null) on = finder(r, c, N - 7, 0);
+        if (on === null) {
+          const nearFinder = (r < 8 && c < 8) || (r < 8 && c > N - 9) || (r > N - 9 && c < 8);
+          on = nearFinder ? false : (((r * 7 + c * 13 + r * c) % 5) < 2);
+        }
+        qr.push({ bg: on ? '#16171A' : '#FFFFFF' });
+      }
+    }
+    return {
+      qr,
+      isQuick: quick,
+      isEvent: !quick,
+      eventName: quick ? 'Sam’s session · 3:40 PM' : 'Rooftop birthday',
+      pillLabel: quick ? 'Live · Quick session' : 'Live',
+      endLabel: quick ? 'End session' : 'End event',
+      dangerTitle: quick ? 'End this session' : 'End this event',
+      dangerText: quick ? 'Stops hosting now and deletes every photo from this computer and from everyone’s app. Photos people saved to their own devices stay.' : 'Stops hosting now and deletes every photo and post from this computer and from everyone’s app, instead of waiting for Sat, Nov 15 at 2:00 PM. Photos people saved to their own devices stay.',
+      remaining: soon ? '52 minutes' : '17 h 42 m',
+      expiryDate: 'Sat, Nov 15 at 2:00 PM',
+      expiryBg: soon ? '#FFF4E5' : '#FFFFFF',
+      expiryBorder: soon ? '#F5B97A' : '#E2DFD8',
+      expiryInk: soon ? '#92400E' : '#16171A',
+      people: [
+        { name: 'Sam R. (you)', device: 'Mac', role: 'Host', photos: 6, verified: true, menuLabel: 'More actions for Sam R.' },
+        { name: 'Jordan', device: 'iPhone', role: 'Uploader', photos: 14, verified: true, menuLabel: 'More actions for Jordan' },
+        { name: 'Alex', device: 'Android', role: 'Uploader', photos: 9, verified: true, menuLabel: 'More actions for Alex' },
+        { name: 'Priya', device: 'iPhone', role: 'Uploader', photos: 11, verified: true, menuLabel: 'More actions for Priya' },
+        { name: 'Leo (guest)', device: 'Browser', role: 'Viewer', photos: 0, verified: false, menuLabel: 'More actions for Leo' }
+      ],
+      log: [
+        { t: '9:44 PM', text: 'Sam (host) added 3 photos from this computer', ink: '#16171A' },
+        { t: '9:41 PM', text: 'Jordan shared IMG_4815.HEIC', ink: '#16171A' },
+        { t: '9:40 PM', text: 'Leo joined from a browser (viewer)', ink: '#16171A' },
+        { t: '9:38 PM', text: 'Denied: unsupported file type (Alex, .mov)', ink: '#B42318' },
+        { t: '9:35 PM', text: 'Leo downloaded a compatible JPEG', ink: '#16171A' },
+        { t: '9:30 PM', text: 'Priya re-joined after her session expired', ink: '#16171A' }
+      ],
+      mine: [
+        { scene: 'radial-gradient(circle at 50% 42%,#FFD9A0 0 6%,rgba(255,180,90,0.55) 12%,transparent 34%),radial-gradient(ellipse at 50% 95%,#F4E3D0 0 28%,transparent 29%),linear-gradient(180deg,#2B1D1A 0%,#4A2E28 100%)', busy: true, label: 'Checking' },
+        { scene: 'radial-gradient(ellipse at 30% 105%,#5E7F55 0 30%,transparent 31%),radial-gradient(ellipse at 80% 110%,#4E6E4A 0 34%,transparent 35%),linear-gradient(180deg,#9FC3E3 0%,#D8E7F2 55%,#E9DCC8 56%,#CDBBA2 100%)', busy: true, label: '40%' },
+        { scene: 'linear-gradient(180deg,#2E3168 0%,#6E4C8A 38%,#E79B7A 62%,#3B2A33 63%,#1C1620 100%)', busy: false, label: '' },
+        { scene: 'radial-gradient(circle at 25% 52%,#3A2F3F 0 9%,transparent 10%),radial-gradient(circle at 50% 46%,#4A3B4E 0 10%,transparent 11%),radial-gradient(circle at 75% 52%,#3A2F3F 0 9%,transparent 10%),radial-gradient(ellipse at 50% 100%,#2B2433 0 45%,transparent 46%),linear-gradient(180deg,#F2B880 0%,#D9826B 100%)', busy: false, label: '' },
+        { scene: 'radial-gradient(circle at 18% 28%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 42% 18%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 66% 30%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 86% 20%,#FFE6A6 0 2px,transparent 3px),radial-gradient(ellipse at 50% 120%,#7A4E7E 0%,transparent 60%),linear-gradient(180deg,#151632 0%,#2A2550 100%)', busy: false, label: '' },
+        { scene: 'radial-gradient(circle at 50% 38%,#C99A7E 0 15%,transparent 16%),radial-gradient(ellipse at 50% 100%,#3D4A6B 0 38%,transparent 39%),linear-gradient(160deg,#E9C7A8 0%,#B98B7A 100%)', busy: false, label: '' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

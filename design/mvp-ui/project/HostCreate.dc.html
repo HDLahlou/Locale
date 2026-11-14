@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale Host · Create event</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button,input,select,textarea{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E2DFD8">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4" fill="#6366F1"></circle><circle cx="16" cy="16" r="9" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.55"></circle><circle cx="16" cy="16" r="14" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.25"></circle></svg>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px">Locale</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; gap: 6px">
+      <a href="DeskEvents.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Events</a>
+      <a href="HostCreate.dc.html" aria-current="page" style="padding: 8px 14px; border-radius: 10px; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Host</a>
+      <a href="HostPast.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Past events</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #3F4349">
+      <button type="button" aria-label="Account: Sam R." style="width: 40px; height: 40px; border-radius: 20px; border: 0; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">SR</button>
+    </div>
+  </header>
+
+  <main style="max-width: 1180px; margin: 0 auto; padding: 32px 28px 48px; box-sizing: border-box">
+    <h1 style="margin: 0 0 6px; font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -0.02em">Host an event</h1>
+    <p style="margin: 0 0 20px; font-size: 15px; color: #4A4E55">Photos are stored on this computer and deleted when the event expires.</p>
+
+    <sc-if value="{{isHosting}}" hint-placeholder-val="{{false}}">
+      <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 18px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between">
+        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 420px; min-width: 0">
+          <span style="display: inline-flex; align-self: flex-start; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: #DCFCE7; color: #14532D; font-size: 13px; font-weight: 700"><span style="width: 8px; height: 8px; border-radius: 4px; background: #16A34A"></span>Live</span>
+          <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700">You're hosting Rooftop birthday</h2>
+          <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #4A4E55">You can host one event or quick session at a time. End this one, or let it expire, to start something new. You can still join other people's events from Events or from your phone.</p>
+        </div>
+        <a href="HostLive.dc.html" style="display: inline-flex; align-items: center; height: 50px; padding: 0 22px; border-radius: 14px; background: #16171A; color: #FFFFFF; font-size: 16px; font-weight: 600; text-decoration: none">Open live event</a>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{notHosting}}" hint-placeholder-val="{{true}}">
+    <section style="background: #16171A; color: #FFFFFF; border-radius: 18px; padding: 20px 22px; margin-bottom: 28px; display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between">
+      <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 420px; min-width: 0">
+        <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 22px; font-weight: 700">Quick session</h2>
+        <p style="margin: 0; font-size: 14px; line-height: 1.5; color: #D4D4D8">Share right now at a cafe, a work session or a hangout. No form: you get a QR code in one click.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px">
+          <span style="padding: 3px 10px; border-radius: 999px; background: #2A2B2F; font-size: 12px; font-weight: 600; color: #E4E4E7">Invite link only</span>
+          <span style="padding: 3px 10px; border-radius: 999px; background: #2A2B2F; font-size: 12px; font-weight: 600; color: #E4E4E7">Ends when you end it · 12 h max</span>
+          <span style="padding: 3px 10px; border-radius: 999px; background: #2A2B2F; font-size: 12px; font-weight: 600; color: #E4E4E7">Deleted at the end</span>
+          <span style="padding: 3px 10px; border-radius: 999px; background: #2A2B2F; font-size: 12px; font-weight: 600; color: #E4E4E7">Photos only</span>
+        </div>
+      </div>
+      <a href="QuickCheck.dc.html" style="display: inline-flex; align-items: center; gap: 8px; height: 50px; padding: 0 22px; border-radius: 14px; background: #A5B4FC; color: #1E1B4B; font-size: 16px; font-weight: 600; text-decoration: none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"></path></svg>
+        Start quick session
+      </a>
+    </section>
+
+    <h2 style="margin: 0 0 14px; font-size: 18px; font-weight: 700">Or set up a full event</h2>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <form style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+        <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 16px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 700">Event details</h2>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="name" style="font-size: 13px; font-weight: 600">Name</label>
+            <input id="name" value="Rooftop birthday" style="height: 44px; padding: 0 12px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 15px">
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="desc" style="font-size: 13px; font-weight: 600">Description</label>
+            <textarea id="desc" rows="2" style="padding: 10px 12px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 15px; resize: vertical">Sam turns 30. Drop your photos here so everyone gets them in full quality.</textarea>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="start" style="font-size: 13px; font-weight: 600">Starts</label>
+              <input id="start" value="Fri, Nov 14 · 7:00 PM" style="height: 44px; padding: 0 12px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 15px">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="end" style="font-size: 13px; font-weight: 600">Ends</label>
+              <input id="end" value="Sat, Nov 15 · 1:00 AM" style="height: 44px; padding: 0 12px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 15px">
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="links" style="font-size: 13px; font-weight: 600">Links (optional)</label>
+            <input id="links" value="Playlist · Building entry" style="height: 44px; padding: 0 12px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 15px">
+          </div>
+        </section>
+
+        <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 700">Who can join</h2>
+          <fieldset style="border: 0; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px">
+            <legend style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Access type</legend>
+            <label style="display: flex; gap: 10px; padding: 12px; border: 1px solid #C9C6BF; border-radius: 12px; cursor: pointer">
+              <input type="radio" name="access" style="accent-color: #6366F1; width: 18px; height: 18px; margin: 1px 0 0">
+              <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Open</span><span style="font-size: 12px; color: #5B5F66">Shows in Nearby</span></span>
+            </label>
+            <label style="display: flex; gap: 10px; padding: 12px; border: 2px solid #16171A; border-radius: 12px; cursor: pointer">
+              <input type="radio" name="access" checked style="accent-color: #6366F1; width: 18px; height: 18px; margin: 1px 0 0">
+              <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Invite link only</span><span style="font-size: 12px; color: #5B5F66">QR code or link</span></span>
+            </label>
+            <label style="display: flex; gap: 10px; padding: 12px; border: 1px solid #C9C6BF; border-radius: 12px; cursor: pointer">
+              <input type="radio" name="access" style="accent-color: #6366F1; width: 18px; height: 18px; margin: 1px 0 0">
+              <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Password</span><span style="font-size: 12px; color: #5B5F66">App only, no browsers</span></span>
+            </label>
+          </fieldset>
+          <label style="display: flex; gap: 10px; align-items: flex-start; font-size: 14px; cursor: pointer">
+            <input type="checkbox" checked style="accent-color: #6366F1; width: 18px; height: 18px; margin: 1px 0 0">
+            <span><strong>Let browsers join as viewers.</strong> <span style="color: #4A4E55">People without the app can view and download, but not upload.</span></span>
+          </label>
+        </section>
+
+        <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 22px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 700; grid-column: 1 / -1">Storage and deletion</h2>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="ret" style="font-size: 13px; font-weight: 600">Delete photos</label>
+            <select id="ret" style="height: 44px; padding: 0 10px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 15px; background: #FFFFFF">
+              <option>24 hours after the event ends</option>
+              <option>When the event ends</option>
+              <option>3 days after the event ends</option>
+            </select>
+            <span style="font-size: 12px; color: #5B5F66">You can extend later, up to 7 days total.</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="alloc" style="font-size: 13px; font-weight: 600">Space to use</label>
+            <select id="alloc" style="height: 44px; padding: 0 10px; border: 1px solid #C9C6BF; border-radius: 10px; font-size: 15px; background: #FFFFFF">
+              <option>20 GB</option><option>10 GB</option><option>50 GB</option>
+            </select>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #5B5F66">~/Locale/Events</span>
+          </div>
+        </section>
+      </form>
+
+      <aside style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 22px; display: flex; flex-direction: column; gap: 4px">
+          <h2 style="margin: 0 0 8px; font-size: 16px; font-weight: 700">Ready to host?</h2>
+          <sc-for list="{{checks}}" as="c" hint-placeholder-count="4">
+            <div style="display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-top: 1px solid #EFEDE8">
+              <span style="width: 24px; height: 24px; border-radius: 12px; background: {{c.dot}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 13px; font-weight: 700">{{c.mark}}</span>
+              <div style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+                <span style="font-size: 14px; font-weight: 600">{{c.title}}</span>
+                <span style="font-size: 13px; color: #4A4E55; line-height: 1.4">{{c.detail}}</span>
+                <sc-if value="{{c.fix}}" hint-placeholder-val="{{false}}">
+                  <button type="button" style="align-self: flex-start; margin-top: 6px; height: 36px; padding: 0 14px; border: 1px solid #16171A; border-radius: 10px; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">{{c.fixLabel}}</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </section>
+        <div style="background: #FEF3C7; border-radius: 14px; padding: 14px 16px; font-size: 13px; line-height: 1.45; color: #422006">
+          <strong>No shared Wi-Fi?</strong> Turn on this computer's hotspot, or plug in a travel router. Venue Wi-Fi sometimes blocks phones from seeing each other.
+        </div>
+        <button type="button" style="height: 54px; border: 0; border-radius: 14px; background: #A5B4FC; color: #1E1B4B; font-size: 16px; font-weight: 600; cursor: pointer; opacity: 0.5" aria-disabled="true">Start hosting</button>
+        <p style="margin: -6px 0 0; font-size: 13px; color: #4A4E55; text-align: center">Fix 1 item to start.</p>
+      </aside>
+    </div>
+    </sc-if>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"alreadyHosting":{"editor":"boolean","default":false},"$preview":{"width":1280,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const ok = '#067647', warn = '#B54708';
+    const hosting = this.props.alreadyHosting ?? false;
+    return {
+      isHosting: hosting,
+      notHosting: !hosting,
+      checks: [
+        { dot: ok, mark: '✓', title: 'Network', detail: 'Connected to "Rooftop-WiFi" at 192.168.1.24', fix: false, fixLabel: '' },
+        { dot: warn, mark: '!', title: 'Firewall', detail: 'Incoming connections on port 7420 are blocked, so phones cannot join.', fix: true, fixLabel: 'Allow connections' },
+        { dot: ok, mark: '✓', title: 'Space', detail: '212 GB free, 20 GB reserved for this event', fix: false, fixLabel: '' },
+        { dot: ok, mark: '✓', title: 'Power', detail: 'Plugged in. Sleep is paused while hosting.', fix: false, fixLabel: '' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

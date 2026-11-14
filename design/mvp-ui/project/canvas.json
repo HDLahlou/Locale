@@ -1,0 +1,60 @@
+{
+  "v": 3,
+  "createdOnFiles": { "v": 1, "at": "2026-11-13T12:00:00Z" },
+  "title": "Locale MVP UI",
+  "launch": { "view": "canvas" },
+  "pages": [],
+  "boards": {
+    "AccentCompare.dc.html": { "x": 0, "y": -1560, "w": 1280, "h": 1000, "title": "Accent: soft indigo (chosen)" },
+    "EventOptions.dc.html": { "x": 1360, "y": -1560, "w": 1370, "h": 1000, "title": "Event page options (A chosen)" },
+    "Main.dc.html": { "x": 0, "y": 0, "w": 390, "h": 844, "title": "1 · Welcome", "radius": 36 },
+    "Home.dc.html": { "x": 470, "y": 0, "w": 390, "h": 844, "title": "2 · Home and nearby", "radius": 36 },
+    "Join.dc.html": { "x": 940, "y": 0, "w": 390, "h": 844, "title": "3 · Join event", "radius": 36 },
+    "Event.dc.html": { "x": 1410, "y": 0, "w": 390, "h": 844, "title": "4 · Event page (tabs, people and sort menu work in Play)", "radius": 36, "is_interactive": true },
+    "Viewer.dc.html": { "x": 1880, "y": 0, "w": 390, "h": 844, "title": "5 · Photo viewer and save", "radius": 36 },
+    "Uploads.dc.html": { "x": 2350, "y": 0, "w": 390, "h": 844, "title": "6 · Uploads (outbox)", "radius": 36 },
+    "HostCreate.dc.html": { "x": 0, "y": 1250, "w": 1280, "h": 1080, "title": "7 · Host: create event or quick session", "expand": "fill" },
+    "QuickCheck.dc.html": { "x": 4080, "y": 1250, "w": 1280, "h": 800, "title": "7b · Host: quick session Wi-Fi check", "expand": "fill" },
+    "HostLive.dc.html": { "x": 1360, "y": 1250, "w": 1280, "h": 1340, "title": "8 · Host: live event / quick session", "expand": "fill" },
+    "HostPast.dc.html": { "x": 2720, "y": 1250, "w": 1280, "h": 800, "title": "9 · Host: past events", "expand": "fill" },
+    "DeskEvents.dc.html": { "x": 0, "y": 4220, "w": 1280, "h": 860, "title": "12 · Desktop: Events (join and nearby)", "expand": "fill" },
+    "DeskEventView.dc.html": { "x": 1360, "y": 4220, "w": 1280, "h": 1080, "title": "13 · Desktop: joined event", "expand": "fill" },
+    "GuestJoin.dc.html": { "x": 0, "y": 2960, "w": 390, "h": 844, "title": "10 · Browser guest: join", "radius": 24 },
+    "GuestPhoto.dc.html": { "x": 470, "y": 2960, "w": 390, "h": 844, "title": "11 · Browser guest: photo", "radius": 24 }
+  },
+  "order": [
+    "AccentCompare.dc.html",
+    "EventOptions.dc.html",
+    "Main.dc.html",
+    "Home.dc.html",
+    "Join.dc.html",
+    "Event.dc.html",
+    "Viewer.dc.html",
+    "Uploads.dc.html",
+    "HostCreate.dc.html",
+    "QuickCheck.dc.html",
+    "HostLive.dc.html",
+    "HostPast.dc.html",
+    "GuestJoin.dc.html",
+    "GuestPhoto.dc.html",
+    "DeskEvents.dc.html",
+    "DeskEventView.dc.html"
+  ],
+  "notes": {
+    "t_accent": { "x": 0, "y": -1840, "text": "Accent: soft indigo", "kind": "title1", "maxW": 1280 },
+    "t_event_opts": { "x": 1360, "y": -1840, "text": "Event page: cleaner options", "kind": "title1", "maxW": 1370 },
+    "t_phone": { "x": 0, "y": -280, "text": "Phone app · iOS and Android", "kind": "title1", "maxW": 2740 },
+    "t_host": { "x": 0, "y": 970, "text": "Desktop app: hosting · macOS and Windows", "kind": "title1", "maxW": 5360 },
+    "t_desk_join": { "x": 0, "y": 3940, "text": "Desktop app: joining other events", "kind": "title1", "maxW": 2640 },
+    "t_guest": { "x": 0, "y": 2680, "text": "Browser guest · view only", "kind": "title1", "maxW": 2000 },
+    "n_about": {
+      "x": -580, "y": 0, "w": 480, "size": "m", "fill": "orange",
+      "text": "Reference mockups for the Locale MVP (docs/Locale MVP Flows.md, rev 2).\n\nUse these as the comparison baseline while building: each screen maps to a flow in section 5 and a row in section 8.\n\n1 Welcome → 5.1\n2 Home → 5.3 (nearby), 5.10 (quick session, M5), 5.11 (your events)\n3 Join → 5.3\n4 Event page → 5.6, 5.9, 5.11, 5.12 (browse, sort, filter)\n5 Viewer → 5.5 (Original / Compatible)\n6 Uploads → 5.4, 5.8\n7 Create → 5.2, 5.10, 5.11 (one event at a time)\n7b Quick session check → 5.10\n8 Live → 5.2, 5.4 (host uploads), 5.7, 5.9\n9 Past → 5.9 (Host again)\n10–11 Guest → 5.3, 5.5\n12 Desktop Events → 5.3 (desktop app join), 5.11\n13 Desktop joined event → 5.3, 5.4, 5.5\n\nTweaks: Home (attendee vs hosting; host on desktop vs phone), Event page (attendee vs host phone, session state, starting tab, sort, menu open), Join (password vs invite, event ID for cover art), Create (already hosting), Desktop Events (hosting or not), Desktop joined event (macOS vs Windows save default), Viewer (photo format), Live host (event vs quick session, expiring soon)."
+    },
+    "n_check": {
+      "x": 950, "y": 2960, "w": 520, "size": "m", "fill": "teal",
+      "text": "Comparison checklist (success criteria, section 2)\n\n• iPhone and Android upload and download byte-identical originals (5, 6)\n• HEIC viewable on Android and in Chrome; Original or Compatible offered (5, 11)\n• Guests view and download, never upload (10, 11)\n• New photos appear for everyone in under 2 s (4)\n• Interrupted uploads resume from the outbox without re-picking (6)\n• Expiry is always visible; extensions are announced (4, 8)\n• Ending the event deletes everything; only settings survive (9)"
+    }
+  },
+  "designSystems": []
+}

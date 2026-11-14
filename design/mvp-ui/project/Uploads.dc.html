@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale · Uploads</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; padding: 44px 20px 24px; gap: 14px">
+  <div style="display: flex; align-items: center; gap: 4px; margin-left: -10px">
+    <button type="button" aria-label="Back to event" style="width: 44px; height: 44px; border: 0; background: transparent; border-radius: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #16171A">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+    </button>
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 17px; font-weight: 600">Uploads</span>
+      <span style="font-size: 12px; color: #5B5F66">Rooftop birthday</span>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 8px; flex-wrap: wrap">
+    <span style="padding: 6px 12px; border-radius: 999px; background: #DBEAFE; color: #3730A3; font-size: 13px; font-weight: 600">3 sending</span>
+    <span style="padding: 6px 12px; border-radius: 999px; background: #FEF3C7; color: #78350F; font-size: 13px; font-weight: 600">1 waiting</span>
+    <span style="padding: 6px 12px; border-radius: 999px; background: #FEE4E2; color: #912018; font-size: 13px; font-weight: 600">2 need attention</span>
+  </div>
+
+  <div style="display: flex; flex-direction: column; background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; overflow: hidden">
+    <sc-for list="{{rows}}" as="r" hint-placeholder-count="7">
+      <div style="display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-bottom: 1px solid #EFEDE8; min-height: 64px">
+        <div style="width: 52px; height: 52px; border-radius: 10px; background: {{r.thumb}}; flex-shrink: 0"></div>
+        <div style="flex-grow: 1; min-width: 0; display: flex; flex-direction: column; gap: 5px">
+          <div style="display: flex; justify-content: space-between; gap: 8px">
+            <span style="font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.name}}</span>
+            <span style="font-size: 12px; font-weight: 700; color: {{r.tone}}; white-space: nowrap">{{r.badge}}</span>
+          </div>
+          <sc-if value="{{r.bar}}" hint-placeholder-val="{{false}}">
+            <div style="height: 5px; border-radius: 3px; background: #E5E7EB"><div style="height: 5px; border-radius: 3px; width: {{r.pct}}; background: #4F46E5"></div></div>
+          </sc-if>
+          <span style="font-size: 12px; line-height: 1.35; color: #5B5F66">{{r.detail}}</span>
+        </div>
+        <sc-if value="{{r.hasAction}}" hint-placeholder-val="{{false}}">
+          <button type="button" style="height: 36px; padding: 0 12px; border: 1px solid #16171A; border-radius: 10px; background: #FFFFFF; font-size: 13px; font-weight: 600; color: #16171A; cursor: pointer; flex-shrink: 0">{{r.action}}</button>
+        </sc-if>
+      </div>
+    </sc-for>
+  </div>
+
+  <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.45; color: #4A4E55; padding: 0 2px">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B5F66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+    <span>Uploads keep going if you leave this screen, and resume where they stopped if the connection drops. Location data is removed before sending.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const blue = '#4F46E5', amber = '#92400E', red = '#B42318', green = '#067647', grey = '#5B5F66';
+    return {
+      rows: [
+        { thumb: 'linear-gradient(180deg,#F7C59F 0%,#EF8A7E 40%,#8C5A8F 75%,#3A2F55 100%)', name: 'IMG_4821.HEIC', badge: '62%', tone: blue, bar: true, pct: '62%', detail: '2.1 of 3.4 MB', hasAction: true, action: 'Cancel' },
+        { thumb: 'radial-gradient(circle at 25% 52%,#3A2F3F 0 9%,transparent 10%),radial-gradient(circle at 50% 46%,#4A3B4E 0 10%,transparent 11%),radial-gradient(circle at 75% 52%,#3A2F3F 0 9%,transparent 10%),linear-gradient(180deg,#F2B880 0%,#D9826B 100%)', name: 'IMG_4822.HEIC', badge: '18%', tone: blue, bar: true, pct: '18%', detail: 'Resumed after connection dropped', hasAction: false, action: '' },
+        { thumb: 'radial-gradient(circle at 20% 30%,#A5B4FC 0 3%,transparent 4%),radial-gradient(circle at 70% 20%,#F9A8D4 0 3%,transparent 4%),radial-gradient(circle at 40% 70%,#FDE68A 0 3%,transparent 4%),linear-gradient(160deg,#2D2A4A 0%,#4C3F75 100%)', name: 'IMG_4819.HEIC', badge: 'Checking', tone: blue, bar: false, pct: '0%', detail: 'Received by host, being checked', hasAction: false, action: '' },
+        { thumb: 'radial-gradient(ellipse at 30% 105%,#5E7F55 0 30%,transparent 31%),linear-gradient(180deg,#9FC3E3 0%,#D8E7F2 55%,#E9DCC8 56%,#CDBBA2 100%)', name: 'IMG_4823.JPG', badge: 'Waiting', tone: amber, bar: false, pct: '0%', detail: 'Will send when the host is reachable', hasAction: false, action: '' },
+        { thumb: 'repeating-linear-gradient(135deg,#3F4349 0 6px,#4A4E55 6px 12px)', name: 'Screen Recording.mov', badge: 'Not sent', tone: red, bar: false, pct: '0%', detail: 'Only photos (JPEG, HEIC, PNG) can be shared', hasAction: true, action: 'Remove' },
+        { thumb: 'radial-gradient(circle at 50% 42%,#FFD9A0 0 6%,rgba(255,180,90,0.55) 12%,transparent 34%),linear-gradient(180deg,#2B1D1A 0%,#4A2E28 100%)', name: 'IMG_4790.HEIC', badge: 'Stopped', tone: red, bar: false, pct: '0%', detail: 'Stopped after 10 tries', hasAction: true, action: 'Retry' },
+        { thumb: 'linear-gradient(180deg,#2E3168 0%,#6E4C8A 38%,#E79B7A 62%,#3B2A33 63%,#1C1620 100%)', name: 'IMG_4815.HEIC', badge: 'Shared', tone: green, bar: false, pct: '100%', detail: 'Visible to everyone · 9:41 PM', hasAction: false, action: '' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

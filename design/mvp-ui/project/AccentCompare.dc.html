@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Accent comparison: soft indigo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
+<style>
+body{margin:0}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1280px; height: 1000px; box-sizing: border-box; background: #ECEAE4; color: #16171A; font-family: Inter, system-ui, sans-serif; padding: 40px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px">
+  <sc-for list="{{options}}" as="o" hint-placeholder-count="2">
+    <div style="display: flex; flex-direction: column; gap: 18px; min-width: 0">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+        <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 30px; font-weight: 700; letter-spacing: -0.02em">{{o.name}}</h2>
+        <span style="font-size: 13px; color: #4A4E55; text-align: right">{{o.note}}</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px">
+        <sc-for list="{{o.swatches}}" as="s" hint-placeholder-count="4">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <div style="height: 56px; border-radius: 10px; background: {{s.hex}}; border: 1px solid rgba(0,0,0,0.06)"></div>
+            <span style="font-size: 12px; font-weight: 600">{{s.label}}</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #4A4E55">{{s.hex}} · {{s.ratio}}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <sc-for list="{{o.themes}}" as="t" hint-placeholder-count="2">
+        <div style="background: {{t.bg}}; color: {{t.fg}}; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: center">
+            <span style="font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: {{t.muted}}">{{t.label}}</span>
+            <span style="font-size: 13px; color: {{t.link}}; font-weight: 600; text-decoration: underline">Manage my uploads</span>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: {{t.surface}}; border: 1px solid {{t.line}}">
+            <div style="width: 44px; height: 44px; border-radius: 10px; background: #D6A88F; flex-shrink: 0"></div>
+            <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+              <div style="display: flex; align-items: center; gap: 8px">
+                <span style="font-size: 15px; font-weight: 700">Rooftop birthday</span>
+                <span style="padding: 2px 8px; border-radius: 999px; background: {{t.badgeBg}}; color: {{t.badgeInk}}; font-size: 11px; font-weight: 700">Host</span>
+              </div>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap">
+                <span style="padding: 2px 8px; border-radius: 999px; background: {{t.okBg}}; color: {{t.okInk}}; font-size: 11px; font-weight: 700">● Live</span>
+                <span style="padding: 2px 8px; border-radius: 999px; background: {{t.warnBg}}; color: {{t.warnInk}}; font-size: 11px; font-weight: 700">Waiting</span>
+                <span style="padding: 2px 8px; border-radius: 999px; background: {{t.errBg}}; color: {{t.errInk}}; font-size: 11px; font-weight: 700">Not sent</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 18px; border-bottom: 1px solid {{t.line}}">
+            <span style="padding: 8px 2px; border-bottom: 2.5px solid {{t.tab}}; font-size: 14px; font-weight: 700">Photos 48</span>
+            <span style="padding: 8px 2px; font-size: 14px; color: {{t.muted}}">Posts 4</span>
+            <span style="padding: 8px 2px; font-size: 14px; color: {{t.muted}}">Attendees 23</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+            <button type="button" style="height: 48px; border: 0; border-radius: 14px; background: {{t.primary}}; color: {{t.onPrimary}}; font-size: 15px; font-weight: 600">Scan QR code to join</button>
+            <button type="button" style="height: 48px; border: 1.5px solid {{t.outline}}; border-radius: 14px; background: transparent; color: {{t.fg}}; font-size: 15px; font-weight: 600">Host an event</button>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-for>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const status = {
+      light: { okBg: '#DCFCE7', okInk: '#14532D', warnBg: '#FEF3C7', warnInk: '#78350F', errBg: '#FEE4E2', errInk: '#912018' },
+      dark: { okBg: '#163A24', okInk: '#86EFAC', warnBg: '#3A2C14', warnInk: '#FCD34D', errBg: '#3F1B18', errInk: '#FCA5A5' }
+    };
+    const light = (a) => Object.assign({ label: 'Light', bg: '#F5F3EE', fg: '#16171A', muted: '#5B5F66', surface: '#FFFFFF', line: '#E2DFD8', outline: '#16171A' }, status.light, a);
+    const dark = (a) => Object.assign({ label: 'Dark', bg: '#131516', fg: '#E9E7E2', muted: '#A9ADB2', surface: '#1C1F21', line: '#2E3235', outline: '#E9E7E2' }, status.dark, a);
+    return {
+      options: [
+        {
+          name: 'Soft indigo',
+          note: 'Same periwinkle in both themes · dark text on soft buttons',
+          swatches: [
+            { label: 'Primary fill', hex: '#A5B4FC', ratio: '8.0:1 with ink text' },
+            { label: 'Hover / pressed', hex: '#818CF8', ratio: '' },
+            { label: 'Tint (badges)', hex: '#E6E9FE', ratio: 'light mode' },
+            { label: 'Text and links', hex: '#4F46E5', ratio: '5.7:1 on page' }
+          ],
+          themes: [
+            light({ primary: '#A5B4FC', onPrimary: '#1E1B4B', link: '#4F46E5', tab: '#6366F1', badgeBg: '#E6E9FE', badgeInk: '#3730A3' }),
+            dark({ primary: '#A5B4FC', onPrimary: '#131516', link: '#A5B4FC', tab: '#A5B4FC', badgeBg: '#2A2D5C', badgeInk: '#C7D2FE' })
+          ]
+        },
+        {
+          name: 'For reference',
+          note: 'The earlier light-mode versions you compared',
+          swatches: [
+            { label: 'Deep indigo', hex: '#4338CA', ratio: 'white text 7.9:1' },
+            { label: 'Deep teal-cyan', hex: '#0E7490', ratio: 'white text 5.4:1' },
+            { label: 'Soft indigo', hex: '#A5B4FC', ratio: 'ink text 8.0:1' },
+            { label: 'Page ground', hex: '#F5F3EE', ratio: '' }
+          ],
+          themes: [
+            light({ label: 'Light · deep indigo (before)', primary: '#4338CA', onPrimary: '#FFFFFF', link: '#4338CA', tab: '#4338CA', badgeBg: '#E0E7FF', badgeInk: '#3730A3' }),
+            light({ label: 'Light · deep teal-cyan (before)', primary: '#0E7490', onPrimary: '#FFFFFF', link: '#0E7490', tab: '#0E7490', badgeBg: '#CFFAFE', badgeInk: '#155E75' })
+          ]
+        }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

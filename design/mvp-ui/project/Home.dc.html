@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale · Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; padding: 44px 20px 20px; gap: 14px; overflow: hidden">
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <div style="display: flex; align-items: center; gap: 8px">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4" fill="#6366F1"></circle><circle cx="16" cy="16" r="9" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.55"></circle><circle cx="16" cy="16" r="14" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.25"></circle></svg>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.02em">Locale</span>
+    </div>
+    <button type="button" aria-label="Account" style="width: 44px; height: 44px; border-radius: 22px; border: 0; background: #16171A; color: #FFFFFF; font-weight: 600; font-size: 15px; cursor: pointer">{{initials}}</button>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700">Your events</h2>
+    <sc-for list="{{mine}}" as="ev" hint-placeholder-count="2">
+      <a href="Event.dc.html" style="display: flex; align-items: center; gap: 12px; min-height: 76px; padding: 10px 14px 10px 10px; border-radius: 16px; background: {{ev.bg}}; color: {{ev.ink}}; text-decoration: none">
+        <span style="position: relative; width: 60px; height: 56px; flex-shrink: 0" aria-hidden="true">
+          <span style="position: absolute; left: 14px; top: 0; width: 44px; height: 44px; border-radius: 10px; background: {{ev.thumbB}}; transform: rotate(8deg)"></span>
+          <span style="position: absolute; left: 0; top: 8px; width: 48px; height: 48px; border-radius: 10px; background: {{ev.thumbA}}; box-shadow: 0 0 0 2px {{ev.bg}}"></span>
+        </span>
+        <span style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1; min-width: 0">
+          <span style="display: flex; align-items: center; gap: 8px">
+            <span style="font-size: 16px; font-weight: 700">{{ev.name}}</span>
+            <span style="padding: 2px 8px; border-radius: 999px; background: {{ev.roleBg}}; color: {{ev.roleInk}}; font-size: 11px; font-weight: 700">{{ev.role}}</span>
+          </span>
+          <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: {{ev.sub}}">
+            <span style="width: 7px; height: 7px; border-radius: 4px; background: #22C55E"></span>{{ev.meta}}
+          </span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+      </a>
+    </sc-for>
+  </div>
+
+  <button type="button" style="height: 58px; border: 0; border-radius: 16px; background: #A5B4FC; color: #1E1B4B; font-size: 17px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 12px; cursor: pointer">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"></rect><rect x="14" y="3" width="7" height="7" rx="1"></rect><rect x="3" y="14" width="7" height="7" rx="1"></rect><path d="M14 14h3v3h-3zM20 14v.01M14 20h.01M17 20h4v-3"></path></svg>
+    Scan QR code to join
+  </button>
+
+  <sc-if value="{{notHosting}}" hint-placeholder-val="{{true}}">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+        <button type="button" style="height: 50px; border: 1.5px solid #16171A; border-radius: 16px; background: #FFFFFF; color: #16171A; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L4 14h7l-1 8 9-12h-7z"></path></svg>
+          Quick session
+        </button>
+        <button type="button" style="height: 50px; border: 1.5px solid #16171A; border-radius: 16px; background: #FFFFFF; color: #16171A; font-size: 15px; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 8px; cursor: pointer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.5"></circle><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2"></path></svg>
+          Host an event
+        </button>
+      </div>
+      <span style="font-size: 12px; line-height: 1.4; color: #5B5F66; text-align: center">{{hostCaption}}</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{isHosting}}" hint-placeholder-val="{{false}}">
+    <div style="display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #E6E9FE; color: #1E1B4B; font-size: 13px; line-height: 1.45">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3730A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="2.5"></circle><path d="M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4"></path></svg>
+      <span><strong>You're hosting Rooftop birthday</strong> from Sam's MacBook. You can still join other events. End this one there to host something new.</span>
+    </div>
+  </sc-if>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <div style="display: flex; align-items: baseline; justify-content: space-between">
+      <h2 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700">Nearby</h2>
+      <span style="font-size: 13px; color: #5B5F66">On this Wi-Fi</span>
+    </div>
+    <sc-for list="{{nearby}}" as="ev" hint-placeholder-count="2">
+      <button type="button" style="display: flex; align-items: center; gap: 14px; width: 100%; min-height: 60px; padding: 8px 14px; border: 1px solid #E2DFD8; border-radius: 14px; background: #FFFFFF; text-align: left; cursor: pointer; color: #16171A">
+        <span style="width: 40px; height: 40px; border-radius: 12px; background: #E6E9FE; color: #3730A3; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; flex-shrink: 0">{{ev.initial}}</span>
+        <span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+          <span style="font-size: 15px; font-weight: 600">{{ev.name}}</span>
+          <span style="font-size: 13px; color: #5B5F66">{{ev.meta}}</span>
+        </span>
+        <sc-if value="{{ev.locked}}" hint-placeholder-val="{{false}}">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B5F66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Password required"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+        </sc-if>
+      </button>
+    </sc-for>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"you":{"editor":"enum","options":["attendee","hosting"],"default":"attendee"},"hosting":{"editor":"enum","options":["desktop (MVP)","phone (M5)"],"default":"desktop (MVP)"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const isHosting = (this.props.you ?? 'attendee') === 'hosting';
+    const phone = (this.props.hosting ?? 'desktop (MVP)') === 'phone (M5)';
+    const dark = { bg: '#16171A', ink: '#FFFFFF', sub: '#D4D4D8' };
+    const light = { bg: '#FFFFFF', ink: '#16171A', sub: '#5B5F66' };
+    const uploader = { role: 'Uploader', roleBg: '#F1EFEA', roleInk: '#3F4349' };
+    const uploaderDark = { role: 'Uploader', roleBg: '#3F3F46', roleInk: '#F4F4F5' };
+    const host = { role: 'Host', roleBg: '#A5B4FC', roleInk: '#1E1B4B' };
+    return {
+      isHosting,
+      notHosting: !isHosting,
+      initials: isHosting ? 'SR' : 'MR',
+      hostCaption: phone
+        ? 'Host from this phone. Keep Locale open while hosting. One hosted event at a time.'
+        : 'In this version, sessions and events are hosted from Locale Host on a Mac or Windows computer. We’ll send you the link.',
+      mine: [
+        Object.assign({ thumbA: 'linear-gradient(180deg,#2E3168 0%,#6E4C8A 38%,#E79B7A 62%,#3B2A33 63%,#1C1620 100%)', thumbB: 'radial-gradient(circle at 50% 42%,#FFD9A0 0 6%,rgba(255,180,90,0.55) 12%,transparent 34%),linear-gradient(180deg,#2B1D1A 0%,#4A2E28 100%)', name: 'Rooftop birthday', meta: isHosting ? 'Live · 23 here · hosted from your MacBook' : 'Live · 23 here · 48 photos' }, dark, isHosting ? host : uploaderDark),
+        Object.assign({ thumbA: 'radial-gradient(circle at 50% 38%,#C99A7E 0 15%,transparent 16%),radial-gradient(ellipse at 50% 100%,#3D4A6B 0 38%,transparent 39%),linear-gradient(160deg,#E9C7A8 0%,#B98B7A 100%)', thumbB: 'linear-gradient(135deg,#1F3A4A 0%,#3E7C8C 50%,#C9E4DF 100%)', name: 'Climbing gym meetup', meta: 'Live · 9 here · 31 photos' }, light, uploader)
+      ],
+      nearby: [
+        { initial: 'T', name: 'Saturday trivia', meta: 'Open · 12 here · Hosted by Bar laptop', locked: false },
+        { initial: 'D', name: 'Design club meetup', meta: 'Password · 8 here · Hosted by Priya', locked: true }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

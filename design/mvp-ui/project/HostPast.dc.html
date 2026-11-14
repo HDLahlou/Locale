@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale Host · Past events</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E2DFD8">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4" fill="#6366F1"></circle><circle cx="16" cy="16" r="9" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.55"></circle><circle cx="16" cy="16" r="14" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.25"></circle></svg>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px">Locale</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; gap: 6px">
+      <a href="DeskEvents.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Events</a>
+      <a href="HostCreate.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Host</a>
+      <a href="HostPast.dc.html" aria-current="page" style="padding: 8px 14px; border-radius: 10px; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Past events</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #3F4349">
+      <button type="button" aria-label="Account: Sam R." style="width: 40px; height: 40px; border-radius: 20px; border: 0; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">SR</button>
+    </div>
+  </header>
+
+  <main style="max-width: 920px; margin: 0 auto; padding: 32px 28px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 16px">
+      <div style="display: flex; flex-direction: column; gap: 6px">
+        <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -0.02em">Past events</h1>
+        <p style="margin: 0; font-size: 15px; color: #4A4E55; max-width: 560px; line-height: 1.5">Only settings are kept. Photos, attendees and the event index were deleted when each event ended.</p>
+      </div>
+      <a href="HostCreate.dc.html" style="display: inline-flex; align-items: center; height: 46px; padding: 0 18px; border-radius: 12px; background: #A5B4FC; color: #1E1B4B; font-size: 15px; font-weight: 600; text-decoration: none">New event</a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <sc-for list="{{events}}" as="e" hint-placeholder-count="3">
+        <article style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 18px 20px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between">
+          <div style="display: flex; flex-direction: column; gap: 6px; min-width: 240px">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 700">{{e.name}}</h2>
+            <span style="font-size: 14px; color: #4A4E55">{{e.ended}}</span>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px">
+              <span style="padding: 3px 10px; border-radius: 999px; background: #F1EFEA; font-size: 12px; font-weight: 600; color: #3F4349">{{e.access}}</span>
+              <span style="padding: 3px 10px; border-radius: 999px; background: #F1EFEA; font-size: 12px; font-weight: 600; color: #3F4349">{{e.retention}}</span>
+              <span style="padding: 3px 10px; border-radius: 999px; background: #F1EFEA; font-size: 12px; font-weight: 600; color: #3F4349">{{e.browsers}}</span>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <button type="button" aria-label="More actions for {{e.name}}, including delete settings" style="width: 42px; height: 42px; border: 0; border-radius: 10px; background: transparent; color: #4A4E55; cursor: pointer; display: inline-flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg></button>
+            <button type="button" style="height: 42px; padding: 0 18px; border: 1.5px solid #16171A; border-radius: 10px; background: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">Host again</button>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: flex-start; background: #EEF2FF; border-radius: 14px; padding: 14px 16px; font-size: 13px; line-height: 1.5; color: #1E293B">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="9"></circle><path d="M12 11v5M12 8h.01"></path></svg>
+      <span><strong>Host again</strong> starts a new, empty event with these settings. It gets a new QR code, so old codes and links stop working and everyone joins again.</span>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":800}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      events: [
+        { name: 'Saturday trivia', ended: 'Ended Sat, Nov 8 · photos deleted Sun, Nov 9', access: 'Open', retention: 'Delete 24 h after end', browsers: 'Browsers allowed' },
+        { name: 'Design club meetup', ended: 'Ended Sat, Nov 1 · photos deleted at end', access: 'Password', retention: 'Delete at end', browsers: 'App only' },
+        { name: 'Studio open house', ended: 'Ended Sun, Oct 26 · photos deleted Wed, Oct 29', access: 'Invite link', retention: 'Delete 3 days after end', browsers: 'Browsers allowed' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

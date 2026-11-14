@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale desktop · Events</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div style="min-height: 100vh; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif">
+  <header style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 28px; background: #FFFFFF; border-bottom: 1px solid #E2DFD8">
+    <div style="display: flex; align-items: center; gap: 10px">
+      <svg width="26" height="26" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="4" fill="#6366F1"></circle><circle cx="16" cy="16" r="9" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.55"></circle><circle cx="16" cy="16" r="14" fill="none" stroke="#6366F1" stroke-width="2" opacity="0.25"></circle></svg>
+      <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 20px">Locale</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; gap: 6px">
+      <a href="DeskEvents.dc.html" aria-current="page" style="padding: 8px 14px; border-radius: 10px; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Events</a>
+      <a href="HostCreate.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Host</a>
+      <a href="HostPast.dc.html" style="padding: 8px 14px; border-radius: 10px; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">Past events</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #3F4349">
+      <button type="button" aria-label="Account: Sam R." style="width: 40px; height: 40px; border-radius: 20px; border: 0; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; cursor: pointer">SR</button>
+    </div>
+  </header>
+
+  <main style="max-width: 1180px; margin: 0 auto; padding: 32px 28px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 24px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; letter-spacing: -0.02em">Events</h1>
+      <p style="margin: 0; font-size: 15px; color: #4A4E55">Join events near you to view, add and save photos from this computer.</p>
+    </div>
+
+    <sc-if value="{{hosting}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-wrap: wrap; gap: 14px; align-items: center; padding: 14px 16px; border-radius: 16px; background: #E6E9FE; color: #1E1B4B">
+        <span style="width: 40px; height: 40px; border-radius: 20px; background: #A5B4FC; color: #1E1B4B; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Hosting"><circle cx="12" cy="12" r="2.2" fill="currentColor"></circle><path d="M8.2 8.2a5.4 5.4 0 0 0 0 7.6M15.8 8.2a5.4 5.4 0 0 1 0 7.6M5.3 5.3a9.5 9.5 0 0 0 0 13.4M18.7 5.3a9.5 9.5 0 0 1 0 13.4"></path></svg>
+        </span>
+        <div style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 360px; min-width: 0">
+          <span style="font-size: 15px; font-weight: 700">You're hosting Rooftop birthday on this computer</span>
+          <span style="font-size: 13px; line-height: 1.45; color: #3730A3">You can still join events on this network. Your event keeps priority, and this computer won't switch networks.</span>
+        </div>
+        <a href="HostLive.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border-radius: 10px; background: #FFFFFF; color: #1E1B4B; font-size: 14px; font-weight: 600; text-decoration: none; flex-shrink: 0">Open live event</a>
+      </div>
+    </sc-if>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+      <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+        <section style="display: flex; flex-direction: column; gap: 10px">
+          <h2 style="margin: 0; font-size: 18px; font-weight: 700">Your events</h2>
+          <sc-for list="{{mine}}" as="ev" hint-placeholder-count="2">
+            <article style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px; padding: 16px 18px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E2DFD8">
+              <div style="width: 120px; height: 72px; border-radius: 12px; background: {{ev.thumb}}; flex-shrink: 0"></div>
+              <div style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 240px; min-width: 0">
+                <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap">
+                  <span style="font-size: 17px; font-weight: 700">{{ev.name}}</span>
+                  <span style="padding: 2px 8px; border-radius: 999px; background: {{ev.roleBg}}; color: {{ev.roleInk}}; font-size: 11px; font-weight: 700">{{ev.role}}</span>
+                </div>
+                <span style="font-size: 13px; color: #4A4E55">{{ev.meta}}</span>
+              </div>
+              <a href="{{ev.href}}" style="display: inline-flex; align-items: center; height: 42px; padding: 0 16px; border-radius: 10px; border: 1.5px solid #16171A; color: #16171A; font-size: 14px; font-weight: 600; text-decoration: none">{{ev.action}}</a>
+            </article>
+          </sc-for>
+        </section>
+
+        <section style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px">
+            <h2 style="margin: 0; font-size: 18px; font-weight: 700">Nearby</h2>
+            <span style="font-size: 13px; color: #4A4E55">On "Studio-5G" · open and password events</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px">
+            <sc-for list="{{nearby}}" as="n" hint-placeholder-count="3">
+              <article style="display: flex; flex-direction: column; gap: 10px; padding: 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #E2DFD8">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 22px">
+                  <span style="font-size: 16px; font-weight: 700">{{n.name}}</span>
+                  <sc-if value="{{n.locked}}" hint-placeholder-val="{{false}}">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5B5F66" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Password required"><rect x="5" y="11" width="14" height="10" rx="2"></rect><path d="M8 11V8a4 4 0 0 1 8 0v3"></path></svg>
+                  </sc-if>
+                </div>
+                <span style="font-size: 13px; line-height: 1.4; color: #4A4E55">{{n.meta}}</span>
+                <a href="DeskEventView.dc.html" style="margin-top: auto; display: inline-flex; align-items: center; justify-content: center; height: 40px; border-radius: 10px; background: #16171A; color: #FFFFFF; font-size: 14px; font-weight: 600; text-decoration: none">Join</a>
+              </article>
+            </sc-for>
+          </div>
+          <p style="margin: 0; font-size: 13px; color: #4A4E55">Don't see it? Invite-only events don't show here. Ask for the link.</p>
+        </section>
+      </div>
+
+      <aside style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 16px">
+        <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+          <label for="link" style="font-size: 16px; font-weight: 700">Join with a link</label>
+          <span style="font-size: 13px; line-height: 1.45; color: #4A4E55">Paste the invite link from the host's QR code or a message.</span>
+          <input id="link" value="http://192.168.1.31:7420/e/crit#t=…" style="height: 44px; padding: 0 12px; border: 1px solid #C9C6BF; border-radius: 10px; font-family: 'JetBrains Mono', monospace; font-size: 13px">
+          <a href="DeskEventView.dc.html" style="display: inline-flex; align-items: center; justify-content: center; height: 44px; border-radius: 12px; background: #A5B4FC; color: #1E1B4B; font-size: 15px; font-weight: 600; text-decoration: none">Join event</a>
+        </section>
+        <section style="background: #FFFFFF; border: 1px solid #E2DFD8; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 8px; font-size: 13px; line-height: 1.5; color: #3F4349">
+          <h2 style="margin: 0 0 2px; font-size: 15px; font-weight: 700; color: #16171A">On this computer you can</h2>
+          <span>Add photos by dragging them in</span>
+          <span>Save originals or compatible JPEGs to a folder</span>
+          <span>Download every original from an event at once</span>
+        </section>
+      </aside>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"hosting":{"editor":"boolean","default":true},"$preview":{"width":1280,"height":860}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const hosting = this.props.hosting ?? true;
+    const mine = [];
+    if (hosting) {
+      mine.push({ name: 'Rooftop birthday', role: 'Hosting', roleBg: '#A5B4FC', roleInk: '#1E1B4B', meta: 'Live on this computer · 23 here · 48 photos', action: 'Open live event', href: 'HostLive.dc.html', thumb: 'linear-gradient(180deg,#2E3168 0%,#6E4C8A 38%,#E79B7A 62%,#3B2A33 63%,#1C1620 100%)' });
+    }
+    mine.push({ name: 'Studio crit night', role: 'Uploader', roleBg: '#F1EFEA', roleInk: '#3F4349', meta: 'Live · hosted by Priya · 14 here · 62 photos', action: 'Open', href: 'DeskEventView.dc.html', thumb: 'radial-gradient(circle at 50% 38%,#C99A7E 0 15%,transparent 16%),radial-gradient(ellipse at 50% 100%,#3D4A6B 0 38%,transparent 39%),linear-gradient(160deg,#E9C7A8 0%,#B98B7A 100%)' });
+    return {
+      hosting,
+      mine,
+      nearby: [
+        { name: 'Saturday trivia', meta: 'Open · 12 here · hosted by Bar laptop', locked: false },
+        { name: 'Design club meetup', meta: 'Password · 8 here · hosted by Priya', locked: true },
+        { name: 'Pottery open studio', meta: 'Open · 5 here · hosted by Kiln room iPad', locked: false }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

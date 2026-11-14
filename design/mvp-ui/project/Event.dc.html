@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Locale · Event page</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#4F46E5}a:hover{color:#3730A3}
+button,input{font-family:inherit}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #F5F3EE; color: #16171A; font-family: Inter, system-ui, sans-serif; display: flex; flex-direction: column; position: relative; overflow: hidden">
+  <div style="display: flex; align-items: center; justify-content: space-between; padding: 44px 10px 0">
+    <button type="button" aria-label="Back to home" style="width: 44px; height: 44px; border: 0; background: transparent; border-radius: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #16171A">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg>
+    </button>
+    <div style="display: flex; gap: 2px">
+      <a href="Uploads.dc.html" aria-label="Uploads, 3 in progress" style="width: 44px; height: 44px; border-radius: 22px; display: flex; align-items: center; justify-content: center; color: #16171A; position: relative">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V4M7 9l5-5 5 5"></path><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"></path></svg>
+        <span style="position: absolute; top: 6px; right: 6px; min-width: 16px; height: 16px; border-radius: 8px; background: #A5B4FC; color: #1E1B4B; font-size: 10px; font-weight: 700; display: flex; align-items: center; justify-content: center">3</span>
+      </a>
+      <button type="button" aria-label="Event details and menu" style="width: 44px; height: 44px; border: 0; background: transparent; border-radius: 22px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #16171A">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+      </button>
+    </div>
+  </div>
+
+  <div style="padding: 0 20px; display: flex; flex-direction: column; gap: 12px">
+    <div style="display: flex; flex-direction: column; gap: 3px">
+      <h1 style="margin: 0; font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.02em">Rooftop birthday</h1>
+      <div style="font-size: 13px; color: #4A4E55">{{metaLine}}</div>
+    </div>
+
+    <sc-if value="{{isOffline}}" hint-placeholder-val="{{false}}">
+      <div style="padding: 10px 12px; border-radius: 12px; background: #FEF3C7; font-size: 12px; line-height: 1.45; color: #422006"><strong>Host offline.</strong> Photos saved on this phone still open. New uploads will send when the host is back.</div>
+    </sc-if>
+    <sc-if value="{{isHostPhone}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 12px; color: #3730A3">
+        <span style="padding: 2px 8px; border-radius: 999px; background: #A5B4FC; color: #1E1B4B; font-size: 11px; font-weight: 700">Host</span>
+        <span>Post and delete here · end or extend from Sam's MacBook</span>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{notPosts}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; gap: 10px; padding: 12px 14px; border-radius: 14px; background: #E6E9FE; color: #1E1B4B">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3730A3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><path d="M12 17v5M8 3h8l-1 7 3 3H6l3-3z"></path></svg>
+        <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+          <span style="font-size: 11px; font-weight: 700; letter-spacing: 0.04em; color: #3730A3">{{pinnedLabel}}</span>
+          <span style="font-size: 14px; line-height: 1.4">{{pinnedText}}</span>
+        </span>
+        <button type="button" onClick="{{openPosts}}" style="align-self: flex-end; border: 0; background: transparent; padding: 0; font-size: 12px; font-weight: 600; color: #4F46E5; cursor: pointer; white-space: nowrap">All posts</button>
+      </div>
+    </sc-if>
+
+    <div role="tablist" aria-label="Event sections" style="display: flex; border-bottom: 1px solid #E2DFD8">
+      <sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+        <button type="button" role="tab" aria-selected="{{t.sel}}" onClick="{{t.pick}}" style="height: 42px; padding: 0 2px; margin-right: 20px; border: 0; border-bottom: 2.5px solid {{t.line}}; background: transparent; font-size: 15px; font-weight: {{t.weight}}; color: {{t.ink}}; cursor: pointer">{{t.label}}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <sc-if value="{{showPhotos}}" hint-placeholder-val="{{true}}">
+    <div style="padding: 12px 20px 0; display: flex; flex-direction: column; gap: 10px">
+      <div role="radiogroup" aria-label="Show photos by" style="display: flex; gap: 10px; overflow: hidden">
+        <sc-for list="{{people}}" as="pp" hint-placeholder-count="6">
+          <button type="button" role="radio" aria-checked="{{pp.sel}}" aria-label="{{pp.aria}}" onClick="{{pp.pick}}" style="display: flex; flex-direction: column; align-items: center; gap: 4px; border: 0; background: transparent; padding: 0; cursor: pointer; flex-shrink: 0; width: 50px">
+            <span style="width: 46px; height: 46px; border-radius: 23px; background: {{pp.scene}}; box-shadow: 0 0 0 2px #F5F3EE, 0 0 0 {{pp.ring}} #6366F1; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700">{{pp.initial}}</span>
+            <span style="font-size: 11px; font-weight: {{pp.weight}}; color: #16171A; white-space: nowrap">{{pp.name}}</span>
+          </button>
+        </sc-for>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; position: relative">
+        <span style="font-size: 13px; font-weight: 700">{{sectionTitle}} <span style="font-weight: 500; color: #5B5F66">· {{sectionCount}}</span></span>
+        <button type="button" aria-haspopup="menu" aria-expanded="{{menuExpanded}}" onClick="{{toggleMenu}}" style="display: inline-flex; align-items: center; gap: 4px; height: 32px; padding: 0 10px; border-radius: 999px; border: 1px solid {{sortBorder}}; background: {{sortBg}}; font-size: 12px; font-weight: 600; color: #16171A; cursor: pointer">
+          {{sortLabel}}
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg>
+        </button>
+
+        <sc-if value="{{menuOpen}}" hint-placeholder-val="{{false}}">
+          <div role="menu" aria-label="Sort and show" style="position: absolute; right: 0; top: 38px; z-index: 5; width: 236px; padding: 8px; border-radius: 16px; background: #FFFFFF; box-shadow: 0 16px 40px rgba(30,27,75,0.22); display: flex; flex-direction: column">
+            <span style="padding: 6px 10px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #5B5F66">SORT BY</span>
+            <sc-for list="{{sorts}}" as="s" hint-placeholder-count="4">
+              <button type="button" role="menuitemradio" aria-checked="{{s.sel}}" onClick="{{s.pick}}" style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 10px; border: 0; border-radius: 10px; background: {{s.bg}}; text-align: left; cursor: pointer; color: #16171A">
+                <span style="display: flex; flex-direction: column; flex-grow: 1">
+                  <span style="font-size: 14px; font-weight: 600">{{s.label}}</span>
+                  <span style="font-size: 11px; color: #5B5F66">{{s.hint}}</span>
+                </span>
+                <sc-if value="{{s.on}}" hint-placeholder-val="{{false}}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
+                </sc-if>
+              </button>
+            </sc-for>
+            <span style="margin-top: 4px; padding: 8px 10px 6px; border-top: 1px solid #EFEDE8; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; color: #5B5F66">SHOW</span>
+            <sc-for list="{{shows}}" as="w" hint-placeholder-count="4">
+              <button type="button" role="menuitemradio" aria-checked="{{w.sel}}" onClick="{{w.pick}}" style="display: flex; align-items: center; justify-content: space-between; min-height: 40px; padding: 0 10px; border: 0; border-radius: 10px; background: {{w.bg}}; font-size: 14px; font-weight: 500; text-align: left; cursor: pointer; color: #16171A">
+                {{w.label}}
+                <sc-if value="{{w.on}}" hint-placeholder-val="{{false}}">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"></path></svg>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+
+    <div style="padding: 8px 20px 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-rows: 108px; gap: 4px">
+      <sc-for list="{{tiles}}" as="p" hint-placeholder-count="9">
+        <a href="Viewer.dc.html" aria-label="{{p.label}}" style="grid-column: {{p.span}}; grid-row: {{p.span}}; border-radius: 10px; background: {{p.scene}}; position: relative; overflow: hidden">
+          <sc-if value="{{p.uploading}}" hint-placeholder-val="{{false}}">
+            <span style="position: absolute; inset: 0; background: rgba(22,23,26,0.55); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #FFFFFF">
+              <span style="font-size: 13px; font-weight: 700">{{progress}}%</span>
+              <span style="width: 70%; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.3); display: block"><span style="display: block; width: {{progress}}%; height: 4px; border-radius: 2px; background: #A5B4FC"></span></span>
+              <span style="font-size: 10px; opacity: 0.9">Only you see this</span>
+            </span>
+          </sc-if>
+          <sc-if value="{{p.showBadge}}" hint-placeholder-val="{{false}}">
+            <span style="position: absolute; right: 6px; top: 6px; display: inline-flex; align-items: center; gap: 3px; padding: 2px 7px; border-radius: 999px; background: rgba(14,15,17,0.62); color: #FFFFFF; font-size: 10px; font-weight: 700">{{p.badge}}</span>
+          </sc-if>
+          <span style="position: absolute; left: 6px; bottom: 6px; display: inline-flex; align-items: center; gap: 5px; padding: 2px 7px 2px 2px; border-radius: 999px; background: rgba(14,15,17,0.6); color: #FFFFFF; font-size: 10px; font-weight: 600">
+            <span style="width: 16px; height: 16px; border-radius: 8px; background: #A5B4FC; color: #1E1B4B; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700">{{p.initial}}</span>{{p.caption}}
+          </span>
+        </a>
+      </sc-for>
+    </div>
+    <a href="Uploads.dc.html" style="position: absolute; right: 20px; bottom: 28px; height: 56px; padding: 0 22px 0 18px; border-radius: 28px; background: #A5B4FC; color: #1E1B4B; font-size: 16px; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 8px 24px rgba(30,27,75,0.28); text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+      Add photos
+    </a>
+  </sc-if>
+
+  <sc-if value="{{showPosts}}" hint-placeholder-val="{{false}}">
+    <div style="padding: 12px 20px 0; display: flex; flex-direction: column; gap: 10px">
+      <sc-if value="{{isHostPhone}}" hint-placeholder-val="{{false}}">
+        <button type="button" style="height: 48px; border: 1.5px dashed #6366F1; border-radius: 14px; background: #FFFFFF; color: #3730A3; font-size: 15px; font-weight: 600; cursor: pointer">Write a post</button>
+      </sc-if>
+      <sc-for list="{{posts}}" as="post" hint-placeholder-count="4">
+        <article style="background: {{post.bg}}; border: 1px solid {{post.border}}; border-radius: 14px; padding: 12px 14px; display: flex; flex-direction: column; gap: 4px">
+          <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: #5B5F66">
+            <span style="font-weight: 700; color: {{post.whoInk}}">{{post.who}}</span>
+            <span>{{post.time}}</span>
+          </div>
+          <p style="margin: 0; font-size: 15px; line-height: 1.4; color: #16171A">{{post.text}}</p>
+        </article>
+      </sc-for>
+      <p style="margin: 2px 0 0; font-size: 12px; line-height: 1.45; color: #5B5F66; text-align: center">{{postsNote}}</p>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{showPeople}}" hint-placeholder-val="{{false}}">
+    <div style="padding: 8px 20px 0; display: flex; flex-direction: column">
+      <sc-for list="{{roster}}" as="person" hint-placeholder-count="6">
+        <div style="display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #E8E5DF">
+          <span style="width: 40px; height: 40px; border-radius: 20px; background: {{person.scene}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; flex-shrink: 0">{{person.initial}}</span>
+          <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+            <span style="display: flex; align-items: center; gap: 6px; font-size: 15px; font-weight: 600">{{person.name}}
+              <sc-if value="{{person.verified}}" hint-placeholder-val="{{true}}">
+                <svg width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Verified account"><circle cx="12" cy="12" r="10" fill="#6366F1"></circle><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+              </sc-if>
+            </span>
+            <span style="font-size: 12px; color: #5B5F66">{{person.meta}}</span>
+          </span>
+        </div>
+      </sc-for>
+      <p style="margin: 10px 0 0; font-size: 12px; color: #5B5F66">Verified accounts can upload. Guests can view and download.</p>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"viewer":{"editor":"enum","options":["attendee","host phone"],"default":"attendee"},"state":{"editor":"enum","options":["live","extended","hostOffline"],"default":"live"},"tab":{"editor":"enum","options":["photos","posts","attendees"],"default":"photos"},"sort":{"editor":"enum","options":["newest","oldest","most downloaded","hottest"],"default":"newest"},"menuOpen":{"editor":"boolean","default":false},"progress":{"editor":"range","min":0,"max":100,"step":1,"default":62,"unit":"%"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const S = {
+      dusk: 'linear-gradient(180deg,#2E3168 0%,#6E4C8A 38%,#E79B7A 62%,#3B2A33 63%,#1C1620 100%)',
+      lights: 'radial-gradient(circle at 18% 28%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 42% 18%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 66% 30%,#FFE6A6 0 2px,transparent 3px),radial-gradient(circle at 86% 20%,#FFE6A6 0 2px,transparent 3px),radial-gradient(ellipse at 50% 120%,#7A4E7E 0%,transparent 60%),linear-gradient(180deg,#151632 0%,#2A2550 100%)',
+      cake: 'radial-gradient(circle at 50% 42%,#FFD9A0 0 6%,rgba(255,180,90,0.55) 12%,transparent 34%),radial-gradient(ellipse at 50% 95%,#F4E3D0 0 28%,transparent 29%),linear-gradient(180deg,#2B1D1A 0%,#4A2E28 100%)',
+      terrace: 'radial-gradient(ellipse at 30% 105%,#5E7F55 0 30%,transparent 31%),radial-gradient(ellipse at 80% 110%,#4E6E4A 0 34%,transparent 35%),linear-gradient(180deg,#9FC3E3 0%,#D8E7F2 55%,#E9DCC8 56%,#CDBBA2 100%)',
+      portrait: 'radial-gradient(circle at 50% 38%,#C99A7E 0 15%,transparent 16%),radial-gradient(ellipse at 50% 100%,#3D4A6B 0 38%,transparent 39%),linear-gradient(160deg,#E9C7A8 0%,#B98B7A 100%)',
+      city: 'radial-gradient(circle at 75% 25%,#F6E7C1 0 5%,transparent 6%),linear-gradient(180deg,#232858 0%,#4A4D8C 60%,#151833 61%,#0E1027 100%)',
+      group: 'radial-gradient(circle at 25% 52%,#3A2F3F 0 9%,transparent 10%),radial-gradient(circle at 50% 46%,#4A3B4E 0 10%,transparent 11%),radial-gradient(circle at 75% 52%,#3A2F3F 0 9%,transparent 10%),radial-gradient(ellipse at 50% 100%,#2B2433 0 45%,transparent 46%),linear-gradient(180deg,#F2B880 0%,#D9826B 100%)',
+      drinks: 'radial-gradient(ellipse at 35% 60%,rgba(255,255,255,0.55) 0 8%,transparent 9%),radial-gradient(ellipse at 62% 58%,rgba(255,255,255,0.45) 0 9%,transparent 10%),linear-gradient(135deg,#1F3A4A 0%,#3E7C8C 50%,#C9E4DF 100%)',
+      confetti: 'radial-gradient(circle at 20% 30%,#A5B4FC 0 3%,transparent 4%),radial-gradient(circle at 70% 20%,#F9A8D4 0 3%,transparent 4%),radial-gradient(circle at 40% 70%,#FDE68A 0 3%,transparent 4%),radial-gradient(circle at 85% 65%,#99F6E4 0 3%,transparent 4%),linear-gradient(160deg,#2D2A4A 0%,#4C3F75 100%)',
+      sky: 'linear-gradient(180deg,#F7C59F 0%,#EF8A7E 40%,#8C5A8F 75%,#3A2F55 100%)'
+    };
+    const st = this.state || {};
+    const state = this.props.state ?? 'live';
+    const isHostPhone = (this.props.viewer ?? 'attendee') === 'host phone';
+    const tab = st.tab || this.props.tab || 'photos';
+    const sort = st.sort || this.props.sort || 'newest';
+    const show = st.show || 'everything';
+    const person = st.person || 'all';
+    const menuOpen = st.menuOpen !== undefined ? st.menuOpen : (this.props.menuOpen ?? false);
+    const set = (o) => () => this.setState(o);
+
+    const hostPost = (time, text) => ({ who: 'Sam · host', whoInk: '#3730A3', time, text, bg: '#FFFFFF', border: '#E2DFD8' });
+    const posts = [
+      hostPost('8:12 PM', 'Cake at 9 on the terrace. Group photo right after!'),
+      hostPost('7:48 PM', 'Drinks are in the cooler by the stairs. Please take empties down.'),
+      { who: 'Locale', whoInk: '#3730A3', time: '7:30 PM', text: 'The host extended the event. Photos now delete Sun, Nov 16 at 2:00 PM.', bg: '#E6E9FE', border: '#E6E9FE' },
+      hostPost('7:05 PM', 'Buzz 4B at the front door, then take the elevator to R.'),
+      hostPost('7:00 PM', 'Welcome! Add your photos here so everyone gets the full-quality versions.')
+    ];
+    if (state !== 'extended') posts.splice(2, 1);
+    const pinned = state === 'extended'
+      ? { label: 'LOCALE · 7:30 PM', text: 'The host extended the event. Photos now delete Sun, Nov 16 at 2:00 PM.' }
+      : { label: 'PINNED · SAM · 8:12 PM', text: 'Cake at 9 on the terrace. Group photo right after!' };
+
+    const sortDefs = [
+      ['newest', 'Newest', 'Latest first, grouped by time'],
+      ['oldest', 'Oldest', 'From the start of the event'],
+      ['most downloaded', 'Most downloaded', 'Saved most by everyone'],
+      ['hottest', 'Hottest', 'Most saved in the last 30 minutes']
+    ];
+    const showDefs = [['everything', 'Everything'], ['saved', 'Saved by me'], ['unsaved', 'Not saved yet'], ['mine', 'My photos']];
+    const ranked = sort === 'most downloaded' || sort === 'hottest';
+    const sortLabel = (sortDefs.find((d) => d[0] === sort) || sortDefs[0])[1] + (show !== 'everything' ? ' · 1 filter' : '');
+
+    const uploaders = [['all', 'All', 'Everyone', '#16171A'], ['jordan', 'J', 'Jordan', S.portrait], ['priya', 'P', 'Priya', S.terrace], ['alex', 'A', 'Alex', S.city], ['sam', 'S', 'Sam', S.lights], ['you', 'M', 'You', S.confetti]];
+
+    const timeTiles = [
+      { scene: S.dusk, initial: 'J', caption: 'Jordan · 9:41', span: 'span 2', uploading: false, showBadge: true, badge: 'HEIC · HDR' },
+      { scene: S.confetti, initial: 'M', caption: 'You', span: 'span 1', uploading: true, showBadge: false, badge: '' },
+      { scene: S.cake, initial: 'P', caption: '9:38', span: 'span 1', uploading: false, showBadge: false, badge: '' },
+      { scene: S.group, initial: 'A', caption: '9:36', span: 'span 1', uploading: false, showBadge: false, badge: '' },
+      { scene: S.lights, initial: 'S', caption: '9:35', span: 'span 1', uploading: false, showBadge: false, badge: '' },
+      { scene: S.drinks, initial: 'J', caption: '9:33', span: 'span 1', uploading: false, showBadge: false, badge: '' },
+      { scene: S.terrace, initial: 'P', caption: '9:31', span: 'span 1', uploading: false, showBadge: false, badge: '' },
+      { scene: S.city, initial: 'A', caption: '9:30', span: 'span 1', uploading: false, showBadge: false, badge: '' }
+    ];
+    const rankScenes = sort === 'hottest'
+      ? [[S.cake, 'P', '14'], [S.group, 'A', '11'], [S.dusk, 'J', '9'], [S.lights, 'S', '7'], [S.sky, 'M', '6'], [S.drinks, 'J', '5'], [S.terrace, 'P', '4'], [S.city, 'A', '3'], [S.portrait, 'J', '2']]
+      : [[S.dusk, 'J', '18'], [S.group, 'A', '16'], [S.cake, 'P', '15'], [S.terrace, 'P', '12'], [S.lights, 'S', '11'], [S.portrait, 'J', '9'], [S.city, 'A', '8'], [S.drinks, 'J', '7'], [S.sky, 'M', '6']];
+    const rankTiles = rankScenes.map(([sc, i, n], k) => ({
+      scene: sc, initial: i, caption: '#' + (k + 1), span: k === 0 ? 'span 2' : 'span 1', uploading: false, showBadge: true,
+      badge: (sort === 'hottest' ? '↑ ' : '↓ ') + n
+    }));
+    const tiles = (ranked ? rankTiles : (sort === 'oldest' ? timeTiles.slice().reverse().filter((t) => !t.uploading) : timeTiles))
+      .map((t, k) => Object.assign({ label: 'Photo by ' + t.caption + ', ' + (k + 1) + ' of 48' }, t));
+
+    return {
+      isHostPhone,
+      isOffline: state === 'hostOffline',
+      metaLine: state === 'extended' ? 'Fri 7 PM – 1 AM · Hosted by Sam · deletes Sun 2 PM' : 'Fri 7 PM – 1 AM · Hosted by Sam · deletes Sat 2 PM',
+      pinnedLabel: pinned.label, pinnedText: pinned.text,
+      postsNote: isHostPhone ? 'Everyone sees your posts here. They are deleted with the event.' : 'Only the host can post here. Posts are deleted with the event.',
+      progress: this.props.progress ?? 62,
+      showPhotos: tab === 'photos', showPosts: tab === 'posts', showPeople: tab === 'attendees', notPosts: tab !== 'posts',
+      openPosts: set({ tab: 'posts' }),
+      tabs: [['photos', 'Photos 48'], ['posts', 'Posts ' + posts.length], ['attendees', 'Attendees 23']].map(([id, label]) => ({
+        label, sel: tab === id ? 'true' : 'false', line: tab === id ? '#6366F1' : 'transparent',
+        weight: tab === id ? '700' : '500', ink: tab === id ? '#16171A' : '#5B5F66', pick: set({ tab: id })
+      })),
+      people: uploaders.map(([id, initial, name, scene]) => ({
+        initial, name, scene, sel: person === id ? 'true' : 'false', ring: person === id ? '4px' : '0px', weight: person === id ? '700' : '500',
+        aria: id === 'all' ? 'Everyone’s photos' : 'Photos by ' + name, pick: set({ person: id })
+      })),
+      sectionTitle: ranked ? (sort === 'hottest' ? 'Hottest right now' : 'Most downloaded') : (sort === 'oldest' ? '7:00 – 7:30 PM' : '9:30 – 10:00 PM'),
+      sectionCount: ranked ? '48 photos' : '14',
+      sortLabel,
+      sortBg: menuOpen ? '#E6E9FE' : '#FFFFFF', sortBorder: menuOpen ? '#A5B4FC' : '#E2DFD8',
+      menuOpen, menuExpanded: menuOpen ? 'true' : 'false',
+      toggleMenu: set({ menuOpen: !menuOpen }),
+      sorts: sortDefs.map(([id, label, hint]) => ({ label, hint, on: sort === id, sel: sort === id ? 'true' : 'false', bg: sort === id ? '#F5F6FF' : 'transparent', pick: set({ sort: id, menuOpen: false }) })),
+      shows: showDefs.map(([id, label]) => ({ label, on: show === id, sel: show === id ? 'true' : 'false', bg: show === id ? '#F5F6FF' : 'transparent', pick: set({ show: id, menuOpen: false }) })),
+      tiles,
+      posts,
+      roster: [
+        { initial: 'S', name: 'Sam', meta: 'Host · Mac', scene: S.lights, verified: true },
+        { initial: 'J', name: 'Jordan', meta: 'Uploader · 14 photos', scene: S.portrait, verified: true },
+        { initial: 'P', name: 'Priya', meta: 'Uploader · 11 photos', scene: S.terrace, verified: true },
+        { initial: 'A', name: 'Alex', meta: 'Uploader · 9 photos', scene: S.city, verified: true },
+        { initial: 'M', name: 'Maya (you)', meta: 'Uploader · 3 photos', scene: S.confetti, verified: true },
+        { initial: 'L', name: 'Leo', meta: 'Guest · browser', scene: '#8A8780', verified: false }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

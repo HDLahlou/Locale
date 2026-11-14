@@ -1,0 +1,7 @@
+# Personal interview prep (not part of the Locale design)
+docs/PostHog Interview Prep.md
+docs/PostHog Interview Prep.html
+
+# OS and editor files
+.DS_Store
+.idea/
