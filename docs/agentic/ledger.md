@@ -6,13 +6,13 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 | ID | Status | Branch | Model | Attempts | Verified | Note |
 |---|---|---|---|---|---|---|
-| S1 | verifying | worktree-agent-a9b4199858be64bb8 | S | 1 | — | Implementer done; `just check` passes on the branch when run by the orchestrator; with a Sonnet verifier |
-| S2 | todo | — | H | 0 | — | Has a human gate |
-| S3 | todo | — | O | 0 | — |  |
-| S4 | todo | — | S (was H) | 0 | — | Has a human gate |
+| S1 | done | merged 9fab878 | S | 1 | PASS (Sonnet), `just check` green on build/integration | Skeleton, justfile, CLAUDE.md. Tauri crate is `locale-desktop`; TypeScript pinned to 6.0.3 |
+| S2 | in-progress | worktree | H | 1 | — | Has a human gate (person installs what `just doctor` reports missing) |
+| S3 | in-progress | worktree | O | 1 | — |  |
+| S4 | in-progress | worktree | S (was H) | 1 | — | Has a human gate (person adds four real device photos) |
 | S5 | todo | — | S | 0 | — |  |
 | S6 | todo | — | S | 0 | — | Has a human gate |
-| M0a-1 | todo | — | O | 0 | — |  |
+| M0a-1 | in-progress | worktree | O | 1 | — |  |
 | M0a-2 | todo | — | S | 0 | — |  |
 | M0a-3 | todo | — | O | 0 | — |  |
 | M0a-4 | todo | — | O | 0 | — | Has a human gate |
@@ -122,3 +122,4 @@ This file is the record of the build run. It overrides anyone's memory of the co
 - 2026-11-14T02:22Z · S · Tool probe before S1: present are Node 26.7, npm, Flutter 3.47.7 (Dart 3.13.5), Python 3.12, sips, JDK 17, Homebrew. Missing are rustup, cargo, rustc, just, pnpm, full Xcode (only Command Line Tools, so no xcodebuild or simctl), the Android SDK (adb, emulator), flutter_rust_bridge_codegen and gh.
 - 2026-11-14T02:22Z · S · Stopped, waiting for a person. S1 cannot be verified without cargo and just, and every other task depends on S1. No subagents were launched. See `docs/agentic/reports/S.md`.
 - 2026-11-16T04:18Z · S · Resumed at a person's request. Tool probe: every tool that was missing is now on PATH (cargo 1.100.0, just 1.59.0, pnpm 12.18.0, full Xcode with iOS 27.2 simulators, adb and emulator, flutter_rust_bridge_codegen, gh signed in). Rust targets for iOS and Android are installed. No leftover worktrees or task branches. S1 moved from blocked to ready.
+- 2026-11-16T05:20Z · S · S1 done: 1 Sonnet implementer, 1 Sonnet verifier, no returns. Dispatched S2 (Haiku), S3 (Opus), S4 (Sonnet) and M0a-1 (Opus) in parallel worktrees.
