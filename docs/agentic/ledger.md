@@ -116,14 +116,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 ## 3. Pending digest edits
 
-- §3 "Core libraries" and §12: add DU-44 (rustls with `ring`).
-- §8 item 4 and §12: add DU-52 (worker limits as built on macOS; claimed-format check). `CLAUDE.md` commands table: `check-rust` runs `fixtures-verify` first; add `just ci <suffix>`.
-- §3 "Repository layout", §11 "Facade" and §12: add DU-51 (`crates/telemetry`). `CLAUDE.md` layout table gets the same row.
-- §4.2, §8 item 6 and §12: add DU-50 (capability reasons and fix identifiers, isolated ranges, 5 s cap).
-- §11 rule 7 and §12: add DU-48 (facade owns the queue and the sender; TR-16).
-- §9 and §12: add DU-46 (dark values chosen in S5).
-- §5.1 and §12: add DU-47 (listener timeouts, port attempts, key file names).
-- §3 "Repository layout" and §12: add DU-45 (`scripts/`, `fixtures/`, `packages/ui`).
+None. DU-44 to DU-52 were applied to the digest and `CLAUDE.md` at the milestone S boundary (2026-11-16).
 
 ## 4. Plan changes
 
