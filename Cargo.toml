@@ -26,6 +26,7 @@ http-body-util = "0.1"
 hyper = "1"
 hyper-util = "0.1"
 libc = "0.2"
+mdns-sd = { version = "0.21", default-features = false, features = ["async"] }
 miniz_oxide = { version = "0.8", default-features = false, features = ["with-alloc"] }
 objc2-core-foundation = { version = "0.3", default-features = false }
 objc2-core-graphics = { version = "0.3", default-features = false }

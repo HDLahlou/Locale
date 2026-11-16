@@ -4,6 +4,7 @@ pub mod capability;
 pub mod db;
 pub mod event_folder;
 pub mod listener;
+pub mod mdns;
 
 /// Name of this crate, used by the skeleton test.
 pub const CRATE_NAME: &str = "host-core";

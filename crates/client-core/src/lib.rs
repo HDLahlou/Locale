@@ -1,5 +1,6 @@
 //! The `client-core` crate: the client side shared by desktop and phone.
 
+pub mod nearby;
 pub mod tls_pin;
 
 /// Name of this crate, used by the skeleton test.

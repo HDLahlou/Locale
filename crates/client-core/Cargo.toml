@@ -6,6 +6,8 @@ license.workspace = true
 publish.workspace = true
 
 [dependencies]
+mdns-sd = { workspace = true }
+proto = { path = "../proto" }
 rustls = { workspace = true }
 sha2 = { workspace = true }
 subtle = { workspace = true }
