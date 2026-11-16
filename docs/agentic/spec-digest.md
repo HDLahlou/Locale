@@ -339,6 +339,18 @@ Service type `_locale._tcp.local.`, instance name = event ID. TXT: `v=1`, `id`, 
 ### 5.7 Client core API through flutter_rust_bridge (DU-33)
 `sign_in_*`, `join(url | nearby)`, `list_events`, `open_event(id) → observable index`, `enqueue_upload(event_id, file)`, `outbox(event_id) → observable`, `fetch(item, version)`, `mark_saved`, `delete_item`, `create_post`, `leave`, `telemetry.track`. Observables are exposed to Dart as streams. The core owns all networking and runs on its own threads; Dart never sends protocol traffic. The Flutter app supplies: network change, app foreground, file locations, the PostHog SDK hand-off (PostHog Flutter SDK), and calls into `locale_media` for picking and saving. The desktop (Tauri) calls the same API directly in Rust.
 
+### 5.8 Contract details fixed in code (DU-49)
+`crates/proto` is the code form of this section, and `crates/proto/CONTRACT.md` is rendered from it; where this digest is silent, that file is the authority. Choices made in task S3 that every device and the account service must agree on:
+- **Encodings.** Base64url is unpadded everywhere (join token 22 characters, fingerprint and device key 43, signature 86). Item states travel in uppercase (`"PENDING"`). The mDNS `fp` is the 12 hex digits in uppercase with no separators; `st` and `en` are decimal milliseconds.
+- **Join failure statuses.** `wrong_password` 401, `token_invalid` 401, `removed` 403, `browser_not_allowed` 403, `event_ended` 410, `rate_limited` 429. Retryable: join `rate_limited` and `unreachable`; API `rate_limited` and `offset_mismatch`. For `offset_mismatch`, `received_bytes` sits inside the `error` object.
+- **Success statuses.** JSON responses are 200; every DELETE and `POST …/saved` returns 204. The guest session cookie is `locale_session`.
+- **Snapshot items** carry `download_count`, `hot_score` and `hot_score_updated_at` as well as the `item_available` fields, so a client can sort on join. A system post has `author_id` null.
+- **Credential signature.** Ed25519 over the ASCII bytes `v1.<payload segment>`; the payload JSON is compact, in declared field order, and is verified as received, never re-serialised.
+- **Proof of possession.** `proof` is `{timestamp, signature}`. The signed message is 70 bytes: `"locale-join-v1"` (14 ASCII bytes), the event ID (16 ASCII bytes), the raw fingerprint digest (32 bytes), the timestamp as Unix milliseconds in a big-endian i64 (8 bytes). The ±5 minute window is inclusive.
+- **Service authentication.** `PATCH /v1/account` and `POST /v1/host-link` send `Authorization: Bearer <refresh_token>`; host-link has no body and returns 204.
+- **Config.** JSON keys follow PH §7: the five flags at the top level plus `transfer_config`, `outbox_config` and `rate_limits`. Bounds the sources do not give: stall 30 s–10 min, transfer retries 1–10, backoff base 100 ms–10 s, outbox attempts 1–50, outbox age 1 h–7 d, uploads per window 1–1000, window 1–60 min. Storage limits use binary units (20 GiB, 5 GiB for a quick session), as do the photo limit (52,428,800 bytes) and the chunk (1,048,576 bytes) (DU-43).
+- **Open and closed enums.** Change types, WebSocket message types, item reasons, bye reasons and notice kinds accept unknown values (they become `Unknown`); access type, role, session scope, item state and the other §6 enums reject them.
+
 ---
 
 ## 6. Data model (MVP §7)
@@ -507,6 +519,8 @@ Index on `item(state, updated_at)` for the sweeper (T19). One index database per
 | DU-39 | Dark theme from tokens | §9 |
 | DU-40 | Derived UI states for unmocked screens. **Decided** (Q8) | §9 |
 | DU-42 | Riverpod for Flutter state management | §3 |
+| DU-43 | Binary units: photo limit 52,428,800 bytes, chunk 1,048,576 bytes, storage 20 GiB and 5 GiB | §5.8, §10 |
+| DU-49 | Contract details fixed in code by task S3 (encodings, statuses, signed bytes, service authentication, config bounds, open enums) | §5.8 |
 | DU-41 | Scope placed in milestones the build order does not name: extend and shorten, Past events and Host again, quick-session limits → M3; posts → M1; Download all → M2; telemetry schema → M1 | work breakdown |
 
 ---
