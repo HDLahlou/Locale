@@ -11,10 +11,10 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S3 | done | merged 2d1cb7b | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `proto` crate: transport, codes, api, ws, service, mdns, model, state, config; 24 schema files and `CONTRACT.md` generated, with a staleness test. 61 tests. No returns. Contract choices recorded in digest §5.8 (DU-49) |
 | S4 | gate: person adds four real device photos (setup items 2 and 3; runbook `runbooks/S4.md`) | merged 68029db | S (was H) | 1 | PASS (Sonnet, low), `just check` and `just fixtures-verify` green on build/integration | Agent work is done and merged: 20 committed fixtures, two 50 MB files generated on demand, manifest, independent verifier. Tasks that depend on S4 may start; only the device-photo parts of M0a-5 and M2-3 wait for the person. One return (bytecode) |
 | S5 | done | merged 4afeea8 | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `packages/ui` (`@locale/ui`), `tokens.json` and `labels.json` as single sources, generated CSS, TS and Dart. All contrast pairs at least 4.5:1 |
-| S6 | in-progress | worktree-agent-a1b93593b0b50aaab | S | 1 | — | Three CI runs so far. Windows Rust job now passes after an `icon.ico` and a `.gitattributes` fix. CI found a real defect in `scripts/doctor.py` (a timeout on Windows killed only the shell, not the process tree); the implementer was authorised to fix it and is rerunning. Returned twice. Has a human gate (Actions is enabled: runs start) |
+| S6 | verifying | worktree-agent-a1b93593b0b50aaab | S | 1 | — | Smoke run 43838217560 green on every job; red run 43838700494 fails only the Windows Rust job (both read by the orchestrator with `gh run view`). `just check` exit 0. Three returns before verification: scope extended for the Windows icon and a doctor test; authorised to fix `doctor.py` (timeout did not kill the process tree on Windows); force-push removed from `just ci`. Five CI runs used. Human gate needs no action: Actions is enabled and runs start |
 | M0a-1 | done | merged 71034d4 | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | Listener with separate TLS and plain routers, `TlsIdentity`, pinned connector in client-core. Follow-ups: move `fingerprint_base64url` to proto's helper after S3; plain path has no header-read timeout yet (M3-9); two timing tests have a 500 ms margin |
-| M0a-2 | todo | — | S | 0 | — |  |
-| M0a-3 | in-progress | worktree | O | 1 | — |  |
+| M0a-2 | in-progress | worktree | S | 1 | — |  |
+| M0a-3 | verifying | worktree-agent-ac4da8c3b9735f0ba | O | 1 | — | Orchestrator ran `cargo test -p image-worker` (42 pass) and `just check` (exit 0). Open point decided: `just check` will run `fixtures-verify` first so the 50 MB fixture exists on a fresh clone |
 | M0a-4 | todo | — | O | 0 | — | Has a human gate |
 | M0a-5 | in-progress | worktree | O | 1 | — | Runs alongside M0a-3 in the same crate (different modules). Has a human gate (device photos from S4) |
 | M0a-6 | todo | — | S | 0 | — |  |
@@ -27,7 +27,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M0b-3 | todo | — | H | 0 | — | Has a human gate |
 | M1-1 | todo | — | S | 0 | — | Has a human gate |
 | M1-2 | in-progress | worktree | O | 1 | — |  |
-| M1-3 | todo | — | S | 0 | — |  |
+| M1-3 | in-progress | worktree | S | 1 | — |  |
 | M1-4 | todo | — | S | 0 | — |  |
 | M1-5 | done | merged 18e496e | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `host-core::capability`: `OsProbe` trait, `FakeProbe` behind the `test-util` feature, check rows with reason and fix, reachability `ok`/`isolated`/`unknown`. The real probe answers only free space, port binding and private address; firewall, power and mDNS reply are left for M3-11, which also holds the manual check on real machines |
 | M1-6 | todo | — | O | 0 | — |  |
@@ -146,3 +146,5 @@ This file is the record of the build run. It overrides anyone's memory of the co
 - 2026-11-16T09:17Z · S, M1 · M1-5 implementer done, with verifier. Orchestrator fixed one test's output in its own commit (7324433): a passing fixture test printed a "FAIL" line into `just check` output and two agents read it as a failure.
 - 2026-11-16T09:21Z · S · S3 done: 1 Opus implementer, 1 Sonnet verifier, no returns. Digest §5.8 added with the contract details in commit 3859f12 (the one digest edit allowed mid-milestone); DU-43 moved into the digest with it. No `done` task used `proto` types before this merge, so no tests needed re-running beyond `just check`. Dispatched M1-2 (Opus). Follow-up for a later host task: replace M0a-1's private `fingerprint_base64url` helper with `proto::transport::Fingerprint`.
 - 2026-11-16T09:23Z · M1 · M1-5 done: 1 Sonnet implementer, 1 Sonnet verifier, no returns. Workspace dependency-table conflicts at merge are now resolved by a small script that keeps both sides sorted and stops if the same crate is specified two ways.
+
+- 2026-11-16T09:33Z · S, M0a, M1 · S6 and M0a-3 implementers done, each with a Sonnet verifier. Dispatched M1-3 and M0a-2 (Sonnet). Running implementers: M0a-5, M1-2, M1-3, M0a-2.
