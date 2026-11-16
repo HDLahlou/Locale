@@ -13,5 +13,12 @@ path = "src/lib.rs"
 name = "image-worker"
 path = "src/main.rs"
 
+[dependencies]
+miniz_oxide = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+tempfile = { workspace = true }
+
 [lints]
 workspace = true
