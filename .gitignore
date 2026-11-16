@@ -5,3 +5,16 @@ docs/PostHog Interview Prep.html
 # OS and editor files
 .DS_Store
 .idea/
+
+# Build output
+target/
+node_modules/
+dist/
+build/
+.dart_tool/
+.gradle/
+Pods/
+playwright-report/
+test-results/
+apps/desktop/src-tauri/gen/
+*.tsbuildinfo
