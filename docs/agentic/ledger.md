@@ -6,7 +6,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 | ID | Status | Branch | Model | Attempts | Verified | Note |
 |---|---|---|---|---|---|---|
-| S1 | blocked: tools | — | S | 0 | — | cargo, just and pnpm are not installed, so `just check` cannot run (setup item 1) |
+| S1 | ready | — | S | 0 | — | Tools now installed; unblocked on resume 2026-11-16 |
 | S2 | todo | — | H | 0 | — | Has a human gate |
 | S3 | todo | — | O | 0 | — |  |
 | S4 | todo | — | H | 0 | — | Has a human gate |
@@ -116,3 +116,4 @@ None yet.
 - 2026-11-14T02:22Z · S · Run started by a person. Ledger created from the work breakdown (92 tasks).
 - 2026-11-14T02:22Z · S · Tool probe before S1: present are Node 26.7, npm, Flutter 3.47.7 (Dart 3.13.5), Python 3.12, sips, JDK 17, Homebrew. Missing are rustup, cargo, rustc, just, pnpm, full Xcode (only Command Line Tools, so no xcodebuild or simctl), the Android SDK (adb, emulator), flutter_rust_bridge_codegen and gh.
 - 2026-11-14T02:22Z · S · Stopped, waiting for a person. S1 cannot be verified without cargo and just, and every other task depends on S1. No subagents were launched. See `docs/agentic/reports/S.md`.
+- 2026-11-16T04:18Z · S · Resumed at a person's request. Tool probe: every tool that was missing is now on PATH (cargo 1.100.0, just 1.59.0, pnpm 12.18.0, full Xcode with iOS 27.2 simulators, adb and emulator, flutter_rust_bridge_codegen, gh signed in). Rust targets for iOS and Android are installed. No leftover worktrees or task branches. S1 moved from blocked to ready.

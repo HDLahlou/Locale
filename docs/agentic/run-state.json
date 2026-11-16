@@ -1,10 +1,10 @@
 {
-  "status": "stopped",
+  "status": "running",
   "milestone": "S",
-  "started_at": "2026-11-14T02:22:51Z",
-  "paused_at": "2026-11-14T02:40:00Z",
-  "reason": "Waiting for a person: the build tools are not installed, so no task can be verified. Missing on PATH: rustup/cargo/rustc, just, pnpm, full Xcode (only Command Line Tools are active, so xcodebuild and simctl fail), the Android SDK (adb, emulator), flutter_rust_bridge_codegen, gh. Present: Node 26.7, npm, Flutter 3.47.7, Python 3.12, sips, JDK 17, Homebrew. Task S1 needs cargo, just and pnpm for `just check`, and every other task depends on S1. Nothing was dispatched. Fix: install the tools listed in docs/agentic/reports/S.md (setup item 1), then run docs/agentic/start-build.sh.",
-  "last_checkpoint": "2026-11-14T02:40:00Z",
+  "started_at": "2026-11-16T04:18:02Z",
+  "paused_at": null,
+  "reason": null,
+  "last_checkpoint": "2026-11-16T04:18:02Z",
   "consecutive_env_failures": 0,
   "dispatches_since_last_done": 0
 }
