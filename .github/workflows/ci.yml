@@ -47,7 +47,20 @@ jobs:
       - name: Rust toolchain from rust-toolchain.toml
         run: rustup show
       - uses: Swatinem/rust-cache@v2
-      # check-rust: fmt, pnpm install, desktop web build, clippy -D warnings, cargo test --workspace
+      # check-rust starts with fixtures-verify (a Python script), so this job needs Python too.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Windows has no python3 command; the recipes call python3, so give it one.
+      - name: python3 alias (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          printf '#!/bin/sh\nexec python "$@"\n' > "$RUNNER_TEMP/bin/python3"
+          chmod +x "$RUNNER_TEMP/bin/python3"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      # check-rust: fixtures-verify, fmt, pnpm install, desktop web build, clippy -D warnings, cargo test --workspace
       - run: just check-rust
 
   web:

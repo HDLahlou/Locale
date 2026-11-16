@@ -9,7 +9,8 @@ default:
 # Everything that must pass before a commit
 check: check-rust check-web check-mobile check-scripts
 
-check-rust:
+# Fixtures first: tests read fixtures/generated/ (the 50 MB files), which only exist after fixtures-verify
+check-rust: fixtures-verify
     cargo fmt --all --check
     pnpm install --frozen-lockfile
     pnpm -C apps/desktop build
