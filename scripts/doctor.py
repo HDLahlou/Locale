@@ -12,6 +12,7 @@ import json
 import os
 import re
 import shutil
+import signal
 import subprocess
 import sys
 
@@ -69,20 +70,46 @@ def run(prog, *args):
     if path is None:
         raise CmdError(f"{prog} not found on PATH")
     limit = timeout_seconds()
+    extra = {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt" else {"start_new_session": True}
     try:
-        proc = subprocess.run(
+        proc = subprocess.Popen(
             [path, *args],
-            capture_output=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
             text=True,
             errors="replace",
             stdin=subprocess.DEVNULL,
-            timeout=limit,
+            **extra,
         )
-    except subprocess.TimeoutExpired:
-        raise CmdError(f"{prog} timed out after {limit:g}s")
     except OSError as err:
         raise CmdError(f"{prog} failed to start: {err}")
-    return proc.returncode, proc.stdout + proc.stderr
+    try:
+        stdout, stderr = proc.communicate(timeout=limit)
+    except subprocess.TimeoutExpired:
+        kill_tree(proc)
+        try:
+            proc.communicate(timeout=5)
+        except subprocess.TimeoutExpired:
+            pass
+        raise CmdError(f"{prog} timed out after {limit:g}s")
+    return proc.returncode, stdout + stderr
+
+
+def kill_tree(proc):
+    """Kill the child and everything it started, so no grandchild keeps the pipes open."""
+    if os.name == "nt":
+        subprocess.run(
+            ["taskkill", "/T", "/F", "/PID", str(proc.pid)],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL,
+        )
+    else:
+        try:
+            os.killpg(proc.pid, signal.SIGKILL)
+        except OSError:
+            pass
+    proc.kill()
 
 
 def first_line(text):
