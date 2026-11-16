@@ -9,9 +9,9 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S1 | done | merged 9fab878 | S | 1 | PASS (Sonnet), `just check` green on build/integration | Skeleton, justfile, CLAUDE.md. Tauri crate is `locale-desktop`; TypeScript pinned to 6.0.3 |
 | S2 | done | merged 1d45dab | H | 1 | PASS (Sonnet, low), `just check` green on build/integration | `just doctor` exits 0 on this machine: nothing needed for M1 is missing, so the human gate needs no action. Not needed and missing: cargo-ndk, Playwright browsers, libheif. Windows branches of the script are unrun until S6 |
 | S3 | in-progress | worktree | O | 1 | — |  |
-| S4 | in-progress | worktree-agent-ac9bd79d0909d040d | S (was H) | 1 | — | Checks pass; returned once to remove committed `__pycache__` files. Has a human gate (person adds four real device photos) |
+| S4 | verifying | worktree-agent-ac9bd79d0909d040d | S (was H) | 1 | — | One return (bytecode removed). `just fixtures-verify` and `just check` pass when run by the orchestrator. Has a human gate (person adds four real device photos) |
 | S5 | in-progress | worktree | S | 1 | — |  |
-| S6 | todo | — | S | 0 | — | Has a human gate |
+| S6 | in-progress | worktree | S | 1 | — | Implementer may push only `ci/s6-*` branches. Has a human gate (Actions enabled, setup item 5) |
 | M0a-1 | in-progress | worktree | O | 1 | — |  |
 | M0a-2 | todo | — | S | 0 | — |  |
 | M0a-3 | todo | — | O | 0 | — |  |
