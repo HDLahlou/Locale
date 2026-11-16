@@ -1,2 +1,6 @@
+# Text files are LF on every platform. Generated files (crates/proto/schema, CONTRACT.md, tokens) are
+# compared byte for byte by staleness tests, and a CRLF checkout on Windows made them all "stale".
+* text=auto eol=lf
+
 # Fixtures are byte-exact: no line-ending conversion on Windows checkouts
 fixtures/** -text
