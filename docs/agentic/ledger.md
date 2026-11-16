@@ -16,7 +16,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M0a-2 | todo | — | S | 0 | — |  |
 | M0a-3 | in-progress | worktree | O | 1 | — |  |
 | M0a-4 | todo | — | O | 0 | — | Has a human gate |
-| M0a-5 | todo | — | O | 0 | — | Has a human gate |
+| M0a-5 | in-progress | worktree | O | 1 | — | Runs alongside M0a-3 in the same crate (different modules). Has a human gate (device photos from S4) |
 | M0a-6 | todo | — | S | 0 | — |  |
 | M0a-7 | todo | — | S | 0 | — |  |
 | M0a-8 | todo | — | S | 0 | — | Has a human gate |
