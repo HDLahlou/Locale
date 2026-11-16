@@ -29,7 +29,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M1-2 | in-progress | worktree | O | 1 | — |  |
 | M1-3 | todo | — | S | 0 | — |  |
 | M1-4 | todo | — | S | 0 | — |  |
-| M1-5 | verifying | worktree-agent-ae5c4b4ccb1254d9e | S | 1 | — | Orchestrator ran `cargo test -p host-core capability` (14 pass) and `just check` (exit 0). Has a human gate (real firewall and isolation behaviour, M3-11) |
+| M1-5 | done | merged 18e496e | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `host-core::capability`: `OsProbe` trait, `FakeProbe` behind the `test-util` feature, check rows with reason and fix, reachability `ok`/`isolated`/`unknown`. The real probe answers only free space, port binding and private address; firewall, power and mDNS reply are left for M3-11, which also holds the manual check on real machines |
 | M1-6 | todo | — | O | 0 | — |  |
 | M1-7 | todo | — | O | 0 | — |  |
 | M1-8 | todo | — | S | 0 | — |  |
@@ -103,6 +103,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - DU-43 (default, unconfirmed) · Sizes use binary units: the 50 MB photo limit is 52,428,800 bytes and the 1 MB chunk is 1,048,576 bytes. The digest says "50 MB" and "1024 KB" without defining the unit.
 - DU-44 (default, unconfirmed) · TLS uses rustls with the `ring` crypto provider, not aws-lc, so the phone and Windows builds need no extra native build tools.
+- DU-50 (default, unconfirmed) · Capability check details (M1-5): reasons `no_network`, `firewall_blocked`, `low_space`, `low_power`; fixes `turn_on_hotspot`, `show_network_instructions`, `allow_firewall`, `choose_smaller_size`, `plug_in`; link-local and 100.64.0.0/10 addresses count as isolated; the reachability test is capped at 5 s overall with the 2 s mDNS wait inside.
 - DU-49 (contract, applied to the digest at once) · Contract details fixed in code by S3: unpadded base64url; uppercase item states; join-failure HTTP statuses; 204 for DELETE and saved; cookie `locale_session`; snapshot items carry counts; credential signature over `v1.<payload segment>`; 70-byte proof message with a big-endian millisecond timestamp; Bearer refresh token on the two authenticated service endpoints; config JSON layout and bounds; which enums accept unknown values. `schemars` stays a normal dependency of `proto`. Listed in digest §5.8.
 - TR-16 (proposed) · The desktop core sends telemetry with its own small sender over PostHog's HTTP API; the facade owns the SQLite queue and the flag cache; `posthog-rs` is not used. Reason: the crate does not persist, has no offline flag cache, and forces aws-lc-rs into the build. Entry added to `docs/Locale Design Tradeoffs.md`.
 - DU-48 (default, unconfirmed) · Digest §11 rule 7 becomes: "On desktop the facade owns a small SQLite queue and sends over PostHog's HTTP API itself (TR-16)."
@@ -113,6 +114,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 ## 3. Pending digest edits
 
 - §3 "Core libraries" and §12: add DU-44 (rustls with `ring`).
+- §4.2, §8 item 6 and §12: add DU-50 (capability reasons and fix identifiers, isolated ranges, 5 s cap).
 - §11 rule 7 and §12: add DU-48 (facade owns the queue and the sender; TR-16).
 - §9 and §12: add DU-46 (dark values chosen in S5).
 - §5.1 and §12: add DU-47 (listener timeouts, port attempts, key file names).
@@ -139,3 +141,4 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - 2026-11-16T09:17Z · S, M1 · M1-5 implementer done, with verifier. Orchestrator fixed one test's output in its own commit (7324433): a passing fixture test printed a "FAIL" line into `just check` output and two agents read it as a failure.
 - 2026-11-16T09:21Z · S · S3 done: 1 Opus implementer, 1 Sonnet verifier, no returns. Digest §5.8 added with the contract details in commit 3859f12 (the one digest edit allowed mid-milestone); DU-43 moved into the digest with it. No `done` task used `proto` types before this merge, so no tests needed re-running beyond `just check`. Dispatched M1-2 (Opus). Follow-up for a later host task: replace M0a-1's private `fingerprint_base64url` helper with `proto::transport::Fingerprint`.
+- 2026-11-16T09:23Z · M1 · M1-5 done: 1 Sonnet implementer, 1 Sonnet verifier, no returns. Workspace dependency-table conflicts at merge are now resolved by a small script that keeps both sides sorted and stops if the same crate is specified two ways.
