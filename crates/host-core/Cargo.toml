@@ -11,10 +11,13 @@ base64 = { workspace = true }
 fs4 = { workspace = true }
 hyper = { workspace = true, features = ["http1", "http2", "server"] }
 hyper-util = { workspace = true, features = ["http1", "http2", "server", "server-auto", "tokio"] }
+proto = { path = "../proto" }
 rcgen = { workspace = true }
+rusqlite = { workspace = true }
 rustls = { workspace = true }
 serde = { workspace = true }
 sha2 = { workspace = true }
+thiserror = { workspace = true }
 time = { workspace = true, features = ["std"] }
 tokio = { workspace = true, features = ["io-util", "macros", "net", "rt", "sync", "time"] }
 tokio-rustls = { workspace = true }
