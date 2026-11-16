@@ -1,5 +1,7 @@
 """Tests for the fixture set and its verifier. Every mutation works on a temporary copy; the large files are never created."""
 
+import contextlib
+import io
 import json
 import shutil
 import tempfile
@@ -119,7 +121,13 @@ class VerifierTests(TempFixtures):
 
     def test_main_exits_nonzero_on_mismatch(self):
         (self.root / "images" / "p3.jpg").unlink()
-        self.assertEqual(fv.main(["--root", str(self.root)]), 1)
+        # Capture the verifier's report: printed into `just check` output, its
+        # "FAIL: images/p3.jpg" line was read as a real failure by people and agents.
+        out, err = io.StringIO(), io.StringIO()
+        with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+            code = fv.main(["--root", str(self.root)])
+        self.assertEqual(code, 1)
+        self.assertIn("p3.jpg", out.getvalue() + err.getvalue())
 
 
 class FixtureSetTests(unittest.TestCase):
