@@ -4,7 +4,7 @@
   "started_at": "2026-11-16T04:18:02Z",
   "paused_at": null,
   "reason": null,
-  "last_checkpoint": "2026-11-16T04:18:02Z",
+  "last_checkpoint": "2026-11-16T04:30:00Z",
   "consecutive_env_failures": 0,
-  "dispatches_since_last_done": 0
+  "dispatches_since_last_done": 1
 }
