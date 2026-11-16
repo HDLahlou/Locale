@@ -20,6 +20,7 @@ publish = false
 [workspace.dependencies]
 axum = { version = "0.8", default-features = false }
 base64 = "0.23"
+fs4 = "1"
 http-body-util = "0.1"
 hyper = "1"
 hyper-util = "0.1"

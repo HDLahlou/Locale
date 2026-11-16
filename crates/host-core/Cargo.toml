@@ -8,22 +8,29 @@ publish.workspace = true
 [dependencies]
 axum = { workspace = true, features = ["tokio"] }
 base64 = { workspace = true }
+fs4 = { workspace = true }
 hyper = { workspace = true, features = ["http1", "http2", "server"] }
 hyper-util = { workspace = true, features = ["http1", "http2", "server", "server-auto", "tokio"] }
 rcgen = { workspace = true }
 rustls = { workspace = true }
+serde = { workspace = true }
 sha2 = { workspace = true }
 time = { workspace = true, features = ["std"] }
 tokio = { workspace = true, features = ["io-util", "macros", "net", "rt", "sync", "time"] }
 tokio-rustls = { workspace = true }
 tower = { workspace = true, features = ["util"] }
 
+[features]
+test-util = []
+
 [dev-dependencies]
+host-core = { path = ".", features = ["test-util"] }
+serde_json = { workspace = true }
 client-core = { path = "../client-core" }
 http-body-util = { workspace = true }
 hyper = { workspace = true, features = ["client", "http1"] }
 tempfile = { workspace = true }
-tokio = { workspace = true, features = ["rt-multi-thread"] }
+tokio = { workspace = true, features = ["rt-multi-thread", "test-util"] }
 x509-parser = { workspace = true }
 
 [lints]
