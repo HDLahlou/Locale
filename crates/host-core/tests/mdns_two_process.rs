@@ -125,7 +125,12 @@ struct ChildProc {
 impl ChildProc {
     fn spawn(role: &str, id: &EventId, case: usize) -> ChildProc {
         let mut child = Command::new(std::env::current_exe().unwrap())
-            .args(["--exact", "mdns_child_entry", "--nocapture", "--test-threads=1"])
+            .args([
+                "--exact",
+                "mdns_child_entry",
+                "--nocapture",
+                "--test-threads=1",
+            ])
             .env("LOCALE_MDNS_CHILD", role)
             .env("LOCALE_MDNS_ID", id.as_str())
             .env("LOCALE_MDNS_CASE", case.to_string())
