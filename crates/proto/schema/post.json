@@ -1,0 +1,48 @@
+{
+  "$defs": {
+    "PostKind": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "host",
+        "system"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "A post: the `post_published` payload, the snapshot's `posts` entries and the\n`POST /posts` response.",
+  "properties": {
+    "author_id": {
+      "description": "Author's attendee ID; `null` for system posts.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "created_at": {
+      "description": "Creation time.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "id": {
+      "description": "Post ID.",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/PostKind",
+      "description": "Kind."
+    },
+    "text": {
+      "description": "Text, 1–500 characters.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "kind",
+    "text",
+    "created_at"
+  ],
+  "title": "Post",
+  "type": "object"
+}

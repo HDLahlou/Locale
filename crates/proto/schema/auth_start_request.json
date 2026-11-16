@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /v1/auth/start` request.",
+  "properties": {
+    "email": {
+      "description": "Email address to send the code to.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "email"
+  ],
+  "title": "AuthStartRequest",
+  "type": "object"
+}

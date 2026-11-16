@@ -1,0 +1,103 @@
+{
+  "$defs": {
+    "ItemReason": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "type",
+        "size",
+        "storage_full",
+        "abandoned",
+        "stalled",
+        "cancelled",
+        "unauthorized",
+        "invalid_image",
+        "integrity",
+        "duplicate"
+      ],
+      "type": "string"
+    },
+    "ItemState": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "PENDING",
+        "UPLOADING",
+        "VALIDATING",
+        "AVAILABLE",
+        "FAILED",
+        "DELETED"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /items` response.",
+  "properties": {
+    "chunk_bytes": {
+      "description": "Chunk size to use, when uploading.",
+      "format": "uint64",
+      "minimum": 0,
+      "type": [
+        "integer",
+        "null"
+      ]
+    },
+    "duplicate_of": {
+      "description": "The existing item, for `duplicate` (DU-12).",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "item_id": {
+      "description": "Item ID.",
+      "type": "string"
+    },
+    "reason_code": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ItemReason"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Reason, when `FAILED`."
+    },
+    "received_bytes": {
+      "description": "Bytes the host already has (resume offset).",
+      "format": "uint64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "retryable": {
+      "description": "Whether the reason is retryable, when `FAILED`.",
+      "type": [
+        "boolean",
+        "null"
+      ]
+    },
+    "state": {
+      "$ref": "#/$defs/ItemState",
+      "description": "Current state."
+    },
+    "submission_id": {
+      "description": "Submission ID.",
+      "type": "string"
+    },
+    "upload_token": {
+      "description": "Upload token for the chunk requests, when uploading.",
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "submission_id",
+    "item_id",
+    "state",
+    "received_bytes"
+  ],
+  "title": "CreateItemResponse",
+  "type": "object"
+}

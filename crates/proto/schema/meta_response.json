@@ -1,0 +1,136 @@
+{
+  "$defs": {
+    "AccessType": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "open",
+        "invite",
+        "password"
+      ],
+      "type": "string"
+    },
+    "EventId": {
+      "description": "Event ID: evt_ followed by 12 lowercase hex digits.",
+      "pattern": "^evt_[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "EventKind": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "event",
+        "quick"
+      ],
+      "type": "string"
+    },
+    "EventStatus": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "active",
+        "paused",
+        "ended"
+      ],
+      "type": "string"
+    },
+    "MetaCounts": {
+      "description": "Photo and attendee counts in `/meta`.",
+      "properties": {
+        "attendees": {
+          "description": "Attendees.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "photos": {
+          "description": "Available photos.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "photos",
+        "attendees"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`GET /meta` response.\n\n`counts` is present only for open events, or invite events when\n`X-Join-Token` is valid; never for password events (D17).",
+  "properties": {
+    "access_type": {
+      "$ref": "#/$defs/AccessType",
+      "description": "Access type."
+    },
+    "browser_guests_allowed": {
+      "description": "Whether browser guests may join.",
+      "type": "boolean"
+    },
+    "counts": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MetaCounts"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Counts, when allowed."
+    },
+    "ends_at": {
+      "description": "End time.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "event_id": {
+      "$ref": "#/$defs/EventId",
+      "description": "Event ID."
+    },
+    "expires_at": {
+      "description": "Expiry.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "host_name": {
+      "description": "The host's display name.",
+      "type": "string"
+    },
+    "kind": {
+      "$ref": "#/$defs/EventKind",
+      "description": "Kind."
+    },
+    "name": {
+      "description": "Event name.",
+      "type": "string"
+    },
+    "proto": {
+      "description": "The host's protocol version.",
+      "format": "uint32",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "starts_at": {
+      "description": "Start time.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "status": {
+      "$ref": "#/$defs/EventStatus",
+      "description": "Status."
+    }
+  },
+  "required": [
+    "event_id",
+    "name",
+    "host_name",
+    "starts_at",
+    "ends_at",
+    "expires_at",
+    "access_type",
+    "kind",
+    "status",
+    "browser_guests_allowed",
+    "proto"
+  ],
+  "title": "MetaResponse",
+  "type": "object"
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /items` request. Idempotent on `submission_id`.",
+  "properties": {
+    "content_type": {
+      "description": "MIME type.",
+      "type": "string"
+    },
+    "original_name": {
+      "description": "File name.",
+      "type": "string"
+    },
+    "sha256": {
+      "description": "SHA-256 of the file, lowercase hex.",
+      "type": "string"
+    },
+    "size_bytes": {
+      "description": "File size.",
+      "format": "uint64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "submission_id": {
+      "description": "Submission ID chosen by the uploader.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "submission_id",
+    "content_type",
+    "size_bytes",
+    "sha256",
+    "original_name"
+  ],
+  "title": "CreateItemRequest",
+  "type": "object"
+}

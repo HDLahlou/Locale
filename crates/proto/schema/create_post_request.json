@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /posts` request.",
+  "properties": {
+    "text": {
+      "description": "Text, 1–500 characters.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "text"
+  ],
+  "title": "CreatePostRequest",
+  "type": "object"
+}

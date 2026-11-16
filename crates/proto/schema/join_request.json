@@ -1,0 +1,148 @@
+{
+  "$defs": {
+    "ClientInfo": {
+      "description": "The joining client.",
+      "properties": {
+        "app_version": {
+          "description": "App version string.",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/ClientKind",
+          "description": "Client kind."
+        }
+      },
+      "required": [
+        "kind",
+        "app_version"
+      ],
+      "type": "object"
+    },
+    "ClientKind": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "ios",
+        "android",
+        "desktop",
+        "web"
+      ],
+      "type": "string"
+    },
+    "Credential": {
+      "description": "Account credential: v1.<base64url(payload JSON)>.<base64url(Ed25519 signature)>.",
+      "pattern": "^v1\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]{86}$",
+      "type": "string"
+    },
+    "GuestInfo": {
+      "description": "A browser or signed-out guest.",
+      "properties": {
+        "display_name": {
+          "description": "Display name.",
+          "type": "string"
+        },
+        "guest_id": {
+          "description": "Guest ID the client generated and keeps.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "guest_id",
+        "display_name"
+      ],
+      "type": "object"
+    },
+    "JoinProof": {
+      "description": "The `proof` field of `POST /join`: the signing time and the device key's\nsignature over [`proof_message`].",
+      "properties": {
+        "signature": {
+          "$ref": "#/$defs/Signature",
+          "description": "Ed25519 signature over [`proof_message`]."
+        },
+        "timestamp": {
+          "description": "Unix milliseconds when the proof was made.",
+          "format": "int64",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "timestamp",
+        "signature"
+      ],
+      "type": "object"
+    },
+    "JoinToken": {
+      "description": "Join token: 128 random bits, base64url without padding.",
+      "pattern": "^[A-Za-z0-9_-]{22}$",
+      "type": "string"
+    },
+    "Signature": {
+      "description": "Ed25519 signature, base64url without padding.",
+      "pattern": "^[A-Za-z0-9_-]{86}$",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /join` request.",
+  "properties": {
+    "client": {
+      "$ref": "#/$defs/ClientInfo",
+      "description": "The client."
+    },
+    "credential": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Credential"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Account credential, for verified attendees."
+    },
+    "guest": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/GuestInfo"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Guest identity, when joining without a credential."
+    },
+    "join_token": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/JoinToken"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Join token from the QR code or link."
+    },
+    "password": {
+      "description": "Event password.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "proof": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/JoinProof"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Proof of possession of the credential's device key."
+    }
+  },
+  "required": [
+    "client"
+  ],
+  "title": "JoinRequest",
+  "type": "object"
+}

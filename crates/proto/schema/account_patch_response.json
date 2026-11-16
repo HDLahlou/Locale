@@ -1,0 +1,56 @@
+{
+  "$defs": {
+    "Account": {
+      "description": "An account on the app service.",
+      "properties": {
+        "created_at": {
+          "description": "Creation time.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "display_name": {
+          "description": "Display name.",
+          "type": "string"
+        },
+        "email": {
+          "description": "Email address.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Account ID.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "display_name",
+        "email",
+        "created_at"
+      ],
+      "type": "object"
+    },
+    "Credential": {
+      "description": "Account credential: v1.<base64url(payload JSON)>.<base64url(Ed25519 signature)>.",
+      "pattern": "^v1\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]{86}$",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`PATCH /v1/account` response.",
+  "properties": {
+    "account": {
+      "$ref": "#/$defs/Account",
+      "description": "The updated account."
+    },
+    "credential": {
+      "$ref": "#/$defs/Credential",
+      "description": "A credential carrying the new display name."
+    }
+  },
+  "required": [
+    "account",
+    "credential"
+  ],
+  "title": "AccountPatchResponse",
+  "type": "object"
+}

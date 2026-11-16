@@ -1,0 +1,36 @@
+{
+  "$defs": {
+    "ItemState": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "PENDING",
+        "UPLOADING",
+        "VALIDATING",
+        "AVAILABLE",
+        "FAILED",
+        "DELETED"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`PUT /uploads/{submission_id}` response.",
+  "properties": {
+    "received_bytes": {
+      "description": "Bytes received so far.",
+      "format": "uint64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "state": {
+      "$ref": "#/$defs/ItemState",
+      "description": "Current state."
+    }
+  },
+  "required": [
+    "received_bytes",
+    "state"
+  ],
+  "title": "UploadChunkResponse",
+  "type": "object"
+}

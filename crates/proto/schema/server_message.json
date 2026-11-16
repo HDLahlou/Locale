@@ -1,0 +1,1278 @@
+{
+  "$defs": {
+    "AccessType": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "open",
+        "invite",
+        "password"
+      ],
+      "type": "string"
+    },
+    "Attendee": {
+      "description": "An attendee: the `attendee_joined` payload and the snapshot's `attendees` entries.",
+      "properties": {
+        "client_kind": {
+          "$ref": "#/$defs/ClientKind",
+          "description": "Client kind."
+        },
+        "display_name": {
+          "description": "Display name.",
+          "type": "string"
+        },
+        "id": {
+          "description": "Attendee ID.",
+          "type": "string"
+        },
+        "is_host_device": {
+          "description": "The host's own device.",
+          "type": "boolean"
+        },
+        "role": {
+          "$ref": "#/$defs/Role",
+          "description": "Role."
+        },
+        "verified": {
+          "description": "Joined with a valid account credential.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "display_name",
+        "role",
+        "verified",
+        "client_kind",
+        "is_host_device"
+      ],
+      "type": "object"
+    },
+    "ByeReason": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "removed",
+        "event_ended",
+        "session_expired"
+      ],
+      "type": "string"
+    },
+    "Change": {
+      "description": "Change envelope {version, type, payload, ts}. Receivers keep changes with an unknown type as Unknown.",
+      "oneOf": [
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/EventPatch"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "event_updated",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/EventExtended"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "event_extended",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/Item"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "item_available",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/Tombstone"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "item_deleted",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/Attendee"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "attendee_joined",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/Tombstone"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "attendee_removed",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/Post"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "post_published",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/Tombstone"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "post_deleted",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "items": {
+                "$ref": "#/$defs/ItemCounts"
+              },
+              "type": "array"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "counts_updated",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        },
+        {
+          "properties": {
+            "payload": {
+              "$ref": "#/$defs/Empty"
+            },
+            "ts": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": {
+              "const": "event_ended",
+              "type": "string"
+            },
+            "version": {
+              "format": "uint64",
+              "minimum": 0,
+              "type": "integer"
+            }
+          },
+          "required": [
+            "version",
+            "type",
+            "payload",
+            "ts"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ClientKind": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "ios",
+        "android",
+        "desktop",
+        "web"
+      ],
+      "type": "string"
+    },
+    "CompatibleCopyStrategy": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "on_demand"
+      ],
+      "type": "string"
+    },
+    "Config": {
+      "description": "The configuration the host freezes at event start and sends at join and in the\nsnapshot. Keys match the PH §7 flag and remote-config names.\n\nMissing keys take the compiled default, so an older host's config still parses.",
+      "properties": {
+        "browser_guests_available": {
+          "default": true,
+          "description": "Flag: browser guests can be offered.",
+          "type": "boolean"
+        },
+        "compatible_copy_strategy": {
+          "$ref": "#/$defs/CompatibleCopyStrategy",
+          "default": "on_demand",
+          "description": "Remote config: when the compatible copy is made."
+        },
+        "desktop_download_all": {
+          "default": true,
+          "description": "Flag: the desktop app offers Download all.",
+          "type": "boolean"
+        },
+        "outbox_config": {
+          "$ref": "#/$defs/OutboxConfig",
+          "default": {
+            "max_age_ms": 86400000,
+            "max_attempts": 10
+          },
+          "description": "Outbox settings."
+        },
+        "quick_session_enabled": {
+          "default": true,
+          "description": "Flag: quick sessions are enabled.",
+          "type": "boolean"
+        },
+        "rate_limits": {
+          "$ref": "#/$defs/RateLimits",
+          "default": {
+            "upload_window_ms": 300000,
+            "uploads_per_window": 30
+          },
+          "description": "Rate limits."
+        },
+        "reachability_test_mode": {
+          "$ref": "#/$defs/ReachabilityTestMode",
+          "default": "full",
+          "description": "Remote config: reachability test mode."
+        },
+        "transfer_config": {
+          "$ref": "#/$defs/TransferConfig",
+          "default": {
+            "backoff_base_ms": 500,
+            "chunk_bytes": 1048576,
+            "stall_timeout_ms": 120000,
+            "transfer_retries": 3
+          },
+          "description": "Transfer settings."
+        }
+      },
+      "type": "object"
+    },
+    "Empty": {
+      "description": "The empty `{}` payload of `event_ended`.",
+      "type": "object"
+    },
+    "Event": {
+      "description": "An event as attendees see it: the snapshot's `event`.",
+      "properties": {
+        "access_type": {
+          "$ref": "#/$defs/AccessType",
+          "description": "Access type."
+        },
+        "browser_guests_allowed": {
+          "description": "Whether guests may join from a browser.",
+          "type": "boolean"
+        },
+        "created_at": {
+          "description": "Creation time.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "description": {
+          "default": "",
+          "description": "Description; empty when none.",
+          "type": "string"
+        },
+        "ends_at": {
+          "description": "End time.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "expires_at": {
+          "description": "When the event and its photos are deleted (end plus retention).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "extension_count": {
+          "description": "How many times the event was extended.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "host_display_name": {
+          "description": "The host's display name.",
+          "type": "string"
+        },
+        "id": {
+          "$ref": "#/$defs/EventId",
+          "description": "Event ID."
+        },
+        "kind": {
+          "$ref": "#/$defs/EventKind",
+          "description": "Kind."
+        },
+        "links": {
+          "default": [],
+          "description": "Links the host added.",
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "max_ends_at": {
+          "description": "Latest end the host may extend to.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "name": {
+          "description": "Event name.",
+          "type": "string"
+        },
+        "retention_hours": {
+          "description": "Hours photos stay available after the end.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "starts_at": {
+          "description": "Start time.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "status": {
+          "$ref": "#/$defs/EventStatus",
+          "description": "Status."
+        },
+        "storage_limit_bytes": {
+          "description": "Storage limit for the event.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "starts_at",
+        "ends_at",
+        "expires_at",
+        "retention_hours",
+        "max_ends_at",
+        "extension_count",
+        "access_type",
+        "status",
+        "kind",
+        "host_display_name",
+        "browser_guests_allowed",
+        "storage_limit_bytes",
+        "created_at"
+      ],
+      "type": "object"
+    },
+    "EventExtended": {
+      "description": "`event_extended` payload (also used for shortening).",
+      "properties": {
+        "ends_at": {
+          "description": "End time.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "new_expires_at": {
+          "description": "New expiry.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "old_expires_at": {
+          "description": "Previous expiry.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "retention_hours": {
+          "description": "Retention in hours.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "old_expires_at",
+        "new_expires_at",
+        "ends_at",
+        "retention_hours"
+      ],
+      "type": "object"
+    },
+    "EventId": {
+      "description": "Event ID: evt_ followed by 12 lowercase hex digits.",
+      "pattern": "^evt_[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "EventKind": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "event",
+        "quick"
+      ],
+      "type": "string"
+    },
+    "EventPatch": {
+      "description": "The payload of `event_updated`: only the fields that changed are present.",
+      "properties": {
+        "browser_guests_allowed": {
+          "description": "New browser-guest setting.",
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "description": {
+          "description": "New description.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ends_at": {
+          "description": "New end time.",
+          "format": "int64",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "expires_at": {
+          "description": "New expiry.",
+          "format": "int64",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "extension_count": {
+          "description": "New extension count.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "host_display_name": {
+          "description": "New host display name.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "kind": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EventKind"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "New kind (a quick session converted to an event)."
+        },
+        "links": {
+          "description": "New links.",
+          "items": {
+            "type": "string"
+          },
+          "type": [
+            "array",
+            "null"
+          ]
+        },
+        "max_ends_at": {
+          "description": "New latest end.",
+          "format": "int64",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "name": {
+          "description": "New name.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "retention_hours": {
+          "description": "New retention.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "starts_at": {
+          "description": "New start time.",
+          "format": "int64",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "status": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EventStatus"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "New status."
+        },
+        "storage_limit_bytes": {
+          "description": "New storage limit.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        }
+      },
+      "type": "object"
+    },
+    "EventStatus": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "active",
+        "paused",
+        "ended"
+      ],
+      "type": "string"
+    },
+    "Item": {
+      "description": "An available item: the `item_available` payload.",
+      "properties": {
+        "available_at": {
+          "description": "When it became available (the photo time, DU-21).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "compatible_same_as_original": {
+          "description": "The compatible copy is the original (JPEG and PNG).",
+          "type": "boolean"
+        },
+        "content_type": {
+          "description": "MIME type of the original.",
+          "type": "string"
+        },
+        "has_hdr_gain_map": {
+          "description": "The original carries an HDR gain map.",
+          "type": "boolean"
+        },
+        "height": {
+          "description": "Height in pixels, orientation applied.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "id": {
+          "description": "Item ID.",
+          "type": "string"
+        },
+        "original_name": {
+          "description": "The uploader's file name.",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "SHA-256 of the original, lowercase hex.",
+          "type": "string"
+        },
+        "size_bytes": {
+          "description": "Size of the original.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "uploader_id": {
+          "description": "Uploader's attendee ID.",
+          "type": "string"
+        },
+        "width": {
+          "description": "Width in pixels, orientation applied.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "uploader_id",
+        "content_type",
+        "size_bytes",
+        "sha256",
+        "width",
+        "height",
+        "has_hdr_gain_map",
+        "compatible_same_as_original",
+        "original_name",
+        "available_at"
+      ],
+      "type": "object"
+    },
+    "ItemCounts": {
+      "description": "Download counts and hot score of one item: an entry of `counts_updated`.",
+      "properties": {
+        "download_count": {
+          "description": "Number of downloads (explicit saves, DU-19).",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "hot_score": {
+          "description": "Hot score at `hot_score_updated_at`; decays continuously (DU-18).",
+          "format": "double",
+          "type": "number"
+        },
+        "hot_score_updated_at": {
+          "description": "When `hot_score` was computed.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Item ID.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "download_count",
+        "hot_score",
+        "hot_score_updated_at"
+      ],
+      "type": "object"
+    },
+    "ItemReason": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "type",
+        "size",
+        "storage_full",
+        "abandoned",
+        "stalled",
+        "cancelled",
+        "unauthorized",
+        "invalid_image",
+        "integrity",
+        "duplicate"
+      ],
+      "type": "string"
+    },
+    "ItemState": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "PENDING",
+        "UPLOADING",
+        "VALIDATING",
+        "AVAILABLE",
+        "FAILED",
+        "DELETED"
+      ],
+      "type": "string"
+    },
+    "NoticeKind": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "expiring_soon"
+      ],
+      "type": "string"
+    },
+    "OutboxConfig": {
+      "description": "Outbox settings (remote key `outbox_config`).",
+      "properties": {
+        "max_age_ms": {
+          "default": 86400000,
+          "description": "Age in milliseconds before an entry expires.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "max_attempts": {
+          "default": 10,
+          "description": "Attempts before an entry expires.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "Post": {
+      "description": "A post: the `post_published` payload, the snapshot's `posts` entries and the\n`POST /posts` response.",
+      "properties": {
+        "author_id": {
+          "description": "Author's attendee ID; `null` for system posts.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "description": "Creation time.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Post ID.",
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/PostKind",
+          "description": "Kind."
+        },
+        "text": {
+          "description": "Text, 1–500 characters.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "text",
+        "created_at"
+      ],
+      "type": "object"
+    },
+    "PostKind": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "host",
+        "system"
+      ],
+      "type": "string"
+    },
+    "RateLimits": {
+      "description": "Rate limits (remote key `rate_limits`). Join and password limits are fixed;\nsee [`crate::api::JOINS_PER_MINUTE_PER_IP`].",
+      "properties": {
+        "upload_window_ms": {
+          "default": 300000,
+          "description": "Window length in milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "uploads_per_window": {
+          "default": 30,
+          "description": "Uploads per user per window.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ReachabilityTestMode": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "full"
+      ],
+      "type": "string"
+    },
+    "Role": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "host",
+        "uploader",
+        "viewer"
+      ],
+      "type": "string"
+    },
+    "SnapshotItem": {
+      "description": "An item in the snapshot: the `item_available` fields plus its current counts.",
+      "properties": {
+        "available_at": {
+          "description": "When it became available (the photo time, DU-21).",
+          "format": "int64",
+          "type": "integer"
+        },
+        "compatible_same_as_original": {
+          "description": "The compatible copy is the original (JPEG and PNG).",
+          "type": "boolean"
+        },
+        "content_type": {
+          "description": "MIME type of the original.",
+          "type": "string"
+        },
+        "download_count": {
+          "description": "Number of downloads.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "has_hdr_gain_map": {
+          "description": "The original carries an HDR gain map.",
+          "type": "boolean"
+        },
+        "height": {
+          "description": "Height in pixels, orientation applied.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "hot_score": {
+          "description": "Hot score at `hot_score_updated_at`.",
+          "format": "double",
+          "type": "number"
+        },
+        "hot_score_updated_at": {
+          "description": "When `hot_score` was computed.",
+          "format": "int64",
+          "type": "integer"
+        },
+        "id": {
+          "description": "Item ID.",
+          "type": "string"
+        },
+        "original_name": {
+          "description": "The uploader's file name.",
+          "type": "string"
+        },
+        "sha256": {
+          "description": "SHA-256 of the original, lowercase hex.",
+          "type": "string"
+        },
+        "size_bytes": {
+          "description": "Size of the original.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "uploader_id": {
+          "description": "Uploader's attendee ID.",
+          "type": "string"
+        },
+        "width": {
+          "description": "Width in pixels, orientation applied.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "uploader_id",
+        "content_type",
+        "size_bytes",
+        "sha256",
+        "width",
+        "height",
+        "has_hdr_gain_map",
+        "compatible_same_as_original",
+        "original_name",
+        "available_at",
+        "download_count",
+        "hot_score",
+        "hot_score_updated_at"
+      ],
+      "type": "object"
+    },
+    "Tombstone": {
+      "description": "Payload of a deletion or removal: `{id}`.",
+      "properties": {
+        "id": {
+          "description": "ID of the deleted item, removed attendee or deleted post.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "type": "object"
+    },
+    "TransferConfig": {
+      "description": "Transfer settings (remote key `transfer_config`).",
+      "properties": {
+        "backoff_base_ms": {
+          "default": 500,
+          "description": "Backoff base in milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "chunk_bytes": {
+          "default": 1048576,
+          "description": "Upload chunk size in bytes.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "stall_timeout_ms": {
+          "default": 120000,
+          "description": "Stall timeout in milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "transfer_retries": {
+          "default": 3,
+          "description": "Transfer retries.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Host → client messages.",
+  "oneOf": [
+    {
+      "description": "The full index at `version`. `items` are `AVAILABLE` items only.",
+      "properties": {
+        "attendees": {
+          "description": "Attendees not on the removed list.",
+          "items": {
+            "$ref": "#/$defs/Attendee"
+          },
+          "type": "array"
+        },
+        "config": {
+          "$ref": "#/$defs/Config",
+          "description": "The event's frozen configuration."
+        },
+        "event": {
+          "$ref": "#/$defs/Event",
+          "description": "The event."
+        },
+        "items": {
+          "description": "Available items with their counts.",
+          "items": {
+            "$ref": "#/$defs/SnapshotItem"
+          },
+          "type": "array"
+        },
+        "posts": {
+          "description": "Posts not deleted.",
+          "items": {
+            "$ref": "#/$defs/Post"
+          },
+          "type": "array"
+        },
+        "t": {
+          "const": "snapshot",
+          "type": "string"
+        },
+        "version": {
+          "description": "Version of the newest change included.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "t",
+        "version",
+        "event",
+        "attendees",
+        "items",
+        "posts",
+        "config"
+      ],
+      "type": "object"
+    },
+    {
+      "description": "Catch-up: the changes after the client's version, oldest first.",
+      "properties": {
+        "changes": {
+          "description": "Changes in version order.",
+          "items": {
+            "$ref": "#/$defs/Change"
+          },
+          "type": "array"
+        },
+        "t": {
+          "const": "changes",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "changes"
+      ],
+      "type": "object"
+    },
+    {
+      "$ref": "#/$defs/Change",
+      "description": "One live change.",
+      "properties": {
+        "t": {
+          "const": "change",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t"
+      ],
+      "type": "object"
+    },
+    {
+      "description": "The state of one of the client's own uploads. Sent to the uploader only;\nnot versioned. This is the completion ack of 4.4 step 18.",
+      "properties": {
+        "item_id": {
+          "description": "Item ID.",
+          "type": "string"
+        },
+        "reason_code": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ItemReason"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Reason, or `null`."
+        },
+        "received_bytes": {
+          "description": "Bytes received so far.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "retryable": {
+          "description": "Whether the reason is retryable (`false` when there is none).",
+          "type": "boolean"
+        },
+        "state": {
+          "$ref": "#/$defs/ItemState",
+          "description": "Current state."
+        },
+        "submission_id": {
+          "description": "Submission ID.",
+          "type": "string"
+        },
+        "t": {
+          "const": "upload_state",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "submission_id",
+        "state",
+        "retryable",
+        "received_bytes",
+        "item_id"
+      ],
+      "type": "object"
+    },
+    {
+      "description": "An informational notice. Not versioned.",
+      "properties": {
+        "expires_at": {
+          "description": "For `expiring_soon`: the expiry.",
+          "format": "int64",
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "kind": {
+          "$ref": "#/$defs/NoticeKind",
+          "description": "Kind."
+        },
+        "t": {
+          "const": "notice",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "kind"
+      ],
+      "type": "object"
+    },
+    {
+      "description": "The host is closing the socket.",
+      "properties": {
+        "reason": {
+          "$ref": "#/$defs/ByeReason",
+          "description": "Why."
+        },
+        "t": {
+          "const": "bye",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t",
+        "reason"
+      ],
+      "type": "object"
+    },
+    {
+      "description": "Answer to `ping`.",
+      "properties": {
+        "t": {
+          "const": "pong",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t"
+      ],
+      "type": "object"
+    }
+  ],
+  "title": "ServerMessage"
+}

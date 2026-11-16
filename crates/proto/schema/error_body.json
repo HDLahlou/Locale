@@ -1,0 +1,58 @@
+{
+  "$defs": {
+    "ErrorDetail": {
+      "description": "The inside of an [`ErrorBody`].",
+      "properties": {
+        "code": {
+          "description": "A code from [`ApiCode`] or [`JoinFailure`]. Kept as a string so a code this\nversion does not know still parses.",
+          "type": "string"
+        },
+        "message": {
+          "description": "Human-readable text for logs. Not shown to people as is.",
+          "type": "string"
+        },
+        "received_bytes": {
+          "description": "For `offset_mismatch`: the bytes the host has, where the upload resumes.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "retry_after_ms": {
+          "description": "How long to wait before retrying, when known.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "retryable": {
+          "description": "Whether the same request may succeed later.",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The error body of every failed host API or service request:\n`{\"error\": {\"code\", \"message\", \"retryable\", \"retry_after_ms\"?}}`.",
+  "properties": {
+    "error": {
+      "$ref": "#/$defs/ErrorDetail",
+      "description": "The error."
+    }
+  },
+  "required": [
+    "error"
+  ],
+  "title": "ErrorBody",
+  "type": "object"
+}

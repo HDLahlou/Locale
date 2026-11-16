@@ -1,0 +1,39 @@
+{
+  "$defs": {
+    "DevicePublicKey": {
+      "description": "Ed25519 public key, base64url without padding.",
+      "pattern": "^[A-Za-z0-9_-]{43}$",
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /v1/auth/verify` request.",
+  "properties": {
+    "code": {
+      "description": "The 6-digit code.",
+      "type": "string"
+    },
+    "device_pubkey": {
+      "$ref": "#/$defs/DevicePublicKey",
+      "description": "The device's public key, named in the credential."
+    },
+    "display_name": {
+      "description": "Display name, for a new account.",
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "email": {
+      "description": "Email address.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "email",
+    "code",
+    "device_pubkey"
+  ],
+  "title": "AuthVerifyRequest",
+  "type": "object"
+}
