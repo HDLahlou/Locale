@@ -9,10 +9,10 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S1 | done | merged 9fab878 | S | 1 | PASS (Sonnet), `just check` green on build/integration | Skeleton, justfile, CLAUDE.md. Tauri crate is `locale-desktop`; TypeScript pinned to 6.0.3 |
 | S2 | done | merged 1d45dab | H | 1 | PASS (Sonnet, low), `just check` green on build/integration | `just doctor` exits 0 on this machine: nothing needed for M1 is missing, so the human gate needs no action. Not needed and missing: cargo-ndk, Playwright browsers, libheif. Windows branches of the script are unrun until S6 |
 | S3 | in-progress | worktree | O | 1 | — |  |
-| S4 | verifying | worktree-agent-ac9bd79d0909d040d | S (was H) | 1 | — | One return (bytecode removed). `just fixtures-verify` and `just check` pass when run by the orchestrator. Has a human gate (person adds four real device photos) |
-| S5 | verifying | worktree-agent-a031ccac713b647fe | S | 1 | — | Orchestrator ran the ui-kit tests (79 + 2 pass) and `just check` (pass) |
-| S6 | in-progress | worktree | S | 1 | — | Implementer may push only `ci/s6-*` branches. Has a human gate (Actions enabled, setup item 5) |
-| M0a-1 | verifying | worktree-agent-a5916b84adbae7b91 | O | 1 | — | Orchestrator ran `cargo test -p host-core listener` (20 pass), `cargo test -p client-core` (8 pass) and `just check` (pass) |
+| S4 | gate: person adds four real device photos (setup items 2 and 3; runbook `runbooks/S4.md`) | merged 68029db | S (was H) | 1 | PASS (Sonnet, low), `just check` and `just fixtures-verify` green on build/integration | Agent work is done and merged: 20 committed fixtures, two 50 MB files generated on demand, manifest, independent verifier. Tasks that depend on S4 may start; only the device-photo parts of M0a-5 and M2-3 wait for the person. One return (bytecode) |
+| S5 | done | merged 4afeea8 | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `packages/ui` (`@locale/ui`), `tokens.json` and `labels.json` as single sources, generated CSS, TS and Dart. All contrast pairs at least 4.5:1 |
+| S6 | in-progress | worktree-agent-a1b93593b0b50aaab | S | 1 | — | First CI run 43805881453: macOS, web and mobile jobs pass; Windows fails on a missing `icon.ico` (S1) and a doctor test whose fake tool needs `ping` on PATH (S2). Returned once with scope extended to fix both. Has a human gate (Actions is enabled: runs start) |
+| M0a-1 | done | merged 71034d4 | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | Listener with separate TLS and plain routers, `TlsIdentity`, pinned connector in client-core. Follow-ups: move `fingerprint_base64url` to proto's helper after S3; plain path has no header-read timeout yet (M3-9); two timing tests have a 500 ms margin |
 | M0a-2 | todo | — | S | 0 | — |  |
 | M0a-3 | todo | — | O | 0 | — |  |
 | M0a-4 | todo | — | O | 0 | — | Has a human gate |
@@ -20,7 +20,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M0a-6 | todo | — | S | 0 | — |  |
 | M0a-7 | todo | — | S | 0 | — |  |
 | M0a-8 | todo | — | S | 0 | — | Has a human gate |
-| M0a-9 | in-progress | worktree | H | 1 | — | Research note only |
+| M0a-9 | in-progress | worktree-agent-a5bf8a59b588bb187 | H | 1 | FAIL (Haiku): main answers confirmed, nine citation and accuracy points | Returned once. Findings so far: posthog-rs 0.33.1 does not persist to disk, flags need the network, and it forces aws-lc-rs into the build |
 | M0a-10 | todo | — | H writes runbook | 0 | — | Has a human gate |
 | M0b-1 | todo | — | S | 0 | — |  |
 | M0b-2 | todo | — | S | 0 | — |  |
@@ -29,7 +29,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M1-2 | todo | — | O | 0 | — |  |
 | M1-3 | todo | — | S | 0 | — |  |
 | M1-4 | todo | — | S | 0 | — |  |
-| M1-5 | todo | — | S | 0 | — | Has a human gate |
+| M1-5 | in-progress | worktree | S | 1 | — | Has a human gate |
 | M1-6 | todo | — | O | 0 | — |  |
 | M1-7 | todo | — | O | 0 | — |  |
 | M1-8 | todo | — | S | 0 | — |  |
@@ -103,12 +103,16 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - DU-43 (default, unconfirmed) · Sizes use binary units: the 50 MB photo limit is 52,428,800 bytes and the 1 MB chunk is 1,048,576 bytes. The digest says "50 MB" and "1024 KB" without defining the unit.
 - DU-44 (default, unconfirmed) · TLS uses rustls with the `ring` crypto provider, not aws-lc, so the phone and Windows builds need no extra native build tools.
+- DU-46 (default, unconfirmed) · Dark-theme values the digest does not give (S5): selected tab `#A5B4FC`; badge tint `#312E81` with ink `#E0E7FF`; status pairs are the light pairs swapped (ok `#14532D`/`#DCFCE7`, warn `#78350F`/`#FEF3C7`, error `#912018`/`#FEE4E2`). Spacing, radius and type scales and the extra label "Verified" are also S5 defaults, in `packages/ui/tokens.json` and `labels.json`.
+- DU-47 (default, unconfirmed) · Listener defaults (M0a-1): 20 port attempts after 7420, 10 s first-byte and TLS handshake timeouts, 5 s shutdown grace, HTTP/1.1 and h2 without ALPN, key and certificate stored as `tls/key.der` (mode 0600) and `tls/cert.der`; the pinned client does not check certificate dates (the pin is the trust decision).
 - DU-45 (default, unconfirmed) · Three folders are added to the DU-7 layout: `scripts/` (developer scripts: doctor, fixture generator and verifier), `fixtures/` (test images and manifest; small files committed, two 50 MB files generated on demand), `packages/ui` (shared web UI kit and design tokens, pnpm package `@locale/ui`).
 
 ## 3. Pending digest edits
 
 - §10 and §12: add DU-43 (binary units for the photo limit and chunk size).
 - §3 "Core libraries" and §12: add DU-44 (rustls with `ring`).
+- §9 and §12: add DU-46 (dark values chosen in S5).
+- §5.1 and §12: add DU-47 (listener timeouts, port attempts, key file names).
 - §3 "Repository layout" and §12: add DU-45 (`scripts/`, `fixtures/`, `packages/ui`).
 
 ## 4. Plan changes
@@ -125,3 +129,4 @@ This file is the record of the build run. It overrides anyone's memory of the co
 - 2026-11-16T05:20Z · S · S1 done: 1 Sonnet implementer, 1 Sonnet verifier, no returns. Dispatched S2 (Haiku), S3 (Opus), S4 (Sonnet) and M0a-1 (Opus) in parallel worktrees.
 
 - 2026-11-16T06:05Z · S · S2 done: 1 Haiku implementer, 1 Sonnet verifier, no returns. S4 returned once (bytecode committed). S5 dispatched (Sonnet).
+- 2026-11-16T07:00Z · S, M0a · Done: S4 (agent part; now at its human gate), S5, M0a-1, each with one implementer and one verifier and no verifier returns. S6 and M0a-9 returned once each. Verifiers that run outside a task worktree cannot use the Edit tool under `.claude/worktrees/` (the `.claude/**` deny rule); from now on verifiers get their own worktree and check out the task branch detached. Dispatched M1-5 (Sonnet).
