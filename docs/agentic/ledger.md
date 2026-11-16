@@ -11,7 +11,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S3 | verifying | worktree-agent-afd7cbc871f0e3440 | O | 1 | — | Orchestrator ran `cargo test -p proto` (61 pass) and `just check` (pass). 26 implementer defaults in the task file; decisions on them are recorded when the verifier reports |
 | S4 | gate: person adds four real device photos (setup items 2 and 3; runbook `runbooks/S4.md`) | merged 68029db | S (was H) | 1 | PASS (Sonnet, low), `just check` and `just fixtures-verify` green on build/integration | Agent work is done and merged: 20 committed fixtures, two 50 MB files generated on demand, manifest, independent verifier. Tasks that depend on S4 may start; only the device-photo parts of M0a-5 and M2-3 wait for the person. One return (bytecode) |
 | S5 | done | merged 4afeea8 | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `packages/ui` (`@locale/ui`), `tokens.json` and `labels.json` as single sources, generated CSS, TS and Dart. All contrast pairs at least 4.5:1 |
-| S6 | in-progress | worktree-agent-a1b93593b0b50aaab | S | 1 | — | Two CI runs so far (43805881453, 43806612675), both failed on Windows; icon and doctor-test fixes are committed; implementer is reading the second failure. Has a human gate (Actions is enabled: runs start) |
+| S6 | in-progress | worktree-agent-a1b93593b0b50aaab | S | 1 | — | Three CI runs so far. Windows Rust job now passes after an `icon.ico` and a `.gitattributes` fix. CI found a real defect in `scripts/doctor.py` (a timeout on Windows killed only the shell, not the process tree); the implementer was authorised to fix it and is rerunning. Returned twice. Has a human gate (Actions is enabled: runs start) |
 | M0a-1 | done | merged 71034d4 | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | Listener with separate TLS and plain routers, `TlsIdentity`, pinned connector in client-core. Follow-ups: move `fingerprint_base64url` to proto's helper after S3; plain path has no header-read timeout yet (M3-9); two timing tests have a 500 ms margin |
 | M0a-2 | todo | — | S | 0 | — |  |
 | M0a-3 | in-progress | worktree | O | 1 | — |  |
@@ -29,7 +29,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M1-2 | todo | — | O | 0 | — |  |
 | M1-3 | todo | — | S | 0 | — |  |
 | M1-4 | todo | — | S | 0 | — |  |
-| M1-5 | in-progress | worktree | S | 1 | — | Has a human gate |
+| M1-5 | verifying | worktree-agent-ae5c4b4ccb1254d9e | S | 1 | — | Orchestrator ran `cargo test -p host-core capability` (14 pass) and `just check` (exit 0). Has a human gate (real firewall and isolation behaviour, M3-11) |
 | M1-6 | todo | — | O | 0 | — |  |
 | M1-7 | todo | — | O | 0 | — |  |
 | M1-8 | todo | — | S | 0 | — |  |
@@ -136,3 +136,5 @@ This file is the record of the build run. It overrides anyone's memory of the co
 - 2026-11-16T07:35Z · M0a · M0a-9 done: 1 Haiku implementer, 1 Haiku verifier, two returns for citations (a research note with source citations is a poor fit for Haiku at low effort; route the next one to Sonnet). Docs-only merge, so `just check` was not re-run for it. Dispatched M0a-3 (Opus).
 
 - 2026-11-16T09:11Z · S, M0a · The session reached its usage limit. The three running implementers (S6, M1-5, M0a-3) were stopped by the orchestrator, then resumed in the same session with their context and worktrees intact when the limit reset; nothing was lost. S3's implementer finished; its checks pass and it is with a Sonnet verifier that works in its own worktree on a detached checkout of the task branch. Note: timestamps earlier in this log were estimates and run up to two hours ahead of the real clock; from here they come from `date -u`.
+
+- 2026-11-16T09:17Z · S, M1 · M1-5 implementer done, with verifier. Orchestrator fixed one test's output in its own commit (7324433): a passing fixture test printed a "FAIL" line into `just check` output and two agents read it as a failure.
