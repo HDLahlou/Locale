@@ -35,6 +35,7 @@ pub mod api;
 pub mod codes;
 pub mod config;
 pub mod contract;
+pub mod credential;
 mod encoding;
 mod error;
 pub mod mdns;
