@@ -22,3 +22,4 @@ apps/desktop/src-tauri/gen/
 # Agent worktrees
 .claude/worktrees/
 fixtures/generated/
+__pycache__/
