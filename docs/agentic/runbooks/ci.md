@@ -32,7 +32,18 @@ gh run watch <id> --exit-status
 
 ## Minutes used in the smoke run
 
-MINUTES_PLACEHOLDER
+Smoke run 43838217560 (wall-clock per job; macOS minutes bill at 10x, Windows at 2x on private repositories):
+
+| Job | Minutes |
+|---|---|
+| mobile (macOS) | 2.25 |
+| web (Ubuntu) | 1.5 |
+| rust (Windows) | 2.75 |
+| rust (macOS) | 1.2 |
+| scripts (Windows) | 0.7 |
+| scripts (macOS) | 0.7 |
+
+Whole run about 3 minutes of wall time. These are with a warm or first-time cache as it happened; expect the first run on a branch with new dependencies to be slower.
 
 ## If runs do not start
 
