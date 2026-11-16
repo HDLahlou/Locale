@@ -1,10 +1,10 @@
 {
   "status": "running",
-  "milestone": "S",
+  "milestone": "M0a, M0b, M1",
   "started_at": "2026-11-16T04:18:02Z",
   "paused_at": null,
   "reason": null,
-  "last_checkpoint": "2026-11-16T14:24Z",
+  "last_checkpoint": "2026-11-16T14:25Z",
   "consecutive_env_failures": 0,
   "dispatches_since_last_done": 4
 }
