@@ -319,11 +319,13 @@ fn detect_format(bytes: &[u8]) -> Result<Format, StripError> {
         }
         // Major brand, minor version (skipped), compatible brands.
         let mut brands = ftyp
-            .chunks_exact(4)
+            .as_chunks::<4>()
+            .0
+            .iter()
             .enumerate()
             .filter(|(i, _)| *i != 1)
             .map(|(_, b)| b);
-        if brands.any(|b| HEIF_IMAGE_BRANDS.iter().any(|ok| ok.as_slice() == b)) {
+        if brands.any(|b| HEIF_IMAGE_BRANDS.contains(&b)) {
             return Ok(Format::Heic);
         }
     }

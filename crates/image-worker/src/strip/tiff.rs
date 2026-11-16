@@ -322,7 +322,8 @@ impl<'a> Tiff<'a> {
         };
         let count = count as usize;
         let end = (off + 2 + 12 * count + 4).min(self.b.len());
-        let mut out = vec![off..end];
+        let mut out = Vec::new();
+        out.push(off..end);
         for i in 0..count {
             let e = off + 2 + 12 * i;
             if e + 12 > self.b.len() {
@@ -379,14 +380,16 @@ fn type_size(typ: u16) -> Option<u32> {
 pub(super) mod tests {
     use super::*;
 
-    /// Builds a big-endian TIFF block from IFDs given as lists of
-    /// (tag, type, count, value-or-offset). IFD `i` starts at `offsets[i]`;
-    /// `next[i]` is its next-IFD pointer. `extra` bytes are written at their
+    /// (tag, type, count, value-or-offset).
+    pub(crate) type TestEntry = (u16, u16, u32, u32);
+
+    /// Builds a big-endian TIFF block from IFDs given as
+    /// (offset, entries, next-IFD pointer). `extra` bytes are written at their
     /// offsets.
     pub(crate) fn build(
         len: usize,
         ifd0: u32,
-        ifds: &[(usize, Vec<(u16, u16, u32, u32)>, u32)],
+        ifds: &[(usize, Vec<TestEntry>, u32)],
         extra: &[(usize, &[u8])],
     ) -> Vec<u8> {
         let mut b = vec![0u8; len];

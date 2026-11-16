@@ -25,7 +25,9 @@ pub(super) fn strip(
     }
     let digits = hex_digits(text)?;
     let decoded: Vec<u8> = digits
-        .chunks_exact(2)
+        .as_chunks::<2>()
+        .0
+        .iter()
         .map(|p| (hex_value(text[p[0]]) << 4) | hex_value(text[p[1]]))
         .collect();
 
