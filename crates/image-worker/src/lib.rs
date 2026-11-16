@@ -2,6 +2,8 @@
 //!
 //! - [`sniff`]: pure-Rust content sniffing (usable on phones).
 //! - [`structure`]: pure-Rust container completeness checks.
+//! - [`strip`]: pure-Rust, size-preserving removal of location metadata
+//!   (usable on phones).
 //! - [`codec`]: the [`ImageCodec`] trait and the per-OS back end.
 //! - [`worker`]: the parent-side API that runs one job per child process with
 //!   time and memory limits.
@@ -11,6 +13,7 @@ pub mod child;
 pub mod codec;
 pub mod job;
 pub mod sniff;
+pub mod strip;
 pub mod structure;
 pub mod worker;
 
