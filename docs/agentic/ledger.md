@@ -8,7 +8,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 |---|---|---|---|---|---|---|
 | S1 | done | merged 9fab878 | S | 1 | PASS (Sonnet), `just check` green on build/integration | Skeleton, justfile, CLAUDE.md. Tauri crate is `locale-desktop`; TypeScript pinned to 6.0.3 |
 | S2 | done | merged 1d45dab | H | 1 | PASS (Sonnet, low), `just check` green on build/integration | `just doctor` exits 0 on this machine: nothing needed for M1 is missing, so the human gate needs no action. Not needed and missing: cargo-ndk, Playwright browsers, libheif. Windows branches of the script are unrun until S6 |
-| S3 | verifying | worktree-agent-afd7cbc871f0e3440 | O | 1 | — | Orchestrator ran `cargo test -p proto` (61 pass) and `just check` (pass). 26 implementer defaults in the task file; decisions on them are recorded when the verifier reports |
+| S3 | done | merged 2d1cb7b | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `proto` crate: transport, codes, api, ws, service, mdns, model, state, config; 24 schema files and `CONTRACT.md` generated, with a staleness test. 61 tests. No returns. Contract choices recorded in digest §5.8 (DU-49) |
 | S4 | gate: person adds four real device photos (setup items 2 and 3; runbook `runbooks/S4.md`) | merged 68029db | S (was H) | 1 | PASS (Sonnet, low), `just check` and `just fixtures-verify` green on build/integration | Agent work is done and merged: 20 committed fixtures, two 50 MB files generated on demand, manifest, independent verifier. Tasks that depend on S4 may start; only the device-photo parts of M0a-5 and M2-3 wait for the person. One return (bytecode) |
 | S5 | done | merged 4afeea8 | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `packages/ui` (`@locale/ui`), `tokens.json` and `labels.json` as single sources, generated CSS, TS and Dart. All contrast pairs at least 4.5:1 |
 | S6 | in-progress | worktree-agent-a1b93593b0b50aaab | S | 1 | — | Three CI runs so far. Windows Rust job now passes after an `icon.ico` and a `.gitattributes` fix. CI found a real defect in `scripts/doctor.py` (a timeout on Windows killed only the shell, not the process tree); the implementer was authorised to fix it and is rerunning. Returned twice. Has a human gate (Actions is enabled: runs start) |
@@ -26,7 +26,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M0b-2 | todo | — | S | 0 | — |  |
 | M0b-3 | todo | — | H | 0 | — | Has a human gate |
 | M1-1 | todo | — | S | 0 | — | Has a human gate |
-| M1-2 | todo | — | O | 0 | — |  |
+| M1-2 | in-progress | worktree | O | 1 | — |  |
 | M1-3 | todo | — | S | 0 | — |  |
 | M1-4 | todo | — | S | 0 | — |  |
 | M1-5 | verifying | worktree-agent-ae5c4b4ccb1254d9e | S | 1 | — | Orchestrator ran `cargo test -p host-core capability` (14 pass) and `just check` (exit 0). Has a human gate (real firewall and isolation behaviour, M3-11) |
@@ -103,6 +103,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - DU-43 (default, unconfirmed) · Sizes use binary units: the 50 MB photo limit is 52,428,800 bytes and the 1 MB chunk is 1,048,576 bytes. The digest says "50 MB" and "1024 KB" without defining the unit.
 - DU-44 (default, unconfirmed) · TLS uses rustls with the `ring` crypto provider, not aws-lc, so the phone and Windows builds need no extra native build tools.
+- DU-49 (contract, applied to the digest at once) · Contract details fixed in code by S3: unpadded base64url; uppercase item states; join-failure HTTP statuses; 204 for DELETE and saved; cookie `locale_session`; snapshot items carry counts; credential signature over `v1.<payload segment>`; 70-byte proof message with a big-endian millisecond timestamp; Bearer refresh token on the two authenticated service endpoints; config JSON layout and bounds; which enums accept unknown values. `schemars` stays a normal dependency of `proto`. Listed in digest §5.8.
 - TR-16 (proposed) · The desktop core sends telemetry with its own small sender over PostHog's HTTP API; the facade owns the SQLite queue and the flag cache; `posthog-rs` is not used. Reason: the crate does not persist, has no offline flag cache, and forces aws-lc-rs into the build. Entry added to `docs/Locale Design Tradeoffs.md`.
 - DU-48 (default, unconfirmed) · Digest §11 rule 7 becomes: "On desktop the facade owns a small SQLite queue and sends over PostHog's HTTP API itself (TR-16)."
 - DU-46 (default, unconfirmed) · Dark-theme values the digest does not give (S5): selected tab `#A5B4FC`; badge tint `#312E81` with ink `#E0E7FF`; status pairs are the light pairs swapped (ok `#14532D`/`#DCFCE7`, warn `#78350F`/`#FEF3C7`, error `#912018`/`#FEE4E2`). Spacing, radius and type scales and the extra label "Verified" are also S5 defaults, in `packages/ui/tokens.json` and `labels.json`.
@@ -111,7 +112,6 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 ## 3. Pending digest edits
 
-- §10 and §12: add DU-43 (binary units for the photo limit and chunk size).
 - §3 "Core libraries" and §12: add DU-44 (rustls with `ring`).
 - §11 rule 7 and §12: add DU-48 (facade owns the queue and the sender; TR-16).
 - §9 and §12: add DU-46 (dark values chosen in S5).
@@ -138,3 +138,4 @@ This file is the record of the build run. It overrides anyone's memory of the co
 - 2026-11-16T09:11Z · S, M0a · The session reached its usage limit. The three running implementers (S6, M1-5, M0a-3) were stopped by the orchestrator, then resumed in the same session with their context and worktrees intact when the limit reset; nothing was lost. S3's implementer finished; its checks pass and it is with a Sonnet verifier that works in its own worktree on a detached checkout of the task branch. Note: timestamps earlier in this log were estimates and run up to two hours ahead of the real clock; from here they come from `date -u`.
 
 - 2026-11-16T09:17Z · S, M1 · M1-5 implementer done, with verifier. Orchestrator fixed one test's output in its own commit (7324433): a passing fixture test printed a "FAIL" line into `just check` output and two agents read it as a failure.
+- 2026-11-16T09:21Z · S · S3 done: 1 Opus implementer, 1 Sonnet verifier, no returns. Digest §5.8 added with the contract details in commit 3859f12 (the one digest edit allowed mid-milestone); DU-43 moved into the digest with it. No `done` task used `proto` types before this merge, so no tests needed re-running beyond `just check`. Dispatched M1-2 (Opus). Follow-up for a later host task: replace M0a-1's private `fingerprint_base64url` helper with `proto::transport::Fingerprint`.
