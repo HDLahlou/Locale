@@ -9,7 +9,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S1 | in-progress | worktree branch (see task file) | S | 1 | — | Dispatched 2026-11-16 to Sonnet, medium effort |
 | S2 | todo | — | H | 0 | — | Has a human gate |
 | S3 | todo | — | O | 0 | — |  |
-| S4 | todo | — | H | 0 | — | Has a human gate |
+| S4 | todo | — | S (was H) | 0 | — | Has a human gate |
 | S5 | todo | — | S | 0 | — |  |
 | S6 | todo | — | S | 0 | — | Has a human gate |
 | M0a-1 | todo | — | O | 0 | — |  |
@@ -101,15 +101,20 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 ## 2. Defaults and decisions made during the build
 
-None yet.
+- DU-43 (default, unconfirmed) · Sizes use binary units: the 50 MB photo limit is 52,428,800 bytes and the 1 MB chunk is 1,048,576 bytes. The digest says "50 MB" and "1024 KB" without defining the unit.
+- DU-44 (default, unconfirmed) · TLS uses rustls with the `ring` crypto provider, not aws-lc, so the phone and Windows builds need no extra native build tools.
+- DU-45 (default, unconfirmed) · Three folders are added to the DU-7 layout: `scripts/` (developer scripts: doctor, fixture generator and verifier), `fixtures/` (test images and manifest; small files committed, two 50 MB files generated on demand), `packages/ui` (shared web UI kit and design tokens, pnpm package `@locale/ui`).
 
 ## 3. Pending digest edits
 
-None yet.
+- §10 and §12: add DU-43 (binary units for the photo limit and chunk size).
+- §3 "Core libraries" and §12: add DU-44 (rustls with `ring`).
+- §3 "Repository layout" and §12: add DU-45 (`scripts/`, `fixtures/`, `packages/ui`).
 
 ## 4. Plan changes
 
-None yet.
+- 2026-11-16 · S4 routed to Sonnet instead of Haiku. The fixture set as briefed needs hand-built EXIF, XMP and IPTC location blocks, a HEIC with GPS written through ImageIO, deterministic 50 MB files and an independent metadata check, which is more than boilerplate. The verifier stays Sonnet.
+- 2026-11-16 · M0a-1 also delivers the pinned-TLS connector in `crates/client-core/src/tls_pin.rs`, because its acceptance needs a pinned client and M1-11 and M0a-2 reuse it. The fingerprint's text forms stay in `proto` (S3).
 
 ## 5. Milestone log
 
