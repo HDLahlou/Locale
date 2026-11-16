@@ -13,22 +13,22 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S5 | done | merged 4afeea8 | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `packages/ui` (`@locale/ui`), `tokens.json` and `labels.json` as single sources, generated CSS, TS and Dart. All contrast pairs at least 4.5:1 |
 | S6 | done | merged ba7963b | S | 1 | PASS (Sonnet, low), `just check` green on build/integration | `ci.yml` (rust on macOS and Windows, web with three browser engines, mobile, scripts), `just ci <suffix>` (plain push, never forced), runbook `runbooks/ci.md`. Proof: smoke run 43838217560 all green; red run 43838700494 fails only the Windows Rust job. Found and fixed on the way: missing Windows icon (S1), a doctor timeout that did not kill the process tree on Windows (S2), fixtures altered by line-ending conversion. The human gate needed no action (Actions is enabled). Third-party actions are pinned by major tag, not commit SHA: a hardening item for M3-14. The remote branch `ci/s6-red` holds the deliberately failing test; only a person can delete `ci/*` branches |
 | M0a-1 | done | merged 71034d4 | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | Listener with separate TLS and plain routers, `TlsIdentity`, pinned connector in client-core. Follow-ups: move `fingerprint_base64url` to proto's helper after S3; plain path has no header-read timeout yet (M3-9); two timing tests have a 500 ms margin |
-| M0a-2 | in-progress | worktree | S | 1 | — |  |
+| M0a-2 | verifying | worktree-agent-a74b6d6a32c51a5ba | S | 1 | — | Orchestrator ran the three test commands and `just check` (all exit 0) |
 | M0a-3 | done | merged a27323c | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `image-worker`: pure-Rust `sniff`, `ImageCodec` trait with ImageIO back end, one-job-per-process worker with a clean environment, 10 s kill and reaping. Known limits, accepted: on macOS the 1 GB memory limit is a parent-side poll every 10 ms, not a kernel limit; ImageIO decodes truncated JPEG and PNG without error, so a structure check runs first; the kill tests run only in debug builds |
 | M0a-4 | todo | — | O | 0 | — | Has a human gate |
-| M0a-5 | verifying | worktree-agent-aab711a36bb24e185 | O | 1 | — | Orchestrator ran `cargo test -p image-worker strip` (56 pass) and `just check` (exit 0). `miniz_oxide` accepted as a dependency (compressed PNG text chunks). Has a human gate (device photos from S4) |
+| M0a-5 | gate: person adds device photos (same four as S4; runbook `runbooks/S4.md`), then `cargo test -p image-worker strip` checks them | merged aa0cfb9 | O | 1 | PASS (Sonnet, medium, with an independent parse of every output), `just check` green on build/integration | Agent work is done and merged: size-preserving strip for JPEG, PNG and HEIC; 50 MB file in under 2 ms. Dependants may start. Follow-ups for the task that first calls it (M2-3 or M2-8): use `sniff` instead of the strip's private format check; zero the old GPS bytes when the GPS pointer is malformed (`tiff.rs:251`) |
 | M0a-6 | todo | — | S | 0 | — |  |
 | M0a-7 | todo | — | S | 0 | — |  |
-| M0a-8 | in-progress | worktree | S | 1 | — | Has a human gate (Windows result from CI) |
+| M0a-8 | verifying | worktree-agent-a32c59c92a911d1a2 | S | 1 | — | Orchestrator ran `cargo test -p host-core mdns`, `-p client-core nearby` and `just check` (all exit 0). Has a human gate (Windows result from CI) |
 | M0a-9 | done | merged 69b02ce | H | 1 | PASS on the third check (Haiku), after two returns for citations | Findings: `posthog-rs` 0.33.1 does not persist unsent events (memory queue only); flags need a network call and no cache survives a restart, so offline they must fall back to compiled defaults; the crate forces aws-lc-rs and sets person profiles on when a group is added. Decision TR-16 |
 | M0a-10 | todo | — | H writes runbook | 0 | — | Has a human gate |
 | M0b-1 | todo | — | S | 0 | — |  |
 | M0b-2 | todo | — | S | 0 | — |  |
 | M0b-3 | todo | — | H | 0 | — | Has a human gate |
-| M1-1 | todo | — | S | 0 | — | Has a human gate |
-| M1-2 | verifying | worktree-agent-a150b31ae610548f4 | O | 1 | — | Orchestrator ran `cargo test -p proto` and `just check` (exit 0). One return with an approved contract change: `/join` carries the raw credential and proof so a malformed one means guest, not a rejected join |
-| M1-3 | verifying | worktree-agent-a7122ab5e057dfa23 | S | 1 | — | Orchestrator ran `cargo test -p host-core schema` (26 pass) and `just check` (exit 0) |
-| M1-4 | todo | — | S | 0 | — |  |
+| M1-1 | in-progress | worktree | S | 1 | — | Has a human gate (production deploy; not needed for tests) |
+| M1-2 | done | merged 071fec9 | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `proto::credential`: sign, strict offline verify against a key list by `kid`, proof of possession, `evaluate_identity` (every failure means guest). One return, for a contract change the implementer found necessary and the orchestrator approved: `/join` carries the raw credential and proof. Adds `ed25519-dalek` 3 and with it a second `sha2` version; align the workspace `sha2` when convenient |
+| M1-3 | done | merged 71741a3 | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `host-core::db` (`EventDb`, `AppDb`, migrations by `user_version`, one writer per handle) and `event_folder`. Note for M1-10: single-writer is per handle, not per file; the host runtime must open each event's database once |
+| M1-4 | in-progress | worktree | S | 1 | — |  |
 | M1-5 | done | merged 18e496e | S | 1 | PASS (Sonnet, medium), `just check` green on build/integration | `host-core::capability`: `OsProbe` trait, `FakeProbe` behind the `test-util` feature, check rows with reason and fix, reachability `ok`/`isolated`/`unknown`. The real probe answers only free space, port binding and private address; firewall, power and mDNS reply are left for M3-11, which also holds the manual check on real machines |
 | M1-6 | todo | — | O | 0 | — |  |
 | M1-7 | todo | — | O | 0 | — |  |
@@ -41,7 +41,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M1-14 | todo | — | S | 0 | — |  |
 | M1-15 | todo | — | S | 0 | — |  |
 | M1-16 | todo | — | O | 0 | — |  |
-| M1-17a | ready | — | S | 0 | — | Split from M1-17: telemetry schema, buckets, ID hashing, consent type and the allowlist filter in `proto` (pure). Verify: `cargo test -p proto telemetry` |
+| M1-17a | in-progress | worktree | S | 1 | — | Split from M1-17: telemetry schema, buckets, ID hashing, consent type and the allowlist filter in `proto` (pure). Verify: `cargo test -p proto telemetry` |
 | M1-17b | todo | — | S | 0 | — | Split from M1-17: new `crates/telemetry` facade: consent storage, SQLite offline queue, own HTTP sender (TR-16) with a loopback fake, hand-off sink for the phone SDK. Depends on M1-17a. Verify: `cargo test -p telemetry`. PostHog key (setup item 13) is not needed for tests |
 | M1-18 | todo | — | S | 0 | — |  |
 | M1-19 | todo | — | S | 0 | — |  |
@@ -104,6 +104,9 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - DU-43 (default, unconfirmed) · Sizes use binary units: the 50 MB photo limit is 52,428,800 bytes and the 1 MB chunk is 1,048,576 bytes. The digest says "50 MB" and "1024 KB" without defining the unit.
 - DU-44 (default, unconfirmed) · TLS uses rustls with the `ring` crypto provider, not aws-lc, so the phone and Windows builds need no extra native build tools.
+- Contract change (applied to digest §5.8 in merge 071fec9) · `JoinRequest.credential` is the raw credential text and `JoinRequest.proof` is raw JSON, so a malformed credential or proof means guest, not a rejected join. No `done` task used `JoinRequest` before the change.
+- DU-53 (default, unconfirmed) · Database details (M1-3): attendee identity is two nullable columns (`account_id`, `guest_id`) with exactly one set; `change_log` versions are gapless by trigger; `hosted_event` is a single-row pointer table in the app database; enum CHECK lists are generated from the `proto` enums at migration time, so adding an enum value needs a new migration. Strip details (M0a-5): XMP location text is blanked in place, IPTC zero-padded, the EXIF thumbnail is not parsed, and metadata that cannot be parsed safely is an error.
+- `.gitattributes` now checks out all text as LF (`* text=auto eol=lf`), after CI showed the generated contract files compared as stale on Windows.
 - DU-52 (default, unconfirmed) · `just check-rust` (and so `just check` and the CI Rust job) runs `fixtures-verify` first, because tests read the generated 50 MB fixtures. Image-worker defaults (M0a-3): every job carries the uploader's claimed format and a mismatch with the sniffed format fails; the compatible copy keeps the orientation tag and colour profile only; size buckets are in MiB.
 - DU-51 (default, unconfirmed) · A crate `crates/telemetry` is added to the DU-7 layout for the telemetry facade (consent storage, offline queue, sender), so `crates/proto` holds only the schema and stays free of I/O.
 - DU-50 (default, unconfirmed) · Capability check details (M1-5): reasons `no_network`, `firewall_blocked`, `low_space`, `low_power`; fixes `turn_on_hotspot`, `show_network_instructions`, `allow_firewall`, `choose_smaller_size`, `plug_in`; link-local and 100.64.0.0/10 addresses count as isolated; the reachability test is capped at 5 s overall with the 2 s mDNS wait inside.
@@ -116,7 +119,9 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 ## 3. Pending digest edits
 
-None. DU-44 to DU-52 were applied to the digest and `CLAUDE.md` at the milestone S boundary (2026-11-16).
+DU-44 to DU-52 were applied to the digest and `CLAUDE.md` at the milestone S boundary (2026-11-16). Queued since then:
+
+- §6, §8 item 5 and §12: add DU-53 (database and strip details).
 
 ## 4. Plan changes
 
@@ -146,3 +151,4 @@ None. DU-44 to DU-52 were applied to the digest and `CLAUDE.md` at the milestone
 - 2026-11-16T14:11Z · S, M0a, M1 · Environment failure: all six running subagents (implementers for M0a-5, M0a-2, M1-2, M1-3; verifiers for S6 and M0a-3) ended with "You've hit your 5-hour limit" (HTTP 429) from the model API. That meets the circuit-breaker rule of three environment failures in a row. No work was lost: each agent's worktree holds its partial work, and M1-2 and S6 have their commits. The limit then reset and the session was continued. Because this session was started at a person's request, the run is resumed under the "Resuming" steps: the cause is checked first with one cheap resume (the S6 verifier); if that fails again the run pauses at once with this reason.
 - 2026-11-16T14:24Z · S, M0a · The probe succeeded, so all agents were resumed from their saved work; `consecutive_env_failures` reset. S6 done (1 Sonnet implementer, 1 Sonnet verifier, three pre-verification returns, 5 CI runs) and M0a-3 done (1 Opus implementer, 1 Sonnet verifier, no returns). Milestone S now has every task done except S4, which waits at its human gate. M1-2, M1-3 and M0a-5 are with verifiers; M0a-2 and M0a-8 are being implemented. A CI run of the merged branch was started with `just ci`.
 - 2026-11-16T14:25Z · S · Milestone S boundary: every S task is done except S4, which is at its human gate. Queued digest edits DU-44 to DU-52 and the `CLAUDE.md` changes were applied in one commit (6a7732c). Report written: `docs/agentic/reports/S.md`. Totals for S: 6 implementers (1 Opus, 4 Sonnet, 1 Haiku), 6 Sonnet verifiers, 5 CI runs. The run continues with M0a and M1.
+- 2026-11-16T14:46Z · M0a, M1 · Done: M1-2 (1 Opus, 1 Sonnet verifier, one return for an approved contract change), M1-3 (1 Sonnet, 1 Sonnet verifier, no returns), M0a-5 agent part (1 Opus, 1 Sonnet verifier, no returns; now at its device-photo gate). CI run 43884740203 on the merged branch failed only the Windows staleness test for generated files (CRLF on checkout); fixed in `.gitattributes` and a second run was started. M0a-2 and M0a-8 are with verifiers. Dispatched M1-4, M1-1 and M1-17a (Sonnet).
