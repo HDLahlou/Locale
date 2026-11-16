@@ -42,7 +42,7 @@ doctor:
     @echo "doctor: not implemented yet (task S2)"
 
 fixtures-verify:
-    @echo "fixtures-verify: not implemented yet (task S4)"
+    python3 -I scripts/fixtures_verify.py
 
 mobile-it platform suite:
     @echo "mobile-it: not implemented yet (task M0a-6)"
