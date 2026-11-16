@@ -11,6 +11,8 @@ base64 = { workspace = true }
 fs4 = { workspace = true }
 hyper = { workspace = true, features = ["http1", "http2", "server"] }
 hyper-util = { workspace = true, features = ["http1", "http2", "server", "server-auto", "tokio"] }
+mdns-sd = { workspace = true }
+proto = { path = "../proto" }
 rcgen = { workspace = true }
 rustls = { workspace = true }
 serde = { workspace = true }
