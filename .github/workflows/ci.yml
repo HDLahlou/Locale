@@ -1,0 +1,138 @@
+name: ci
+
+on:
+  push:
+    branches: ["ci/**"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "Cargo package to test on Windows (for example host-core)"
+        required: true
+        type: string
+      filter:
+        description: "Test name filter (optional)"
+        required: false
+        default: ""
+        type: string
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  rust:
+    if: github.event_name != 'workflow_dispatch'
+    name: rust (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - name: Rust toolchain from rust-toolchain.toml
+        run: rustup show
+      - uses: Swatinem/rust-cache@v2
+      # check-rust: fmt, pnpm install, desktop web build, clippy -D warnings, cargo test --workspace
+      - run: just check-rust
+
+  web:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: just check-web
+      - name: Install browsers
+        run: pnpm -C apps/web-guest exec playwright install --with-deps chromium firefox webkit
+      - name: Guest web browser tests
+        run: pnpm -C apps/web-guest e2e
+
+  mobile:
+    if: github.event_name != 'workflow_dispatch'
+    runs-on: macos-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.47.7
+          channel: stable
+          cache: true
+      - run: just check-mobile
+
+  scripts:
+    if: github.event_name != 'workflow_dispatch'
+    name: scripts (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: extractions/setup-just@v2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Windows has no python3 command; the recipes call python3, so give it one.
+      - name: python3 alias (Windows)
+        if: runner.os == 'Windows'
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          printf '#!/bin/sh\nexec python "$@"\n' > "$RUNNER_TEMP/bin/python3"
+          chmod +x "$RUNNER_TEMP/bin/python3"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      - run: just check-scripts
+      # Runners have no simulators, so the doctor may report problems. Show, never fail.
+      - name: just doctor (informational)
+        continue-on-error: true
+        run: just doctor
+
+  windows-crate:
+    if: github.event_name == 'workflow_dispatch'
+    name: windows tests (${{ inputs.package }})
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: rustup show
+      - uses: Swatinem/rust-cache@v2
+      - name: Desktop web build (the Tauri shell needs it)
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm -C apps/desktop build
+      - name: cargo test
+        shell: bash
+        env:
+          PKG: ${{ inputs.package }}
+          FILTER: ${{ inputs.filter }}
+        run: cargo test -p "$PKG" $FILTER

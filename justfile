@@ -39,6 +39,27 @@ fmt:
     pnpm format
     for d in {{flutter_dirs}}; do (cd "$d" && dart format .); done
 
+# Push HEAD to origin as ci/<suffix>, wait for the CI run, exit with its status
+ci suffix:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    branch="ci/{{suffix}}"
+    case "{{suffix}}" in ""|/*|*..*|*" "*|-*) echo "ci: bad suffix" >&2; exit 2;; esac
+    sha=$(git rev-parse HEAD)
+    if ! git push origin "HEAD:refs/heads/$branch"; then
+      echo "ci: origin/$branch has different history; pick a new suffix, for example {{suffix}}-$(git rev-parse --short HEAD)" >&2
+      exit 3
+    fi
+    id=""
+    for _ in $(seq 1 30); do
+      id=$(gh run list --workflow ci.yml --branch "$branch" --event push --commit "$sha" --limit 1 --json databaseId --jq '.[0].databaseId // empty')
+      [ -n "$id" ] && break
+      sleep 5
+    done
+    [ -n "$id" ] || { echo "ci: no run started for $branch at $sha" >&2; exit 1; }
+    echo "ci: run $id"
+    gh run watch "$id" --exit-status
+
 doctor:
     python3 -I scripts/doctor.py
 
