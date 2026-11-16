@@ -13,5 +13,21 @@ path = "src/lib.rs"
 name = "image-worker"
 path = "src/main.rs"
 
-[lints]
-workspace = true
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+tempfile = { workspace = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+libc = { workspace = true }
+objc2-core-foundation = { workspace = true, features = ["std", "CFBase", "CFData", "CFDictionary", "CFNumber", "CFString"] }
+objc2-core-graphics = { workspace = true, features = ["std", "CGImage", "CGColorSpace"] }
+objc2-image-io = { workspace = true, features = ["std", "CGImageSource", "CGImageDestination", "CGImageProperties", "objc2-core-graphics"] }
+
+# This crate alone may use `unsafe`, and only in its macOS back-end module
+# (ImageIO is reached through FFI). Everything else matches the workspace.
+[lints.rust]
+unsafe_code = "deny"
+
+[lints.clippy]
+all = { level = "warn", priority = -1 }
