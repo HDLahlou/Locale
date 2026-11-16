@@ -1,0 +1,2 @@
+# Fixtures are byte-exact: no line-ending conversion on Windows checkouts
+fixtures/** -text
