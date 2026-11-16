@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "Client → host messages.",
+  "oneOf": [
+    {
+      "description": "First frame, within 5 s: authenticates the socket and states the client's\nlast applied version (0 for none).",
+      "properties": {
+        "session_token": {
+          "description": "Session token.",
+          "type": "string"
+        },
+        "t": {
+          "const": "hello",
+          "type": "string"
+        },
+        "version": {
+          "description": "Last applied change version.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "t",
+        "session_token",
+        "version"
+      ],
+      "type": "object"
+    },
+    {
+      "description": "Asks for the changes after `version` again (or a snapshot).",
+      "properties": {
+        "t": {
+          "const": "resync",
+          "type": "string"
+        },
+        "version": {
+          "description": "Last applied change version.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "t",
+        "version"
+      ],
+      "type": "object"
+    },
+    {
+      "description": "Keep-alive; the host answers `pong`.",
+      "properties": {
+        "t": {
+          "const": "ping",
+          "type": "string"
+        }
+      },
+      "required": [
+        "t"
+      ],
+      "type": "object"
+    }
+  ],
+  "title": "ClientMessage"
+}

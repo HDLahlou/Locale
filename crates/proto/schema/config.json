@@ -1,0 +1,149 @@
+{
+  "$defs": {
+    "CompatibleCopyStrategy": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "on_demand"
+      ],
+      "type": "string"
+    },
+    "OutboxConfig": {
+      "description": "Outbox settings (remote key `outbox_config`).",
+      "properties": {
+        "max_age_ms": {
+          "default": 86400000,
+          "description": "Age in milliseconds before an entry expires.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "max_attempts": {
+          "default": 10,
+          "description": "Attempts before an entry expires.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "RateLimits": {
+      "description": "Rate limits (remote key `rate_limits`). Join and password limits are fixed;\nsee [`crate::api::JOINS_PER_MINUTE_PER_IP`].",
+      "properties": {
+        "upload_window_ms": {
+          "default": 300000,
+          "description": "Window length in milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "uploads_per_window": {
+          "default": 30,
+          "description": "Uploads per user per window.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "ReachabilityTestMode": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "full"
+      ],
+      "type": "string"
+    },
+    "TransferConfig": {
+      "description": "Transfer settings (remote key `transfer_config`).",
+      "properties": {
+        "backoff_base_ms": {
+          "default": 500,
+          "description": "Backoff base in milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "chunk_bytes": {
+          "default": 1048576,
+          "description": "Upload chunk size in bytes.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "stall_timeout_ms": {
+          "default": 120000,
+          "description": "Stall timeout in milliseconds.",
+          "format": "uint64",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "transfer_retries": {
+          "default": 3,
+          "description": "Transfer retries.",
+          "format": "uint32",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "The configuration the host freezes at event start and sends at join and in the\nsnapshot. Keys match the PH §7 flag and remote-config names.\n\nMissing keys take the compiled default, so an older host's config still parses.",
+  "properties": {
+    "browser_guests_available": {
+      "default": true,
+      "description": "Flag: browser guests can be offered.",
+      "type": "boolean"
+    },
+    "compatible_copy_strategy": {
+      "$ref": "#/$defs/CompatibleCopyStrategy",
+      "default": "on_demand",
+      "description": "Remote config: when the compatible copy is made."
+    },
+    "desktop_download_all": {
+      "default": true,
+      "description": "Flag: the desktop app offers Download all.",
+      "type": "boolean"
+    },
+    "outbox_config": {
+      "$ref": "#/$defs/OutboxConfig",
+      "default": {
+        "max_age_ms": 86400000,
+        "max_attempts": 10
+      },
+      "description": "Outbox settings."
+    },
+    "quick_session_enabled": {
+      "default": true,
+      "description": "Flag: quick sessions are enabled.",
+      "type": "boolean"
+    },
+    "rate_limits": {
+      "$ref": "#/$defs/RateLimits",
+      "default": {
+        "upload_window_ms": 300000,
+        "uploads_per_window": 30
+      },
+      "description": "Rate limits."
+    },
+    "reachability_test_mode": {
+      "$ref": "#/$defs/ReachabilityTestMode",
+      "default": "full",
+      "description": "Remote config: reachability test mode."
+    },
+    "transfer_config": {
+      "$ref": "#/$defs/TransferConfig",
+      "default": {
+        "backoff_base_ms": 500,
+        "chunk_bytes": 1048576,
+        "stall_timeout_ms": 120000,
+        "transfer_retries": 3
+      },
+      "description": "Transfer settings."
+    }
+  },
+  "title": "Config",
+  "type": "object"
+}

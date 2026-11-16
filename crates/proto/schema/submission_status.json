@@ -1,0 +1,73 @@
+{
+  "$defs": {
+    "ItemReason": {
+      "description": "Open enum: receivers map values they do not know to Unknown.",
+      "enum": [
+        "type",
+        "size",
+        "storage_full",
+        "abandoned",
+        "stalled",
+        "cancelled",
+        "unauthorized",
+        "invalid_image",
+        "integrity",
+        "duplicate"
+      ],
+      "type": "string"
+    },
+    "ItemState": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "PENDING",
+        "UPLOADING",
+        "VALIDATING",
+        "AVAILABLE",
+        "FAILED",
+        "DELETED"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`GET /submissions/{submission_id}` response. `reason_code` is `null` unless `FAILED`.",
+  "properties": {
+    "item_id": {
+      "description": "Item ID.",
+      "type": "string"
+    },
+    "reason_code": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ItemReason"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "Reason, or `null`."
+    },
+    "received_bytes": {
+      "description": "Bytes received so far.",
+      "format": "uint64",
+      "minimum": 0,
+      "type": "integer"
+    },
+    "retryable": {
+      "description": "Whether the reason is retryable (`false` when there is none).",
+      "type": "boolean"
+    },
+    "state": {
+      "$ref": "#/$defs/ItemState",
+      "description": "Current state."
+    }
+  },
+  "required": [
+    "state",
+    "retryable",
+    "received_bytes",
+    "item_id"
+  ],
+  "title": "SubmissionStatus",
+  "type": "object"
+}

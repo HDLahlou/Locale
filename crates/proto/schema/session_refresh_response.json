@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /session/refresh` response.",
+  "properties": {
+    "session_expires_at": {
+      "description": "New expiry.",
+      "format": "int64",
+      "type": "integer"
+    },
+    "session_token": {
+      "description": "New session token.",
+      "type": "string"
+    }
+  },
+  "required": [
+    "session_token",
+    "session_expires_at"
+  ],
+  "title": "SessionRefreshResponse",
+  "type": "object"
+}

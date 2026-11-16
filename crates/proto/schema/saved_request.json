@@ -1,0 +1,25 @@
+{
+  "$defs": {
+    "DownloadVersion": {
+      "description": "Closed enum: receivers reject values they do not know.",
+      "enum": [
+        "original",
+        "compatible"
+      ],
+      "type": "string"
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "description": "`POST /items/{id}/saved` request: a save made from the local cache.",
+  "properties": {
+    "version": {
+      "$ref": "#/$defs/DownloadVersion",
+      "description": "Which file was saved."
+    }
+  },
+  "required": [
+    "version"
+  ],
+  "title": "SavedRequest",
+  "type": "object"
+}
