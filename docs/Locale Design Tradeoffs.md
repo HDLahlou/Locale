@@ -33,6 +33,7 @@ This document records every major design decision where real alternatives were w
 | TR-13 | Sign-in channel, code provider, service hosting | Email codes, Postmark, one Fly.io machine (EU) | Decided, Nov 13, 2026 | D7, MVP §5.1; DU-6, DU-8 |
 | TR-14 | Counting saves without tracking who saved what | Save reports counted per photo; log names the person, never the photo | Decided, Nov 13, 2026 | MVP §5.12; DU-19 |
 | TR-15 | HEIC decoding on Windows hosts | Bundled libheif, internal builds until licensing advice | Decided, Nov 13, 2026 | D11, MVP §12 |
+| TR-16 | How the desktop core sends telemetry | Own small sender over the PostHog HTTP API; the facade owns the queue and flag cache; no `posthog-rs` | Proposed, Nov 16, 2026 (build orchestrator) | D16, TR-8; digest §11 rule 7, DU-44, DU-48 |
 
 ---
 
@@ -350,6 +351,34 @@ This document records every major design decision where real alternatives were w
 **Fallback, ready if advice is negative:** require the Microsoft HEVC extension. The capability check detects it and blocks hosting with install instructions. The `ImageCodec` trait makes this a backend swap.
 
 **What would make us revisit.** The licensing advice, or a royalty-free path becoming clear.
+
+---
+
+## TR-16. How the desktop core sends telemetry
+
+**Status:** Proposed, Nov 16, 2026. Chosen by the build orchestrator after task M0a-9; a person may overrule it.
+
+**Context.** The Rust core owns one telemetry facade (D16). Digest §11 rule 7 says the facade keeps its own SQLite queue "if `posthog-rs` does not persist", and rule 8 says flags fall back to compiled defaults. Task M0a-9 read `posthog-rs` 0.33.1 and found that it keeps unsent events in memory only, has no flag cache that survives a restart, forces the aws-lc-rs TLS back end into the build (the workspace uses rustls with `ring`, DU-44), and turns person profiles on whenever a group is added, which rule 5 forbids unless every call undoes it. Findings and source citations: `docs/agentic/tasks/M0a-9.md`.
+
+**Options**
+| | **Own sender over the HTTP API** | `posthog-rs` for sending only | `posthog-rs` for capture and flags |
+|---|---|---|---|
+| Offline queue that survives a restart (rule 7) | Facade's SQLite queue | Facade's SQLite queue, plus the crate's second in-memory queue | Not met without the facade's queue anyway |
+| Flags offline (rule 8) | Facade's cache, then compiled defaults | Same | Crate returns an error offline; the facade still needs a cache |
+| TLS back end | rustls with `ring`, same as the rest | Adds aws-lc-rs (C build tools on Windows, a second crypto library) | Same |
+| Control over what leaves the device | One request builder next to the allowlist | Crate adds its own properties (`$is_server`, library and OS info) that must be reviewed on each upgrade | Same |
+| Code we maintain | About two small requests: batch capture and flag fetch | Glue plus the queue | Glue plus the queue |
+| Risk if PostHog changes its API | Ours to follow | The crate follows | The crate follows |
+
+**Decision:** the facade sends batches itself to PostHog's capture endpoint and fetches flags from the flags endpoint, using the workspace's HTTP client and rustls with `ring`. The facade owns the SQLite queue and the flag cache. The desktop build does not depend on `posthog-rs`. Phones keep the PostHog Flutter SDK behind the same schema facade (digest §13 C16).
+
+**Why.** The crate would add nothing we can rely on: persistence and the flag cache must be ours in every option. It would add a second TLS library that makes the Windows build harder, and properties we did not choose in a product whose promise is that only allowlisted metadata leaves the device.
+
+**Costs we accept.** We maintain the request format ourselves and must follow PostHog API changes. We give up the crate's local flag evaluation, which the MVP's flags do not need.
+
+**What would make us revisit.** `posthog-rs` gaining disk persistence and a selectable `ring` back end; or the MVP needing local evaluation of targeted flags.
+
+**Consequences.** M1-17 builds the sender, the SQLite queue and the consent gate with a fake PostHog endpoint on loopback in tests. M1-18 builds the flag cache. Digest §11 rule 7 is reworded at the next milestone boundary (DU-48).
 
 ---
 

@@ -20,7 +20,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M0a-6 | todo | — | S | 0 | — |  |
 | M0a-7 | todo | — | S | 0 | — |  |
 | M0a-8 | todo | — | S | 0 | — | Has a human gate |
-| M0a-9 | in-progress | worktree-agent-a5bf8a59b588bb187 | H | 1 | FAIL twice (Haiku): main answers confirmed; 9 then 2 citation points | Returned twice (the limit). Findings: posthog-rs 0.33.1 does not persist to disk, flags need the network, and it forces aws-lc-rs into the build |
+| M0a-9 | done | merged 69b02ce | H | 1 | PASS on the third check (Haiku), after two returns for citations | Findings: `posthog-rs` 0.33.1 does not persist unsent events (memory queue only); flags need a network call and no cache survives a restart, so offline they must fall back to compiled defaults; the crate forces aws-lc-rs and sets person profiles on when a group is added. Decision TR-16 |
 | M0a-10 | todo | — | H writes runbook | 0 | — | Has a human gate |
 | M0b-1 | todo | — | S | 0 | — |  |
 | M0b-2 | todo | — | S | 0 | — |  |
@@ -103,6 +103,8 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - DU-43 (default, unconfirmed) · Sizes use binary units: the 50 MB photo limit is 52,428,800 bytes and the 1 MB chunk is 1,048,576 bytes. The digest says "50 MB" and "1024 KB" without defining the unit.
 - DU-44 (default, unconfirmed) · TLS uses rustls with the `ring` crypto provider, not aws-lc, so the phone and Windows builds need no extra native build tools.
+- TR-16 (proposed) · The desktop core sends telemetry with its own small sender over PostHog's HTTP API; the facade owns the SQLite queue and the flag cache; `posthog-rs` is not used. Reason: the crate does not persist, has no offline flag cache, and forces aws-lc-rs into the build. Entry added to `docs/Locale Design Tradeoffs.md`.
+- DU-48 (default, unconfirmed) · Digest §11 rule 7 becomes: "On desktop the facade owns a small SQLite queue and sends over PostHog's HTTP API itself (TR-16)."
 - DU-46 (default, unconfirmed) · Dark-theme values the digest does not give (S5): selected tab `#A5B4FC`; badge tint `#312E81` with ink `#E0E7FF`; status pairs are the light pairs swapped (ok `#14532D`/`#DCFCE7`, warn `#78350F`/`#FEF3C7`, error `#912018`/`#FEE4E2`). Spacing, radius and type scales and the extra label "Verified" are also S5 defaults, in `packages/ui/tokens.json` and `labels.json`.
 - DU-47 (default, unconfirmed) · Listener defaults (M0a-1): 20 port attempts after 7420, 10 s first-byte and TLS handshake timeouts, 5 s shutdown grace, HTTP/1.1 and h2 without ALPN, key and certificate stored as `tls/key.der` (mode 0600) and `tls/cert.der`; the pinned client does not check certificate dates (the pin is the trust decision).
 - DU-45 (default, unconfirmed) · Three folders are added to the DU-7 layout: `scripts/` (developer scripts: doctor, fixture generator and verifier), `fixtures/` (test images and manifest; small files committed, two 50 MB files generated on demand), `packages/ui` (shared web UI kit and design tokens, pnpm package `@locale/ui`).
@@ -111,6 +113,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - §10 and §12: add DU-43 (binary units for the photo limit and chunk size).
 - §3 "Core libraries" and §12: add DU-44 (rustls with `ring`).
+- §11 rule 7 and §12: add DU-48 (facade owns the queue and the sender; TR-16).
 - §9 and §12: add DU-46 (dark values chosen in S5).
 - §5.1 and §12: add DU-47 (listener timeouts, port attempts, key file names).
 - §3 "Repository layout" and §12: add DU-45 (`scripts/`, `fixtures/`, `packages/ui`).
@@ -130,3 +133,4 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - 2026-11-16T06:05Z · S · S2 done: 1 Haiku implementer, 1 Sonnet verifier, no returns. S4 returned once (bytecode committed). S5 dispatched (Sonnet).
 - 2026-11-16T07:00Z · S, M0a · Done: S4 (agent part; now at its human gate), S5, M0a-1, each with one implementer and one verifier and no verifier returns. S6 and M0a-9 returned once each. Verifiers that run outside a task worktree cannot use the Edit tool under `.claude/worktrees/` (the `.claude/**` deny rule); from now on verifiers get their own worktree and check out the task branch detached. Dispatched M1-5 (Sonnet).
+- 2026-11-16T07:35Z · M0a · M0a-9 done: 1 Haiku implementer, 1 Haiku verifier, two returns for citations (a research note with source citations is a poor fit for Haiku at low effort; route the next one to Sonnet). Docs-only merge, so `just check` was not re-run for it. Dispatched M0a-3 (Opus).
