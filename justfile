@@ -39,7 +39,7 @@ fmt:
     for d in {{flutter_dirs}}; do (cd "$d" && dart format .); done
 
 doctor:
-    @echo "doctor: not implemented yet (task S2)"
+    python3 -I scripts/doctor.py
 
 fixtures-verify:
     @echo "fixtures-verify: not implemented yet (task S4)"
