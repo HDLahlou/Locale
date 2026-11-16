@@ -108,7 +108,7 @@ class DoctorTests(unittest.TestCase):
         fakes = os.path.join(self._tmp.name, "fakes")
         os.makedirs(fakes)
         if WINDOWS:
-            make_fake(fakes, "just", "ping -n 60 127.0.0.1 > nul")
+            make_fake(fakes, "just", f'"{sys.executable}" -c "import time; time.sleep(60)"')
         else:
             make_fake(fakes, "just", f"exec {shutil.which('sleep')} 60")
         started = time.monotonic()
