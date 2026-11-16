@@ -93,7 +93,8 @@ fn contract_document_covers_every_code_and_row() {
 }
 
 /// The crate is compiled into the phone app: no async runtime, networking, TLS,
-/// database or crypto dependencies.
+/// database or crypto dependencies, except the one Ed25519 crate the credential
+/// module uses (M1-2).
 #[test]
 fn dependencies_stay_small() {
     let manifest = fs::read_to_string(root().join("Cargo.toml")).unwrap();
@@ -110,8 +111,10 @@ fn dependencies_stay_small() {
         .map(str::trim)
         .filter(|n| !n.is_empty() && !n.starts_with('#'))
         .collect();
+    let signature_crate = "ed25519-dalek";
     let allowed = [
         "base64",
+        signature_crate,
         "percent-encoding",
         "schemars",
         "serde",
@@ -140,7 +143,7 @@ fn dependencies_stay_small() {
     ];
     for f in forbidden {
         assert!(
-            !names.iter().any(|n| n.contains(f)),
+            !names.iter().any(|n| *n != signature_crate && n.contains(f)),
             "forbidden dependency {f}"
         );
     }

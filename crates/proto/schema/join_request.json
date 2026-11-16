@@ -28,11 +28,6 @@
       ],
       "type": "string"
     },
-    "Credential": {
-      "description": "Account credential: v1.<base64url(payload JSON)>.<base64url(Ed25519 signature)>.",
-      "pattern": "^v1\\.[A-Za-z0-9_-]+\\.[A-Za-z0-9_-]{86}$",
-      "type": "string"
-    },
     "GuestInfo": {
       "description": "A browser or signed-out guest.",
       "properties": {
@@ -89,15 +84,11 @@
       "description": "The client."
     },
     "credential": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/Credential"
-        },
-        {
-          "type": "null"
-        }
-      ],
-      "description": "Account credential, for verified attendees."
+      "description": "Account credential text (`v1.<payload>.<signature>`), for verified\nattendees. Kept raw so a malformed credential never fails the request: the\nhost treats it as a guest (`credential::evaluate_identity`, §4.3 step 4(a)).",
+      "type": [
+        "string",
+        "null"
+      ]
     },
     "guest": {
       "anyOf": [
@@ -137,7 +128,7 @@
           "type": "null"
         }
       ],
-      "description": "Proof of possession of the credential's device key."
+      "description": "Proof of possession of the credential's device key, a `JoinProof`\n(`{timestamp, signature}`). Kept as raw JSON so a malformed proof never\nfails the request: the host treats it as a guest."
     }
   },
   "required": [

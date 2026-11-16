@@ -8,6 +8,7 @@ description = "Locale interface contract: wire types, codes, state table, config
 
 [dependencies]
 base64 = { workspace = true }
+ed25519-dalek = { workspace = true }
 percent-encoding = { workspace = true }
 schemars = { workspace = true }
 serde = { workspace = true }

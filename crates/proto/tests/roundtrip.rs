@@ -236,11 +236,11 @@ fn join_request_full_and_minimal() {
             kind: ClientKind::Ios,
             app_version: "1.0.0".into(),
         },
-        credential: Some(credential()),
-        proof: Some(JoinProof {
-            timestamp: 1_763_200_000_000,
-            signature: Signature::from_bytes([1; 64]),
-        }),
+        credential: Some(format!("v1.{PAYLOAD_SEG}.{SIG_1}")),
+        proof: Some(serde_json::json!({
+            "timestamp": 1_763_200_000_000_i64,
+            "signature": SIG_1,
+        })),
         guest: None,
         join_token: Some(JoinToken::from_bytes([0xab; 16])),
         password: Some("hunter2".into()),
