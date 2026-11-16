@@ -19,6 +19,7 @@ check-rust:
 check-web:
     pnpm install --frozen-lockfile
     pnpm format:check
+    pnpm -r --if-present format:check
     pnpm -r --if-present lint
     pnpm -r --if-present typecheck
     pnpm -r --if-present test
@@ -60,7 +61,7 @@ doctor:
     python3 -I scripts/doctor.py
 
 fixtures-verify:
-    @echo "fixtures-verify: not implemented yet (task S4)"
+    python3 -I scripts/fixtures_verify.py
 
 mobile-it platform suite:
     @echo "mobile-it: not implemented yet (task M0a-6)"

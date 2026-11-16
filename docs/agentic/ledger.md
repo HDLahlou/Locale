@@ -9,10 +9,10 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S1 | done | merged 9fab878 | S | 1 | PASS (Sonnet), `just check` green on build/integration | Skeleton, justfile, CLAUDE.md. Tauri crate is `locale-desktop`; TypeScript pinned to 6.0.3 |
 | S2 | done | merged 1d45dab | H | 1 | PASS (Sonnet, low), `just check` green on build/integration | `just doctor` exits 0 on this machine: nothing needed for M1 is missing, so the human gate needs no action. Not needed and missing: cargo-ndk, Playwright browsers, libheif. Windows branches of the script are unrun until S6 |
 | S3 | in-progress | worktree | O | 1 | — |  |
-| S4 | in-progress | worktree-agent-ac9bd79d0909d040d | S (was H) | 1 | — | Checks pass; returned once to remove committed `__pycache__` files. Has a human gate (person adds four real device photos) |
-| S5 | in-progress | worktree | S | 1 | — |  |
-| S6 | todo | — | S | 0 | — | Has a human gate |
-| M0a-1 | in-progress | worktree | O | 1 | — |  |
+| S4 | verifying | worktree-agent-ac9bd79d0909d040d | S (was H) | 1 | — | One return (bytecode removed). `just fixtures-verify` and `just check` pass when run by the orchestrator. Has a human gate (person adds four real device photos) |
+| S5 | verifying | worktree-agent-a031ccac713b647fe | S | 1 | — | Orchestrator ran the ui-kit tests (79 + 2 pass) and `just check` (pass) |
+| S6 | in-progress | worktree | S | 1 | — | Implementer may push only `ci/s6-*` branches. Has a human gate (Actions enabled, setup item 5) |
+| M0a-1 | verifying | worktree-agent-a5916b84adbae7b91 | O | 1 | — | Orchestrator ran `cargo test -p host-core listener` (20 pass), `cargo test -p client-core` (8 pass) and `just check` (pass) |
 | M0a-2 | todo | — | S | 0 | — |  |
 | M0a-3 | todo | — | O | 0 | — |  |
 | M0a-4 | todo | — | O | 0 | — | Has a human gate |
@@ -20,7 +20,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M0a-6 | todo | — | S | 0 | — |  |
 | M0a-7 | todo | — | S | 0 | — |  |
 | M0a-8 | todo | — | S | 0 | — | Has a human gate |
-| M0a-9 | todo | — | H | 0 | — |  |
+| M0a-9 | in-progress | worktree | H | 1 | — | Research note only |
 | M0a-10 | todo | — | H writes runbook | 0 | — | Has a human gate |
 | M0b-1 | todo | — | S | 0 | — |  |
 | M0b-2 | todo | — | S | 0 | — |  |
