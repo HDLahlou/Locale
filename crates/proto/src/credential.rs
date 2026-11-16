@@ -306,7 +306,7 @@ pub enum CredentialError {
 }
 
 impl CredentialError {
-    /// Stable snake_case code for the event log and telemetry.
+    /// Stable snake_case code for the host's event log (not telemetry).
     pub const fn as_str(&self) -> &'static str {
         match self {
             CredentialError::Malformed(_) => "credential_malformed",
@@ -420,6 +420,9 @@ pub fn sign_join_proof(
 /// Why a join proof did not verify.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, thiserror::Error)]
 pub enum ProofError {
+    /// The `proof` field is not a `JoinProof` (`{timestamp, signature}`).
+    #[error("join proof is malformed")]
+    Malformed,
     /// The signature does not verify under the credential's `device_pubkey` for
     /// this event and certificate.
     #[error("join proof signature does not verify")]
@@ -433,14 +436,21 @@ pub enum ProofError {
 }
 
 impl ProofError {
-    /// Stable snake_case code for the event log and telemetry.
+    /// Stable snake_case code for the host's event log (not telemetry).
     pub const fn as_str(&self) -> &'static str {
         match self {
+            ProofError::Malformed => "proof_malformed",
             ProofError::BadSignature => "proof_bad_signature",
             ProofError::Stale => "proof_stale",
             ProofError::Future => "proof_future",
         }
     }
+}
+
+/// Reads the raw `proof` field of `POST /join` (`JoinRequest::proof`) as a
+/// [`JoinProof`].
+pub fn parse_join_proof(value: &serde_json::Value) -> Result<JoinProof, ProofError> {
+    JoinProof::deserialize(value).map_err(|_| ProofError::Malformed)
 }
 
 /// Verifies a join proof against the verified credential `payload`: the
@@ -497,7 +507,7 @@ pub enum GuestReason {
 }
 
 impl GuestReason {
-    /// Stable snake_case code for the event log and telemetry.
+    /// Stable snake_case code for the host's event log (not telemetry).
     pub const fn as_str(&self) -> &'static str {
         match self {
             GuestReason::NoCredential => "no_credential",
@@ -506,6 +516,61 @@ impl GuestReason {
             GuestReason::Proof(e) => e.as_str(),
         }
     }
+
+    /// One line for the contract document and the event log.
+    pub const fn description(&self) -> &'static str {
+        match self {
+            GuestReason::NoCredential => "No credential was sent.",
+            GuestReason::Credential(CredentialError::Malformed(_)) => {
+                "The credential text is not `v1.<payload>.<signature>` with a well-formed payload."
+            }
+            GuestReason::Credential(CredentialError::UnknownKid) => {
+                "The credential's `kid` is not in the host's key list."
+            }
+            GuestReason::Credential(CredentialError::BadSignature) => {
+                "The credential signature does not verify (strict Ed25519)."
+            }
+            GuestReason::Credential(CredentialError::Expired) => {
+                "`expires_at` is at or before the host's clock."
+            }
+            GuestReason::Credential(CredentialError::NotYetValid) => {
+                "`issued_at` is more than 5 minutes ahead of the host's clock."
+            }
+            GuestReason::Credential(CredentialError::WrongRole) => {
+                "The signed payload's role is not `verified`."
+            }
+            GuestReason::MissingProof => "A credential was sent without `proof`.",
+            GuestReason::Proof(ProofError::Malformed) => {
+                "`proof` is not `{timestamp, signature}` with a 64-byte signature."
+            }
+            GuestReason::Proof(ProofError::BadSignature) => {
+                "The proof does not verify under the credential's `device_pubkey` for this event and certificate."
+            }
+            GuestReason::Proof(ProofError::Stale) => {
+                "The proof timestamp is more than 5 minutes behind the host's clock."
+            }
+            GuestReason::Proof(ProofError::Future) => {
+                "The proof timestamp is more than 5 minutes ahead of the host's clock."
+            }
+        }
+    }
+
+    /// Every reason, in evaluation order (one `Malformed` stands for all
+    /// malformed-credential details).
+    pub const ALL: [GuestReason; 12] = [
+        GuestReason::NoCredential,
+        GuestReason::Credential(CredentialError::Malformed("")),
+        GuestReason::Credential(CredentialError::UnknownKid),
+        GuestReason::Credential(CredentialError::BadSignature),
+        GuestReason::Credential(CredentialError::WrongRole),
+        GuestReason::Credential(CredentialError::Expired),
+        GuestReason::Credential(CredentialError::NotYetValid),
+        GuestReason::MissingProof,
+        GuestReason::Proof(ProofError::Malformed),
+        GuestReason::Proof(ProofError::BadSignature),
+        GuestReason::Proof(ProofError::Stale),
+        GuestReason::Proof(ProofError::Future),
+    ];
 }
 
 /// The host's identity decision for a join.
@@ -513,16 +578,19 @@ impl GuestReason {
 pub enum IdentityDecision {
     /// Credential and proof verified.
     Verified(VerifiedIdentity),
-    /// Treat as a guest; the reason is for the event log and telemetry only.
+    /// Treat as a guest; the reason is for the host's event log only.
     Guest(GuestReason),
 }
 
 /// The host's decision at Access Validation step (a) (§4.3 step 4(a), §8 item 3):
 /// verify the credential, then the proof of possession. Every failure means
 /// guest, never a rejected join.
+///
+/// Takes the raw `JoinRequest` fields: `credential_text` is
+/// `request.credential.as_deref()` and `proof` is `request.proof.as_ref()`.
 pub fn evaluate_identity(
     credential_text: Option<&str>,
-    proof: Option<&JoinProof>,
+    proof: Option<&serde_json::Value>,
     key_list: &KeyList,
     event_id: &EventId,
     fingerprint: &Fingerprint,
@@ -538,7 +606,11 @@ pub fn evaluate_identity(
     let Some(proof) = proof else {
         return IdentityDecision::Guest(GuestReason::MissingProof);
     };
-    if let Err(e) = verify_join_proof(&payload, proof, event_id, fingerprint, now_ms) {
+    let proof = match parse_join_proof(proof) {
+        Ok(p) => p,
+        Err(e) => return IdentityDecision::Guest(GuestReason::Proof(e)),
+    };
+    if let Err(e) = verify_join_proof(&payload, &proof, event_id, fingerprint, now_ms) {
         return IdentityDecision::Guest(GuestReason::Proof(e));
     }
     IdentityDecision::Verified(VerifiedIdentity {

@@ -11,6 +11,7 @@ use serde_json::{Map, Value};
 use crate::api::{self, headers, ENDPOINTS};
 use crate::codes::{ApiCode, ErrorBody, ItemReason, JoinFailure};
 use crate::config::{self, Config, FIXED, TUNABLES};
+use crate::credential::{self, GuestReason};
 use crate::mdns::{self, TxtRecord};
 use crate::model::{
     AccessType, Attendee, ClientKind, DownloadVersion, Event, EventKind, EventPatch, EventStatus,
@@ -520,6 +521,8 @@ pub fn contract_markdown() -> String {
         service::SERVICE_AUTH_SCHEME
     );
     line!();
+    line!("### Credentials");
+    line!();
     line!("**Credential:** `{}.<base64url(payload JSON)>.<base64url(Ed25519 signature)>`. The signature covers the ASCII bytes `{}.<base64url(payload JSON)>`. The payload JSON is compact, fields in this order:", service::CREDENTIAL_VERSION, service::CREDENTIAL_VERSION);
     line!();
     let payload = CredentialPayload {
@@ -552,6 +555,42 @@ pub fn contract_markdown() -> String {
     line!(
         "Accepted within ±{} ms of the host clock.",
         service::PROOF_WINDOW_MS
+    );
+    line!();
+    line!("**In `POST /join`.** `credential` is the raw credential text and `proof` is raw JSON, so a malformed value never fails the request body; it only makes the attendee a guest.");
+    line!();
+    line!("**Host verification** (`credential::evaluate_identity`, offline, strict Ed25519: small-order keys and `R`, and non-canonical `s`, are rejected). In order:");
+    line!();
+    line!("1. No credential: guest.");
+    line!("2. The text splits into `{}`, payload segment and signature; the segment is base64url JSON with a `kid`; the signature is 64 bytes.", service::CREDENTIAL_VERSION);
+    line!("3. `kid` is in the host's compiled-in key list.");
+    line!("4. The signature verifies over `{}.<payload segment>` exactly as received; the payload is never re-serialised.", service::CREDENTIAL_VERSION);
+    line!("5. The payload decodes and its role is `verified`.");
+    line!("6. `expires_at` is after the host clock.");
+    line!(
+        "7. `issued_at` is at most {} ms ahead of the host clock.",
+        credential::CREDENTIAL_CLOCK_SKEW_MS
+    );
+    line!("8. `proof` is present and is `{{timestamp, signature}}`.");
+    line!("9. The proof signature verifies under the credential's `device_pubkey` for this event ID and certificate fingerprint.");
+    line!(
+        "10. The proof timestamp is within ±{} ms of the host clock (inclusive).",
+        service::PROOF_WINDOW_MS
+    );
+    line!();
+    line!("Every failure means guest, never a rejected join (§4.3 step 4(a), §8 item 3). The reason goes to the host's event log only, not telemetry:");
+    line!();
+    line!("| Guest reason | Meaning |");
+    line!("|---|---|");
+    for r in GuestReason::ALL {
+        line!("| `{}` | {} |", r.as_str(), r.description());
+    }
+    line!();
+    let dev = &credential::DEVELOPMENT_KEY_LIST.keys()[0];
+    line!(
+        "**Development key.** `kid` `{}`, public key `{}`. For tests and local runs only; production hosts never include it.",
+        dev.kid(),
+        DevicePublicKey::from_bytes(*dev.key_bytes())
     );
     line!();
 

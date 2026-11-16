@@ -17,7 +17,7 @@ use crate::model::{
     AccessType, AttendeeId, ClientKind, DownloadVersion, EventKind, EventStatus, GuestId, ItemId,
     ItemState, Role, Sha256Hex, SubmissionId,
 };
-use crate::service::{Credential, JoinProof};
+use crate::service::JoinProof;
 use crate::transport::{EventId, JoinToken};
 
 /// Header names.
@@ -379,12 +379,17 @@ pub struct GuestInfo {
 pub struct JoinRequest {
     /// The client.
     pub client: ClientInfo,
-    /// Account credential, for verified attendees.
+    /// Account credential text (`v1.<payload>.<signature>`), for verified
+    /// attendees. Kept raw so a malformed credential never fails the request: the
+    /// host treats it as a guest (`credential::evaluate_identity`, §4.3 step 4(a)).
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub credential: Option<Credential>,
-    /// Proof of possession of the credential's device key.
+    pub credential: Option<String>,
+    /// Proof of possession of the credential's device key, a `JoinProof`
+    /// (`{timestamp, signature}`). Kept as raw JSON so a malformed proof never
+    /// fails the request: the host treats it as a guest.
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    pub proof: Option<JoinProof>,
+    #[schemars(with = "Option<JoinProof>")]
+    pub proof: Option<serde_json::Value>,
     /// Guest identity, when joining without a credential.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub guest: Option<GuestInfo>,

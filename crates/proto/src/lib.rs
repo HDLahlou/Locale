@@ -4,10 +4,10 @@
 //! the client core, the phone bridge and the account service lives here. Other
 //! crates import these types instead of declaring their own.
 //!
-//! The crate is compiled into the phone app, so it stays small: no async runtime,
-//! no networking, no file or database access and no cryptography. Hashing,
-//! signing and verification happen in other crates; this crate only fixes the
-//! text and byte formats they agree on.
+//! The crate is compiled into the phone app, so it stays small: no I/O (no
+//! networking, file or database access), no async runtime and no clock reads.
+//! The only cryptography is Ed25519 signing and verification in [`credential`];
+//! everything else fixes text and byte formats.
 //!
 //! Modules:
 //! - [`transport`]: port, protocol version, event ID, join token, certificate
@@ -16,6 +16,8 @@
 //! - [`api`]: host API routes, headers, request and response bodies, rate limits (§5.3).
 //! - [`ws`]: index sync WebSocket messages and the change envelope (§5.4).
 //! - [`service`]: account service API, credential format, proof of possession (§5.5).
+//! - [`credential`]: credential signing and offline verification, the join
+//!   proof of possession, and the host's verified-or-guest decision (§5.5, §8).
 //! - [`mdns`]: mDNS service type and TXT record (§5.6).
 //! - [`model`]: enums and records of the data model that cross the wire (§6).
 //! - [`state`]: the item state machine as a table (§7).

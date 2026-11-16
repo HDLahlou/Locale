@@ -165,6 +165,8 @@ Envelope `{version, type, payload, ts}`. An unknown `type` is kept as `ChangeBod
 
 Account-scoped requests authenticate with `Authorization: Bearer <refresh_token>`.
 
+### Credentials
+
 **Credential:** `v1.<base64url(payload JSON)>.<base64url(Ed25519 signature)>`. The signature covers the ASCII bytes `v1.<base64url(payload JSON)>`. The payload JSON is compact, fields in this order:
 
 ```json
@@ -181,6 +183,40 @@ Account-scoped requests authenticate with `Authorization: Bearer <refresh_token>
 | timestamp | 8 | Unix ms, big-endian signed 64-bit |
 
 Accepted within ±300000 ms of the host clock.
+
+**In `POST /join`.** `credential` is the raw credential text and `proof` is raw JSON, so a malformed value never fails the request body; it only makes the attendee a guest.
+
+**Host verification** (`credential::evaluate_identity`, offline, strict Ed25519: small-order keys and `R`, and non-canonical `s`, are rejected). In order:
+
+1. No credential: guest.
+2. The text splits into `v1`, payload segment and signature; the segment is base64url JSON with a `kid`; the signature is 64 bytes.
+3. `kid` is in the host's compiled-in key list.
+4. The signature verifies over `v1.<payload segment>` exactly as received; the payload is never re-serialised.
+5. The payload decodes and its role is `verified`.
+6. `expires_at` is after the host clock.
+7. `issued_at` is at most 300000 ms ahead of the host clock.
+8. `proof` is present and is `{timestamp, signature}`.
+9. The proof signature verifies under the credential's `device_pubkey` for this event ID and certificate fingerprint.
+10. The proof timestamp is within ±300000 ms of the host clock (inclusive).
+
+Every failure means guest, never a rejected join (§4.3 step 4(a), §8 item 3). The reason goes to the host's event log only, not telemetry:
+
+| Guest reason | Meaning |
+|---|---|
+| `no_credential` | No credential was sent. |
+| `credential_malformed` | The credential text is not `v1.<payload>.<signature>` with a well-formed payload. |
+| `credential_unknown_kid` | The credential's `kid` is not in the host's key list. |
+| `credential_bad_signature` | The credential signature does not verify (strict Ed25519). |
+| `credential_wrong_role` | The signed payload's role is not `verified`. |
+| `credential_expired` | `expires_at` is at or before the host's clock. |
+| `credential_not_yet_valid` | `issued_at` is more than 5 minutes ahead of the host's clock. |
+| `proof_missing` | A credential was sent without `proof`. |
+| `proof_malformed` | `proof` is not `{timestamp, signature}` with a 64-byte signature. |
+| `proof_bad_signature` | The proof does not verify under the credential's `device_pubkey` for this event and certificate. |
+| `proof_stale` | The proof timestamp is more than 5 minutes behind the host's clock. |
+| `proof_future` | The proof timestamp is more than 5 minutes ahead of the host's clock. |
+
+**Development key.** `kid` `dev-1`, public key `Keoa0vi2hNTSPKaLIsfhpWJNqMM9ANmKBH9qbCYoc-8`. For tests and local runs only; production hosts never include it.
 
 ## 6. mDNS (§5.6)
 

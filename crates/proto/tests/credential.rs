@@ -66,14 +66,19 @@ fn proof_at(ts: i64) -> JoinProof {
 }
 
 fn evaluate(text: &str, proof: Option<&JoinProof>) -> IdentityDecision {
+    let proof = proof.map(proof_json);
     evaluate_identity(
         Some(text),
-        proof,
+        proof.as_ref(),
         &key_list(),
         &event_id(),
         &fingerprint(),
         NOW,
     )
+}
+
+fn proof_json(proof: &JoinProof) -> serde_json::Value {
+    serde_json::to_value(proof).unwrap()
 }
 
 fn assert_guest(decision: IdentityDecision, reason: GuestReason) {
@@ -136,7 +141,7 @@ fn credential_signature_covers_v1_and_payload_segment() {
 fn credential_no_credential_is_guest() {
     let d = evaluate_identity(
         None,
-        Some(&proof_at(NOW)),
+        Some(&proof_json(&proof_at(NOW))),
         &key_list(),
         &event_id(),
         &fingerprint(),
@@ -243,7 +248,7 @@ fn credential_payload_altered_after_signing_is_guest() {
     let forged = with_segment_json(&text, &compact_json(&p));
     let d = evaluate_identity(
         Some(&forged),
-        Some(&proof),
+        Some(&proof_json(&proof)),
         &KeyList::new(list),
         &event_id(),
         &fingerprint(),
@@ -523,27 +528,49 @@ fn credential_missing_proof_is_guest() {
 
 #[test]
 fn credential_guest_reasons_have_distinct_codes() {
-    let reasons = [
-        GuestReason::NoCredential,
-        cred_guest(CredentialError::Malformed("x")),
-        cred_guest(CredentialError::UnknownKid),
-        cred_guest(CredentialError::BadSignature),
-        cred_guest(CredentialError::Expired),
-        cred_guest(CredentialError::NotYetValid),
-        cred_guest(CredentialError::WrongRole),
-        GuestReason::MissingProof,
-        GuestReason::Proof(ProofError::BadSignature),
-        GuestReason::Proof(ProofError::Stale),
-        GuestReason::Proof(ProofError::Future),
-    ];
+    let reasons = GuestReason::ALL;
     let codes: std::collections::BTreeSet<&str> = reasons.iter().map(|r| r.as_str()).collect();
     assert_eq!(codes.len(), reasons.len());
-    for c in codes {
+    for want in [
+        "no_credential",
+        "credential_malformed",
+        "credential_unknown_kid",
+        "credential_bad_signature",
+        "credential_wrong_role",
+        "credential_expired",
+        "credential_not_yet_valid",
+        "proof_missing",
+        "proof_malformed",
+        "proof_bad_signature",
+        "proof_stale",
+        "proof_future",
+    ] {
+        assert!(codes.contains(want), "{want}");
+    }
+    for r in reasons {
+        assert!(!r.description().is_empty());
         assert!(
-            c.bytes().all(|b| b.is_ascii_lowercase() || b == b'_'),
-            "{c}"
+            r.as_str()
+                .bytes()
+                .all(|b| b.is_ascii_lowercase() || b == b'_'),
+            "{r:?}"
         );
     }
+}
+
+#[test]
+fn credential_contract_document_has_credentials_part() {
+    let doc = proto::contract::contract_markdown();
+    assert!(doc.contains("### Credentials"));
+    for r in GuestReason::ALL {
+        assert!(
+            doc.contains(&format!("| `{}` | {} |", r.as_str(), r.description())),
+            "{}",
+            r.as_str()
+        );
+    }
+    assert!(doc.contains(&format!("`{DEVELOPMENT_KID}`")));
+    assert!(doc.contains("Keoa0vi2hNTSPKaLIsfhpWJNqMM9ANmKBH9qbCYoc-8"));
 }
 
 /// Known answer: fixed keys, fixed payload, literal output. Any change to the
@@ -726,4 +753,120 @@ fn credential_module_reads_no_clock_and_does_no_io() {
     ] {
         assert!(!src.contains(word), "credential.rs uses {word}");
     }
+}
+
+/// Parses a `/join` body and runs the host's identity decision on its raw fields.
+fn evaluate_join_body(body: &str) -> IdentityDecision {
+    let req: proto::api::JoinRequest =
+        serde_json::from_str(body).unwrap_or_else(|e| panic!("body must parse: {e}\n{body}"));
+    evaluate_identity(
+        req.credential.as_deref(),
+        req.proof.as_ref(),
+        &key_list(),
+        &event_id(),
+        &fingerprint(),
+        NOW,
+    )
+}
+
+fn join_body(credential: &str, proof: &str) -> String {
+    format!(
+        r#"{{"client": {{"kind": "ios", "app_version": "1.0.0"}},
+            "credential": {credential}, "proof": {proof},
+            "join_token": "q6urq6urq6urq6urq6urqw"}}"#
+    )
+}
+
+fn good_proof_json() -> String {
+    serde_json::to_string(&proof_at(NOW)).unwrap()
+}
+
+#[test]
+fn credential_join_body_with_valid_credential_and_proof_is_verified() {
+    let body = join_body(
+        &format!("\"{}\"", credential_text(payload())),
+        &good_proof_json(),
+    );
+    assert!(matches!(
+        evaluate_join_body(&body),
+        IdentityDecision::Verified(_)
+    ));
+}
+
+#[test]
+fn credential_join_body_with_garbage_credential_is_guest() {
+    for garbage in ["\"garbage\"", "\"\"", "\"v1.%%%.$$$\"", "\"\u{1F642}\""] {
+        let d = evaluate_join_body(&join_body(garbage, &good_proof_json()));
+        assert!(
+            matches!(
+                d,
+                IdentityDecision::Guest(GuestReason::Credential(CredentialError::Malformed(_)))
+            ),
+            "{garbage}: {d:?}"
+        );
+    }
+}
+
+#[test]
+fn credential_join_body_with_bad_segment_count_is_guest() {
+    let text = credential_text(payload());
+    let (head, sig) = text.rsplit_once('.').unwrap();
+    for bad in [
+        head.to_owned(),
+        format!("{text}.{sig}"),
+        format!("{head}..{sig}"),
+    ] {
+        let d = evaluate_join_body(&join_body(&format!("\"{bad}\""), &good_proof_json()));
+        assert!(
+            matches!(
+                d,
+                IdentityDecision::Guest(GuestReason::Credential(CredentialError::Malformed(_)))
+            ),
+            "{bad}: {d:?}"
+        );
+    }
+}
+
+#[test]
+fn credential_join_body_with_malformed_proof_is_guest() {
+    let cred = format!("\"{}\"", credential_text(payload()));
+    let sig = proof_at(NOW).signature.to_string();
+    for proof in [
+        "\"not a proof\"".to_owned(),
+        "42".to_owned(),
+        "[]".to_owned(),
+        "{}".to_owned(),
+        format!("{{\"signature\": \"{sig}\"}}"),
+        format!("{{\"timestamp\": {NOW}}}"),
+        format!("{{\"timestamp\": \"{NOW}\", \"signature\": \"{sig}\"}}"),
+        format!(
+            "{{\"timestamp\": {NOW}, \"signature\": \"{}\"}}",
+            &sig[..85]
+        ),
+        format!("{{\"timestamp\": {NOW}, \"signature\": \"{sig}A\"}}"),
+        format!("{{\"timestamp\": 1.5, \"signature\": \"{sig}\"}}"),
+    ] {
+        assert_guest(
+            evaluate_join_body(&join_body(&cred, &proof)),
+            GuestReason::Proof(ProofError::Malformed),
+        );
+    }
+    // `null` is the same as no proof.
+    assert_guest(
+        evaluate_join_body(&join_body(&cred, "null")),
+        GuestReason::MissingProof,
+    );
+}
+
+#[test]
+fn credential_parse_join_proof_reads_the_wire_form() {
+    let proof = proof_at(NOW);
+    assert_eq!(
+        proto::credential::parse_join_proof(&proof_json(&proof)),
+        Ok(proof)
+    );
+    assert_eq!(
+        proto::credential::parse_join_proof(&serde_json::json!("x")),
+        Err(ProofError::Malformed)
+    );
 }
