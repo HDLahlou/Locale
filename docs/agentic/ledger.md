@@ -41,7 +41,8 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | M1-14 | todo | — | S | 0 | — |  |
 | M1-15 | todo | — | S | 0 | — |  |
 | M1-16 | todo | — | O | 0 | — |  |
-| M1-17 | todo | — | S | 0 | — | Has a human gate |
+| M1-17a | ready | — | S | 0 | — | Split from M1-17: telemetry schema, buckets, ID hashing, consent type and the allowlist filter in `proto` (pure). Verify: `cargo test -p proto telemetry` |
+| M1-17b | todo | — | S | 0 | — | Split from M1-17: new `crates/telemetry` facade: consent storage, SQLite offline queue, own HTTP sender (TR-16) with a loopback fake, hand-off sink for the phone SDK. Depends on M1-17a. Verify: `cargo test -p telemetry`. PostHog key (setup item 13) is not needed for tests |
 | M1-18 | todo | — | S | 0 | — |  |
 | M1-19 | todo | — | S | 0 | — |  |
 | M1-20 | todo | — | S | 0 | — |  |
@@ -103,6 +104,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 - DU-43 (default, unconfirmed) · Sizes use binary units: the 50 MB photo limit is 52,428,800 bytes and the 1 MB chunk is 1,048,576 bytes. The digest says "50 MB" and "1024 KB" without defining the unit.
 - DU-44 (default, unconfirmed) · TLS uses rustls with the `ring` crypto provider, not aws-lc, so the phone and Windows builds need no extra native build tools.
+- DU-51 (default, unconfirmed) · A crate `crates/telemetry` is added to the DU-7 layout for the telemetry facade (consent storage, offline queue, sender), so `crates/proto` holds only the schema and stays free of I/O.
 - DU-50 (default, unconfirmed) · Capability check details (M1-5): reasons `no_network`, `firewall_blocked`, `low_space`, `low_power`; fixes `turn_on_hotspot`, `show_network_instructions`, `allow_firewall`, `choose_smaller_size`, `plug_in`; link-local and 100.64.0.0/10 addresses count as isolated; the reachability test is capped at 5 s overall with the 2 s mDNS wait inside.
 - DU-49 (contract, applied to the digest at once) · Contract details fixed in code by S3: unpadded base64url; uppercase item states; join-failure HTTP statuses; 204 for DELETE and saved; cookie `locale_session`; snapshot items carry counts; credential signature over `v1.<payload segment>`; 70-byte proof message with a big-endian millisecond timestamp; Bearer refresh token on the two authenticated service endpoints; config JSON layout and bounds; which enums accept unknown values. `schemars` stays a normal dependency of `proto`. Listed in digest §5.8.
 - TR-16 (proposed) · The desktop core sends telemetry with its own small sender over PostHog's HTTP API; the facade owns the SQLite queue and the flag cache; `posthog-rs` is not used. Reason: the crate does not persist, has no offline flag cache, and forces aws-lc-rs into the build. Entry added to `docs/Locale Design Tradeoffs.md`.
@@ -114,6 +116,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 ## 3. Pending digest edits
 
 - §3 "Core libraries" and §12: add DU-44 (rustls with `ring`).
+- §3 "Repository layout", §11 "Facade" and §12: add DU-51 (`crates/telemetry`). `CLAUDE.md` layout table gets the same row.
 - §4.2, §8 item 6 and §12: add DU-50 (capability reasons and fix identifiers, isolated ranges, 5 s cap).
 - §11 rule 7 and §12: add DU-48 (facade owns the queue and the sender; TR-16).
 - §9 and §12: add DU-46 (dark values chosen in S5).
@@ -123,6 +126,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 ## 4. Plan changes
 
 - 2026-11-16 · S4 routed to Sonnet instead of Haiku. The fixture set as briefed needs hand-built EXIF, XMP and IPTC location blocks, a HEIC with GPS written through ImageIO, deterministic 50 MB files and an independent metadata check, which is more than boilerplate. The verifier stays Sonnet.
+- 2026-11-16 · M1-17 split into M1-17a and M1-17b. The plan put the whole telemetry facade in `proto`, but `proto` must stay free of I/O (it is the contract and is compiled into the phone app), and the offline queue and sender need SQLite and HTTP. M1-17a is the pure schema and filter in `proto`; M1-17b is a new crate `crates/telemetry` used by both cores. Tasks that depended on M1-17 depend on M1-17a (M1-18, M2-19, M3-12, M4-2) or on both (desktop consent UI in M1-19).
 - 2026-11-16 · M0a-1 also delivers the pinned-TLS connector in `crates/client-core/src/tls_pin.rs`, because its acceptance needs a pinned client and M1-11 and M0a-2 reuse it. The fingerprint's text forms stay in `proto` (S3).
 
 ## 5. Milestone log
