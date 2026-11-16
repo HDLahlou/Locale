@@ -14,13 +14,13 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | S6 | in-progress | worktree-agent-a1b93593b0b50aaab | S | 1 | — | First CI run 43805881453: macOS, web and mobile jobs pass; Windows fails on a missing `icon.ico` (S1) and a doctor test whose fake tool needs `ping` on PATH (S2). Returned once with scope extended to fix both. Has a human gate (Actions is enabled: runs start) |
 | M0a-1 | done | merged 71034d4 | O | 1 | PASS (Sonnet, medium), `just check` green on build/integration | Listener with separate TLS and plain routers, `TlsIdentity`, pinned connector in client-core. Follow-ups: move `fingerprint_base64url` to proto's helper after S3; plain path has no header-read timeout yet (M3-9); two timing tests have a 500 ms margin |
 | M0a-2 | todo | — | S | 0 | — |  |
-| M0a-3 | todo | — | O | 0 | — |  |
+| M0a-3 | in-progress | worktree | O | 1 | — |  |
 | M0a-4 | todo | — | O | 0 | — | Has a human gate |
 | M0a-5 | todo | — | O | 0 | — | Has a human gate |
 | M0a-6 | todo | — | S | 0 | — |  |
 | M0a-7 | todo | — | S | 0 | — |  |
 | M0a-8 | todo | — | S | 0 | — | Has a human gate |
-| M0a-9 | in-progress | worktree-agent-a5bf8a59b588bb187 | H | 1 | FAIL (Haiku): main answers confirmed, nine citation and accuracy points | Returned once. Findings so far: posthog-rs 0.33.1 does not persist to disk, flags need the network, and it forces aws-lc-rs into the build |
+| M0a-9 | in-progress | worktree-agent-a5bf8a59b588bb187 | H | 1 | FAIL twice (Haiku): main answers confirmed; 9 then 2 citation points | Returned twice (the limit). Findings: posthog-rs 0.33.1 does not persist to disk, flags need the network, and it forces aws-lc-rs into the build |
 | M0a-10 | todo | — | H writes runbook | 0 | — | Has a human gate |
 | M0b-1 | todo | — | S | 0 | — |  |
 | M0b-2 | todo | — | S | 0 | — |  |
