@@ -7,9 +7,9 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | ID | Status | Branch | Model | Attempts | Verified | Note |
 |---|---|---|---|---|---|---|
 | S1 | done | merged 9fab878 | S | 1 | PASS (Sonnet), `just check` green on build/integration | Skeleton, justfile, CLAUDE.md. Tauri crate is `locale-desktop`; TypeScript pinned to 6.0.3 |
-| S2 | verifying | worktree-agent-afe715d920ba6a480 | H | 1 | — | Orchestrator ran `just check` (pass) and `just doctor` (exit 0; only cargo-ndk, Playwright browsers and libheif missing, none needed for M1). Has a human gate |
+| S2 | done | merged 1d45dab | H | 1 | PASS (Sonnet, low), `just check` green on build/integration | `just doctor` exits 0 on this machine: nothing needed for M1 is missing, so the human gate needs no action. Not needed and missing: cargo-ndk, Playwright browsers, libheif. Windows branches of the script are unrun until S6 |
 | S3 | in-progress | worktree | O | 1 | — |  |
-| S4 | in-progress | worktree | S (was H) | 1 | — | Has a human gate (person adds four real device photos) |
+| S4 | in-progress | worktree-agent-ac9bd79d0909d040d | S (was H) | 1 | — | Checks pass; returned once to remove committed `__pycache__` files. Has a human gate (person adds four real device photos) |
 | S5 | in-progress | worktree | S | 1 | — |  |
 | S6 | todo | — | S | 0 | — | Has a human gate |
 | M0a-1 | in-progress | worktree | O | 1 | — |  |
@@ -123,3 +123,5 @@ This file is the record of the build run. It overrides anyone's memory of the co
 - 2026-11-14T02:22Z · S · Stopped, waiting for a person. S1 cannot be verified without cargo and just, and every other task depends on S1. No subagents were launched. See `docs/agentic/reports/S.md`.
 - 2026-11-16T04:18Z · S · Resumed at a person's request. Tool probe: every tool that was missing is now on PATH (cargo 1.100.0, just 1.59.0, pnpm 12.18.0, full Xcode with iOS 27.2 simulators, adb and emulator, flutter_rust_bridge_codegen, gh signed in). Rust targets for iOS and Android are installed. No leftover worktrees or task branches. S1 moved from blocked to ready.
 - 2026-11-16T05:20Z · S · S1 done: 1 Sonnet implementer, 1 Sonnet verifier, no returns. Dispatched S2 (Haiku), S3 (Opus), S4 (Sonnet) and M0a-1 (Opus) in parallel worktrees.
+
+- 2026-11-16T06:05Z · S · S2 done: 1 Haiku implementer, 1 Sonnet verifier, no returns. S4 returned once (bytecode committed). S5 dispatched (Sonnet).
