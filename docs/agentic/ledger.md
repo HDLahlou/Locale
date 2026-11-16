@@ -6,7 +6,7 @@ This file is the record of the build run. It overrides anyone's memory of the co
 
 | ID | Status | Branch | Model | Attempts | Verified | Note |
 |---|---|---|---|---|---|---|
-| S1 | in-progress | worktree branch (see task file) | S | 1 | — | Dispatched 2026-11-16 to Sonnet, medium effort |
+| S1 | verifying | worktree-agent-a9b4199858be64bb8 | S | 1 | — | Implementer done; `just check` passes on the branch when run by the orchestrator; with a Sonnet verifier |
 | S2 | todo | — | H | 0 | — | Has a human gate |
 | S3 | todo | — | O | 0 | — |  |
 | S4 | todo | — | S (was H) | 0 | — | Has a human gate |
