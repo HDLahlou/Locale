@@ -21,3 +21,6 @@ apps/desktop/src-tauri/gen/
 
 # Agent worktrees
 .claude/worktrees/
+
+# Python bytecode
+__pycache__/

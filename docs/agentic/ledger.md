@@ -7,10 +7,10 @@ This file is the record of the build run. It overrides anyone's memory of the co
 | ID | Status | Branch | Model | Attempts | Verified | Note |
 |---|---|---|---|---|---|---|
 | S1 | done | merged 9fab878 | S | 1 | PASS (Sonnet), `just check` green on build/integration | Skeleton, justfile, CLAUDE.md. Tauri crate is `locale-desktop`; TypeScript pinned to 6.0.3 |
-| S2 | in-progress | worktree | H | 1 | — | Has a human gate (person installs what `just doctor` reports missing) |
+| S2 | verifying | worktree-agent-afe715d920ba6a480 | H | 1 | — | Orchestrator ran `just check` (pass) and `just doctor` (exit 0; only cargo-ndk, Playwright browsers and libheif missing, none needed for M1). Has a human gate |
 | S3 | in-progress | worktree | O | 1 | — |  |
 | S4 | in-progress | worktree | S (was H) | 1 | — | Has a human gate (person adds four real device photos) |
-| S5 | todo | — | S | 0 | — |  |
+| S5 | in-progress | worktree | S | 1 | — |  |
 | S6 | todo | — | S | 0 | — | Has a human gate |
 | M0a-1 | in-progress | worktree | O | 1 | — |  |
 | M0a-2 | todo | — | S | 0 | — |  |
