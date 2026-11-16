@@ -8,7 +8,9 @@ Jobs: `rust` and `scripts` on macOS and Windows; `web` (checks plus guest-web Pl
 
 1. Commit your work on your branch.
 2. `just ci <task>-<what>`, for example `just ci s7-windows`. It pushes the current commit to `origin` as `ci/<suffix>`, waits, and exits with the run's status. It refuses a suffix that is empty, starts with `/` or `-`, or contains `..` or spaces.
-3. Only `ci/*` branches are ever pushed for CI. Never push `main` or `build/*` for this.
+3. `just ci` never force-pushes. If `origin/ci/<suffix>` already has different history the push is rejected and the recipe prints "ci: origin/ci/<suffix> has different history; pick a new suffix, for example <suffix>-<short sha>" and exits 3. Pick a new suffix and run it again.
+4. Old `ci/*` branches (including `ci/s6-red`, which holds a deliberately failing test and is never merged) can only be deleted by a person.
+5. Only `ci/*` branches are ever pushed for CI. Never push `main` or `build/*` for this.
 
 A new push to the same branch cancels the older run. Runs cost shared minutes: do not push on every edit.
 

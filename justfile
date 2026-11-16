@@ -46,7 +46,10 @@ ci suffix:
     branch="ci/{{suffix}}"
     case "{{suffix}}" in ""|/*|*..*|*" "*|-*) echo "ci: bad suffix" >&2; exit 2;; esac
     sha=$(git rev-parse HEAD)
-    git push --force origin "HEAD:refs/heads/$branch"
+    if ! git push origin "HEAD:refs/heads/$branch"; then
+      echo "ci: origin/$branch has different history; pick a new suffix, for example {{suffix}}-$(git rev-parse --short HEAD)" >&2
+      exit 3
+    fi
     id=""
     for _ in $(seq 1 30); do
       id=$(gh run list --workflow ci.yml --branch "$branch" --event push --commit "$sha" --limit 1 --json databaseId --jq '.[0].databaseId // empty')
