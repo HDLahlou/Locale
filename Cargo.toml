@@ -24,6 +24,10 @@ fs4 = "1"
 http-body-util = "0.1"
 hyper = "1"
 hyper-util = "0.1"
+libc = "0.2"
+objc2-core-foundation = { version = "0.3", default-features = false }
+objc2-core-graphics = { version = "0.3", default-features = false }
+objc2-image-io = { version = "0.3", default-features = false }
 percent-encoding = "2.3"
 rcgen = { version = "0.14", default-features = false, features = ["crypto", "ring"] }
 rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }

@@ -1,12 +1,25 @@
-//! The `image-worker` library. Empty skeleton.
+//! Image decode and convert worker.
+//!
+//! - [`sniff`]: pure-Rust content sniffing (usable on phones).
+//! - [`structure`]: pure-Rust container completeness checks.
+//! - [`codec`]: the [`ImageCodec`] trait and the per-OS back end.
+//! - [`worker`]: the parent-side API that runs one job per child process with
+//!   time and memory limits.
+//! - [`child`]: the code the `image-worker` binary runs.
 
-/// Name of this crate, used by the skeleton test.
-pub const CRATE_NAME: &str = "image-worker";
+pub mod child;
+pub mod codec;
+pub mod job;
+pub mod sniff;
+pub mod structure;
+pub mod worker;
 
-#[cfg(test)]
-mod tests {
-    #[test]
-    fn crate_name_matches() {
-        assert_eq!(super::CRATE_NAME, "image-worker");
-    }
-}
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+mod macos;
+
+pub use codec::{platform_codec, CodecError, Encoded, Facts, ImageCodec, ImageFormat};
+#[cfg(target_os = "macos")]
+pub use macos::ImageIoCodec;
+pub use sniff::{sniff, NotAnImage};
+pub use worker::{InvalidImage, JobOutput, SizeBucket, Task, Worker, WorkerError};
