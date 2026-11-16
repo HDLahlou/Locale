@@ -1,0 +1,236 @@
+/* Components use only tokens from tokens.css. No colour literals here. */
+
+.lc-button,
+.lc-pill,
+.lc-tabs__tab {
+  font: inherit;
+  font-family: var(--lc-font-family);
+  cursor: pointer;
+}
+
+.lc-button:focus-visible,
+.lc-pill:focus-visible,
+.lc-tabs__tab:focus-visible,
+.lc-dialog:focus-visible {
+  outline: 2px solid var(--lc-link);
+  outline-offset: 2px;
+}
+
+/* Button */
+.lc-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--lc-space-2);
+  min-height: 40px;
+  padding: 0 var(--lc-space-4);
+  border: 1px solid transparent;
+  border-radius: var(--lc-radius-md);
+  font-size: var(--lc-text-md);
+  font-weight: var(--lc-weight-medium);
+}
+.lc-button--primary {
+  background: var(--lc-primary);
+  color: var(--lc-on-primary);
+}
+.lc-button--primary:hover:not(:disabled) {
+  background: var(--lc-primary-hover);
+}
+.lc-button--secondary {
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  border-color: var(--lc-line);
+}
+.lc-button--secondary:hover:not(:disabled) {
+  border-color: var(--lc-muted);
+}
+.lc-button--quiet {
+  background: transparent;
+  color: var(--lc-link);
+}
+.lc-button--quiet:hover:not(:disabled) {
+  background: var(--lc-badge-tint);
+}
+/* Destructive: outlined in the error pair, never the primary fill. */
+.lc-button--destructive {
+  background: var(--lc-surface);
+  color: var(--lc-error-ink);
+  border-color: var(--lc-error-ink);
+}
+.lc-button--destructive:hover:not(:disabled) {
+  background: var(--lc-error-fill);
+}
+.lc-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lc-button[data-busy] {
+  cursor: progress;
+}
+.lc-button__spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: lc-spin 0.8s linear infinite;
+}
+
+/* Pill */
+.lc-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lc-space-2);
+  min-height: 32px;
+  padding: 0 var(--lc-space-3);
+  border: 1px solid var(--lc-line);
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  font-size: var(--lc-text-sm);
+}
+.lc-pill[aria-pressed="true"] {
+  background: var(--lc-badge-tint);
+  border-color: var(--lc-tab-selected);
+  color: var(--lc-badge-ink);
+  font-weight: var(--lc-weight-semibold);
+}
+
+/* Tabs */
+.lc-tabs__list {
+  display: flex;
+  gap: var(--lc-space-1);
+  border-bottom: 1px solid var(--lc-line);
+}
+.lc-tabs__tab {
+  padding: var(--lc-space-2) var(--lc-space-4);
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: var(--lc-muted);
+  font-size: var(--lc-text-md);
+}
+.lc-tabs__tab[aria-selected="true"] {
+  color: var(--lc-text);
+  border-bottom-color: var(--lc-tab-selected);
+  font-weight: var(--lc-weight-semibold);
+}
+.lc-tabs__panel {
+  padding-top: var(--lc-space-4);
+}
+
+/* Status label */
+.lc-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--lc-space-1);
+  padding: 2px var(--lc-space-2);
+  border-radius: var(--lc-radius-pill);
+  font-size: var(--lc-text-xs);
+  font-weight: var(--lc-weight-semibold);
+}
+.lc-status--ok {
+  background: var(--lc-ok-fill);
+  color: var(--lc-ok-ink);
+}
+.lc-status--warn {
+  background: var(--lc-warn-fill);
+  color: var(--lc-warn-ink);
+}
+.lc-status--error {
+  background: var(--lc-error-fill);
+  color: var(--lc-error-ink);
+}
+
+/* Badge */
+.lc-badge {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  color: var(--lc-badge-ink);
+}
+.lc-badge--role {
+  padding: 2px var(--lc-space-2);
+  border-radius: var(--lc-radius-pill);
+  background: var(--lc-badge-tint);
+  font-size: var(--lc-text-xs);
+  font-weight: var(--lc-weight-semibold);
+}
+.lc-badge--verified {
+  color: var(--lc-tab-selected);
+}
+
+/* Dialog */
+.lc-dialog__backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--lc-space-4);
+  background: rgb(0 0 0 / 0.5);
+}
+.lc-dialog {
+  box-sizing: border-box;
+  width: min(480px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  padding: var(--lc-space-5);
+  border: 1px solid var(--lc-line);
+  border-radius: var(--lc-radius-lg);
+  background: var(--lc-surface);
+  color: var(--lc-text);
+  font-family: var(--lc-font-family);
+}
+.lc-dialog__title {
+  margin: 0 0 var(--lc-space-3);
+  font-size: var(--lc-text-lg);
+  line-height: var(--lc-leading-tight);
+}
+.lc-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--lc-space-2);
+  margin-top: var(--lc-space-5);
+}
+
+/* Skeleton */
+.lc-skeleton {
+  display: inline-block;
+  border-radius: var(--lc-radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--lc-line) 25%,
+    var(--lc-badge-tint) 50%,
+    var(--lc-line) 75%
+  );
+  background-size: 200% 100%;
+  animation: lc-shimmer 1.4s ease-in-out infinite;
+}
+.lc-skeleton--circle {
+  border-radius: 50%;
+}
+
+@keyframes lc-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes lc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lc-skeleton {
+    animation: none;
+    background: var(--lc-line);
+  }
+  .lc-button__spinner {
+    animation: none;
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "role_host": "Host",
+  "role_uploader": "Uploader",
+  "role_viewer": "Guest",
+  "join_as_uploader": "Join as Uploader",
+  "join_as_guest": "Join as Guest",
+  "guest_browser": "Guest · browser",
+  "verified": "Verified"
+}

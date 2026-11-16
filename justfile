@@ -19,6 +19,7 @@ check-rust:
 check-web:
     pnpm install --frozen-lockfile
     pnpm format:check
+    pnpm -r --if-present format:check
     pnpm -r --if-present lint
     pnpm -r --if-present typecheck
     pnpm -r --if-present test
